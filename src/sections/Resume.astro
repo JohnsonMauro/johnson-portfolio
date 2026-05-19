@@ -1,0 +1,58 @@
+---
+import { resume, type ResumeItem } from '../data/profile';
+
+const half = Math.ceil(resume.length / 2);
+const left: ResumeItem[] = resume.slice(0, half);
+const right: ResumeItem[] = resume.slice(half);
+---
+
+<section id="resume" class="resume">
+  <div class="container">
+    <div class="section-title">
+      <h2>Experience...</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        {
+          left.map((item) => (
+            <div class="resume-item">
+              <h4>{item.role}</h4>
+              <h5>{item.period}</h5>
+              <p>
+                <em>{item.org}</em>
+              </p>
+              {item.bullets && (
+                <ul>
+                  {item.bullets.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </div>
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        {
+          right.map((item) => (
+            <div class="resume-item">
+              <h4>{item.role}</h4>
+              <h5>{item.period}</h5>
+              <p>
+                <em>{item.org}</em>
+              </p>
+              {item.bullets && (
+                <ul>
+                  {item.bullets.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

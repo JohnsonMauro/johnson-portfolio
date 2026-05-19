@@ -1,0 +1,59 @@
+---
+import { skills } from '../data/profile';
+
+const half = Math.ceil(skills.length / 2);
+const left = skills.slice(0, half);
+const right = skills.slice(half);
+---
+
+<section id="skills" class="skills section-bg">
+  <div class="container">
+    <div class="section-title">
+      <h2>Skills</h2>
+    </div>
+
+    <div class="row skills-content">
+      <div class="col-lg-6" data-aos="fade-up">
+        {
+          left.map((s) => (
+            <div class="progress">
+              <span class="skill">
+                {s.name} <i class="val">{s.value}%</i>
+              </span>
+              <div class="progress-bar-wrap">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  aria-valuenow={s.value}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        {
+          right.map((s) => (
+            <div class="progress">
+              <span class="skill">
+                {s.name} <i class="val">{s.value}%</i>
+              </span>
+              <div class="progress-bar-wrap">
+                <div
+                  class="progress-bar"
+                  role="progressbar"
+                  aria-valuenow={s.value}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
