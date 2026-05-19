@@ -1,20 +1,33 @@
 ---
 import Base from '../layouts/Base.astro';
-import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar';
 import Hero from '../sections/Hero.astro';
 import About from '../sections/About.astro';
 import Skills from '../sections/Skills.astro';
 import Resume from '../sections/Resume.astro';
 import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop';
+import { profile } from '../data/profile';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
 ---
 
 <Base>
-  <Header />
+  <Sidebar
+    client:load
+    name={profile.name}
+    photo={asset(profile.photo)}
+    social={profile.social}
+    email={profile.email}
+    homeHref={`${base}/`}
+  />
   <Hero />
-  <main id="main">
+  <main>
     <About />
     <Skills />
     <Resume />
   </main>
   <Footer />
+  <BackToTop client:idle />
 </Base>

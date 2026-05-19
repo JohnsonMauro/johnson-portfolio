@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title?: string;
   description?: string;
@@ -6,7 +8,7 @@ interface Props {
 
 const {
   title = 'Johnson Mauro - Software Engineer',
-  description = 'Software engineer with 14+ years of experience. Backend, DevOps, Fintech.',
+  description = 'Software engineer with 14+ years working with backend, DevOps, and Fintech.',
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -14,47 +16,30 @@ const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-white">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content="software engineer, backend, devops, python, golang, csharp, fintech" />
+    <meta name="theme-color" content="#040b14" />
 
     <link rel="icon" href={asset('assets/img/favicon.png')} />
     <link rel="apple-touch-icon" href={asset('assets/img/apple-touch-icon.png')} />
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Poppins:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
     />
 
-    <link rel="stylesheet" href={asset('assets/vendor/aos/aos.css')} />
-    <link rel="stylesheet" href={asset('assets/vendor/bootstrap/css/bootstrap.min.css')} />
-    <link rel="stylesheet" href={asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')} />
-    <link rel="stylesheet" href={asset('assets/vendor/boxicons/css/boxicons.min.css')} />
-    <link rel="stylesheet" href={asset('assets/vendor/glightbox/css/glightbox.min.css')} />
-    <link rel="stylesheet" href={asset('assets/vendor/swiper/swiper-bundle.min.css')} />
-
-    <link rel="stylesheet" href={asset('assets/css/style.css')} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
   </head>
-  <body>
+  <body class="bg-white">
     <slot />
-
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
-      <i class="bi bi-arrow-up-short"></i>
-    </a>
-
-    <script is:inline src={asset('assets/vendor/purecounter/purecounter.js')}></script>
-    <script is:inline src={asset('assets/vendor/aos/aos.js')}></script>
-    <script is:inline src={asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}></script>
-    <script is:inline src={asset('assets/vendor/glightbox/js/glightbox.min.js')}></script>
-    <script is:inline src={asset('assets/vendor/isotope-layout/isotope.pkgd.min.js')}></script>
-    <script is:inline src={asset('assets/vendor/swiper/swiper-bundle.min.js')}></script>
-    <script is:inline src={asset('assets/vendor/typed.js/typed.min.js')}></script>
-    <script is:inline src={asset('assets/vendor/waypoints/noframework.waypoints.js')}></script>
-
-    <script is:inline src={asset('assets/js/main.js')}></script>
   </body>
 </html>

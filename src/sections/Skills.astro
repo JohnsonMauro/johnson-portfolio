@@ -1,58 +1,28 @@
 ---
 import { skills } from '../data/profile';
+import ProgressBar from '../components/ProgressBar';
 
 const half = Math.ceil(skills.length / 2);
 const left = skills.slice(0, half);
 const right = skills.slice(half);
 ---
 
-<section id="skills" class="skills section-bg">
-  <div class="container">
-    <div class="section-title">
-      <h2>Skills</h2>
-    </div>
+<section
+  id="skills"
+  class="section-anchor bg-slate-50 py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
+>
+  <div class="mx-auto max-w-page">
+    <header class="mb-10">
+      <h2 class="font-display text-4xl font-bold text-ink-deep">Skills</h2>
+      <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
+    </header>
 
-    <div class="row skills-content">
-      <div class="col-lg-6" data-aos="fade-up">
-        {
-          left.map((s) => (
-            <div class="progress">
-              <span class="skill">
-                {s.name} <i class="val">{s.value}%</i>
-              </span>
-              <div class="progress-bar-wrap">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  aria-valuenow={s.value}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                />
-              </div>
-            </div>
-          ))
-        }
+    <div class="grid gap-x-12 md:grid-cols-2">
+      <div>
+        {left.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
       </div>
-
-      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-        {
-          right.map((s) => (
-            <div class="progress">
-              <span class="skill">
-                {s.name} <i class="val">{s.value}%</i>
-              </span>
-              <div class="progress-bar-wrap">
-                <div
-                  class="progress-bar"
-                  role="progressbar"
-                  aria-valuenow={s.value}
-                  aria-valuemin="0"
-                  aria-valuemax="100"
-                />
-              </div>
-            </div>
-          ))
-        }
+      <div>
+        {right.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
       </div>
     </div>
   </div>

@@ -1,11 +1,23 @@
 ---
 import { profile } from '../data/profile';
-const typedItems = profile.typedRoles.join(', ');
+import Typed from '../components/Typed';
 ---
 
-<section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-  <div class="hero-container" data-aos="fade-in">
-    <h1>{profile.name}</h1>
-    <p>I'm a <span class="typed" data-typed-items={typedItems}></span></p>
+<section
+  id="hero"
+  class="section-anchor relative flex min-h-screen flex-col items-center justify-center bg-sidebar px-6 text-white xl:pl-sidebar"
+>
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(20,157,221,0.18),transparent_60%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative z-10 text-center">
+    <h1 class="font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
+      {profile.name}
+    </h1>
+    <p class="mt-4 text-lg text-white/70 sm:text-xl">
+      I'm a <Typed client:load words={[...profile.typedRoles]} />
+    </p>
   </div>
 </section>
