@@ -8,7 +8,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "favicons": "node scripts/gen-favicons.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^3.6.2",
@@ -19,5 +20,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.14"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }
