@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
-import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://johnsonmauro.github.io',
@@ -16,9 +16,11 @@ export default defineConfig({
       redirectToDefaultLocale: false,
     },
   },
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     react(),
-    tailwind({ applyBaseStyles: false }),
     sitemap({
       i18n: {
         defaultLocale: 'en',
