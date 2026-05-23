@@ -1,10 +1,9 @@
 ---
-import { profile } from '../../domain/profile/profile';
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-ink/10 bg-white px-6 py-8 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]">
+<footer class="border-t border-ink/10 bg-surface px-6 py-8 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]">
   <div class="mx-auto max-w-page text-center text-sm text-ink/70">
-    <p>&copy; {year} <span class="font-semibold text-ink-deep">{profile.name}</span></p>
+    <p>&copy; {year}</p>
   </div>
 </footer>

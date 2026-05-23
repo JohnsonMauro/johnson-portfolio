@@ -3,11 +3,11 @@ export interface Skill {
   value: number;
 }
 
-export const skills: Skill[] = [
-  { name: 'JS', value: 90 },
-  { name: 'C#', value: 70 },
-  { name: 'Go', value: 60 },
-  { name: 'DevOps', value: 50 },
-  { name: 'Business', value: 80 },
-  { name: 'Leadership', value: 70 },
+export const hardSkills: Skill[] = [
+  { name: 'JS / TS', value: 90 },
+  { name: 'Angular', value: 85 },
+  { name: 'React / RN', value: 75 },
+  { name: '.Net Core', value: 75 },
+  { name: 'Node.js', value: 70 },
+  { name: 'SQL', value: 75 },
 ];

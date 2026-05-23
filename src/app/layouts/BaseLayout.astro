@@ -29,7 +29,7 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
 ---
 
 <!DOCTYPE html>
-<html lang={lang} class="bg-white">
+<html lang={lang} class="bg-surface">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,6 +37,19 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="theme-color" content="#040b14" />
+
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var dark = stored ? stored === 'dark' : prefersDark;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (_) {
+          /* localStorage unavailable */
+        }
+      })();
+    </script>
 
     <link rel="canonical" href={canonical} />
     {
@@ -75,7 +88,7 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
 
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} is:inline />}
   </head>
-  <body class="bg-white">
+  <body class="bg-surface">
     <slot />
   </body>
 </html>

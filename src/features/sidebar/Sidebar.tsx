@@ -10,6 +10,8 @@ import {
   HomeIcon,
   UserIcon,
   FileIcon,
+  SunIcon,
+  MoonIcon,
 } from '../../shared/ui/icons';
 import {
   LOCALES,
@@ -45,6 +47,9 @@ interface SidebarProps {
   lang: Locale;
   localeUrls: Record<Locale, string>;
   langSwitchLabel: string;
+  themeToggleLabel: string;
+  themeToggleToDark: string;
+  themeToggleToLight: string;
 }
 
 const NAV_ICONS = {
@@ -64,6 +69,9 @@ export default function Sidebar({
   lang,
   localeUrls,
   langSwitchLabel,
+  themeToggleLabel,
+  themeToggleToDark,
+  themeToggleToLight,
 }: SidebarProps) {
   const NAV: NavItem[] = [
     { href: '#hero', label: navLabels.home, Icon: NAV_ICONS.home },
@@ -73,6 +81,23 @@ export default function Sidebar({
 
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>('hero');
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const toggleTheme = () => {
+    const root = document.documentElement;
+    const next = !root.classList.contains('dark');
+    root.classList.toggle('dark', next);
+    try {
+      window.localStorage.setItem('theme', next ? 'dark' : 'light');
+    } catch {
+      /* localStorage unavailable — ignore */
+    }
+    setIsDark(next);
+  };
 
   useEffect(() => {
     const ids = ['hero', 'about', 'resume'];
@@ -137,7 +162,67 @@ export default function Sidebar({
           (open ? 'translate-x-0' : '-translate-x-full xl:translate-x-0')
         }
       >
-        <div className="flex flex-col items-center pt-4">
+        <div className="flex items-center justify-center gap-3 pb-4">
+          <div
+            role="group"
+            aria-label={langSwitchLabel}
+            className="flex items-center gap-2"
+          >
+            {LOCALES.map((locale) => {
+              const isCurrent = locale === lang;
+              const persistChoice = () => {
+                try {
+                  window.localStorage.setItem('preferred-locale', locale);
+                } catch {
+                  /* localStorage unavailable (privacy mode) — ignore */
+                }
+              };
+              return (
+                <a
+                  key={locale}
+                  href={localeUrls[locale]}
+                  hrefLang={locale === 'pt' ? 'pt-BR' : locale}
+                  aria-label={LOCALE_NAMES[locale]}
+                  aria-current={isCurrent ? 'true' : undefined}
+                  title={LOCALE_NAMES[locale]}
+                  onClick={persistChoice}
+                  className={
+                    'flex items-center justify-center rounded-full transition ' +
+                    (isCurrent
+                      ? 'ring-2 ring-accent ring-offset-2 ring-offset-sidebar'
+                      : 'opacity-60 hover:opacity-100')
+                  }
+                >
+                  <img
+                    src={`${BASE_URL}${LOCALE_FLAGS[locale]}`}
+                    alt=""
+                    width={28}
+                    height={28}
+                    className="h-7 w-7 rounded-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="sr-only">{LOCALE_LABELS[locale]}</span>
+                </a>
+              );
+            })}
+          </div>
+          <span aria-hidden="true" className="h-6 w-px bg-white/15" />
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={themeToggleLabel}
+            aria-pressed={isDark}
+            title={isDark ? themeToggleToLight : themeToggleToDark}
+            className="flex h-7 w-7 items-center justify-center rounded-full bg-sidebar-social text-white/80 transition hover:bg-accent hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <span aria-hidden="true">
+              {isDark ? <SunIcon width={16} height={16} /> : <MoonIcon width={16} height={16} />}
+            </span>
+          </button>
+        </div>
+
+        <div className="flex flex-col items-center pt-2">
           <img
             src={photo}
             alt={name}
@@ -213,50 +298,6 @@ export default function Sidebar({
           </ul>
         </nav>
 
-        <div
-          role="group"
-          aria-label={langSwitchLabel}
-          className="mt-auto flex items-center justify-center gap-2 pt-6"
-        >
-          {LOCALES.map((locale) => {
-            const isCurrent = locale === lang;
-            const persistChoice = () => {
-              try {
-                window.localStorage.setItem('preferred-locale', locale);
-              } catch {
-                /* localStorage unavailable (privacy mode) — ignore */
-              }
-            };
-            return (
-              <a
-                key={locale}
-                href={localeUrls[locale]}
-                hrefLang={locale === 'pt' ? 'pt-BR' : locale}
-                aria-label={LOCALE_NAMES[locale]}
-                aria-current={isCurrent ? 'true' : undefined}
-                title={LOCALE_NAMES[locale]}
-                onClick={persistChoice}
-                className={
-                  'flex items-center justify-center rounded-full transition ' +
-                  (isCurrent
-                    ? 'ring-2 ring-accent ring-offset-2 ring-offset-sidebar'
-                    : 'opacity-60 hover:opacity-100')
-                }
-              >
-                <img
-                  src={`${BASE_URL}${LOCALE_FLAGS[locale]}`}
-                  alt=""
-                  width={28}
-                  height={28}
-                  className="h-7 w-7 rounded-full"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <span className="sr-only">{LOCALE_LABELS[locale]}</span>
-              </a>
-            );
-          })}
-        </div>
       </aside>
     </>
   );

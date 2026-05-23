@@ -1,5 +1,6 @@
 ---
 import { profile } from '../../domain/profile/profile';
+import { findExpertiseByKey } from '../../domain/profile/expertise';
 import FadeIn from '../../shared/ui/FadeIn';
 import { asset } from '../../shared/lib/asset';
 import type { Dict } from '../../domain/i18n/content';
@@ -9,11 +10,13 @@ interface Props {
 }
 
 const { dict } = Astro.props;
+
+const ICON_BASE = 'assets/icons/tech';
 ---
 
 <section
   id="about"
-  class="section-anchor bg-white py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
+  class="section-anchor bg-surface py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
 >
   <div class="mx-auto max-w-page">
     <header class="mb-10">
@@ -35,16 +38,66 @@ const { dict } = Astro.props;
       </FadeIn>
       <FadeIn client:visible variant="fade-left" className="lg:col-span-8" as="div">
         <p class="text-ink/80">{dict.about.current}</p>
-        <dl class="mt-6 space-y-4">
+        <dl class="mt-6 space-y-6">
           {
-            dict.about.expertise.map((item) => (
-              <div>
-                <dt class="font-display text-sm font-semibold uppercase tracking-wide text-ink-deep">
-                  {item.label}
-                </dt>
-                <dd class="mt-1 text-ink/80">{item.value}</dd>
-              </div>
-            ))
+            dict.about.expertise.map((entry) => {
+              const category = findExpertiseByKey(entry.key);
+              if (!category) return null;
+              return (
+                <div>
+                  <dt class="font-display text-sm font-semibold uppercase tracking-wide text-ink-deep">
+                    {entry.label}
+                  </dt>
+                  <dd class="mt-2">
+                    <ul class="flex flex-wrap gap-3">
+                      {category.items.map((item) => (
+                        <li class="group relative">
+                          <span
+                            class="flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-surface-card p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
+                            tabindex="0"
+                            aria-label={item.names.join(', ')}
+                            role="img"
+                          >
+                            <img
+                              src={asset(`${ICON_BASE}/${item.file}`)}
+                              alt=""
+                              width="24"
+                              height="24"
+                              class={
+                                'h-6 w-6 ' +
+                                (item.darkFile ? 'block dark:hidden ' : '') +
+                                (item.tone === 'mono' ? 'dark:invert' : '')
+                              }
+                              loading="lazy"
+                              decoding="async"
+                            />
+                            {item.darkFile && (
+                              <img
+                                src={asset(`${ICON_BASE}/${item.darkFile}`)}
+                                alt=""
+                                width="24"
+                                height="24"
+                                class="hidden h-6 w-6 dark:block"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            )}
+                          </span>
+                          <span
+                            role="tooltip"
+                            class="pointer-events-none absolute left-1/2 top-full z-20 mt-2 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap rounded-md bg-ink-dark px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg ring-1 ring-white/10 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                          >
+                            {item.names.map((n) => (
+                              <span>{n}</span>
+                            ))}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              );
+            })
           }
         </dl>
       </FadeIn>

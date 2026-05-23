@@ -1,5 +1,5 @@
 ---
-import { skills } from '../../domain/profile/skills';
+import { hardSkills } from '../../domain/profile/skills';
 import ProgressBar from '../../shared/ui/ProgressBar';
 import type { Dict } from '../../domain/i18n/content';
 
@@ -9,14 +9,14 @@ interface Props {
 
 const { dict } = Astro.props;
 
-const half = Math.ceil(skills.length / 2);
-const left = skills.slice(0, half);
-const right = skills.slice(half);
+const half = Math.ceil(hardSkills.length / 2);
+const leftHard = hardSkills.slice(0, half);
+const rightHard = hardSkills.slice(half);
 ---
 
 <section
   id="skills"
-  class="section-anchor bg-slate-50 py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
+  class="section-anchor bg-surface-alt py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
 >
   <div class="mx-auto max-w-page">
     <header class="mb-10">
@@ -24,13 +24,33 @@ const right = skills.slice(half);
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 
-    <div class="grid gap-x-12 md:grid-cols-2">
-      <div>
-        {left.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
+    <div class="mb-12">
+      <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
+        {dict.sections.hardSkillsTitle}
+      </h3>
+      <div class="mt-5 grid gap-x-12 md:grid-cols-2">
+        <div>
+          {leftHard.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
+        </div>
+        <div>
+          {rightHard.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
+        </div>
       </div>
-      <div>
-        {right.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
-      </div>
+    </div>
+
+    <div>
+      <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
+        {dict.sections.softSkillsTitle}
+      </h3>
+      <ul class="mt-5 flex flex-wrap gap-2">
+        {
+          dict.softSkills.map((skill) => (
+            <li class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent-dark dark:text-accent-light">
+              {skill}
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </div>
 </section>
