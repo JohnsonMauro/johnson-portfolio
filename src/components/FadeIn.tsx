@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 type Variant = 'fade-in' | 'fade-up' | 'fade-right' | 'fade-left';
 
@@ -6,7 +6,7 @@ interface FadeInProps {
   variant?: Variant;
   delay?: number;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   children: ReactNode;
 }
 
@@ -26,7 +26,7 @@ export default function FadeIn({
 }: FadeInProps) {
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
-  const Tag = as as keyof JSX.IntrinsicElements;
+  const Tag = as as unknown as React.ElementType;
 
   useEffect(() => {
     const el = ref.current;
@@ -53,7 +53,6 @@ export default function FadeIn({
 
   return (
     <Tag
-      // @ts-expect-error generic ref via JSX.IntrinsicElements
       ref={ref}
       className={(visible ? ANIM[variant] + ' ' : '') + className}
       style={style}

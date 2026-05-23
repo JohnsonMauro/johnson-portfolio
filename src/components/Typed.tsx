@@ -16,7 +16,7 @@ export default function Typed({
   const [text, setText] = useState('');
   const [wordIndex, setWordIndex] = useState(0);
   const [phase, setPhase] = useState<'typing' | 'pause' | 'deleting'>('typing');
-  const timer = useRef<number>();
+  const timer = useRef<number | undefined>(undefined);
 
   useEffect(() => {
     const current = words[wordIndex % words.length];
