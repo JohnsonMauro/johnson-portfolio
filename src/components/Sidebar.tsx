@@ -10,7 +10,16 @@ import {
   UserIcon,
   FileIcon,
 } from './icons';
-import { LOCALES, LOCALE_LABELS, type Locale } from '../i18n/config';
+import {
+  LOCALES,
+  LOCALE_LABELS,
+  LOCALE_FLAGS,
+  LOCALE_NAMES,
+  type Locale,
+} from '../i18n/config';
+
+const RAW_BASE = import.meta.env.BASE_URL;
+const BASE_URL = RAW_BASE.endsWith('/') ? RAW_BASE : `${RAW_BASE}/`;
 
 interface NavItem {
   href: string;
@@ -198,7 +207,7 @@ export default function Sidebar({
         <div
           role="group"
           aria-label={langSwitchLabel}
-          className="mt-auto flex items-center justify-center gap-1 pt-6"
+          className="mt-auto flex items-center justify-center gap-2 pt-6"
         >
           {LOCALES.map((locale) => {
             const isCurrent = locale === lang;
@@ -214,16 +223,27 @@ export default function Sidebar({
                 key={locale}
                 href={localeUrls[locale]}
                 hrefLang={locale === 'pt' ? 'pt-BR' : locale}
+                aria-label={LOCALE_NAMES[locale]}
                 aria-current={isCurrent ? 'true' : undefined}
+                title={LOCALE_NAMES[locale]}
                 onClick={persistChoice}
                 className={
-                  'rounded-md px-2 py-1 text-xs font-semibold transition ' +
+                  'flex items-center justify-center rounded-full transition ' +
                   (isCurrent
-                    ? 'bg-accent text-white'
-                    : 'text-white/50 hover:bg-white/10 hover:text-white')
+                    ? 'ring-2 ring-accent ring-offset-2 ring-offset-sidebar'
+                    : 'opacity-60 hover:opacity-100')
                 }
               >
-                {LOCALE_LABELS[locale]}
+                <img
+                  src={`${BASE_URL}${LOCALE_FLAGS[locale]}`}
+                  alt=""
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 rounded-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="sr-only">{LOCALE_LABELS[locale]}</span>
               </a>
             );
           })}

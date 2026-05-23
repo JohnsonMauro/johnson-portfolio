@@ -13,6 +13,11 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   pt: 'Português (BR)',
 };
 
+export const LOCALE_FLAGS: Record<Locale, string> = {
+  en: 'flags/en.svg',
+  pt: 'flags/br.svg',
+};
+
 export function isLocale(value: string | undefined): value is Locale {
   return value !== undefined && (LOCALES as readonly string[]).includes(value);
 }
