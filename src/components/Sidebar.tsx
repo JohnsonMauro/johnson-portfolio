@@ -132,7 +132,7 @@ export default function Sidebar({
 
       <aside
         className={
-          'fixed inset-y-0 left-0 z-40 flex w-sidebar flex-col overflow-y-auto bg-sidebar px-4 py-6 transition-transform duration-500 ease-out ' +
+          'fixed inset-y-0 left-0 z-40 flex w-sidebar flex-col overflow-y-auto overflow-x-clip bg-sidebar px-4 py-6 transition-transform duration-500 ease-out ' +
           (open ? 'translate-x-0' : '-translate-x-full xl:translate-x-0')
         }
       >
