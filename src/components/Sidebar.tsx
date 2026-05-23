@@ -31,7 +31,7 @@ interface SidebarProps {
   mailSubject: string;
   navLabels: { home: string; about: string; experience: string };
   lang: Locale;
-  localeBase: string;
+  localeUrls: Record<Locale, string>;
   langSwitchLabel: string;
 }
 
@@ -50,7 +50,7 @@ export default function Sidebar({
   mailSubject,
   navLabels,
   lang,
-  localeBase,
+  localeUrls,
   langSwitchLabel,
 }: SidebarProps) {
   const NAV: NavItem[] = [
@@ -205,7 +205,8 @@ export default function Sidebar({
             return (
               <a
                 key={locale}
-                href={`${localeBase}/${locale}/`}
+                href={localeUrls[locale]}
+                hrefLang={locale === 'pt' ? 'pt-BR' : locale}
                 aria-current={isCurrent ? 'true' : undefined}
                 className={
                   'rounded-md px-2 py-1 text-xs font-semibold transition ' +
