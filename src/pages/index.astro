@@ -17,23 +17,23 @@ const localeMap = Object.fromEntries(
     <title>Redirecting…</title>
     <script is:inline define:vars={{ defaultTarget, localeMap }}>
       (function () {
-        var STORAGE_KEY = 'preferred-locale';
-        var chosen = defaultTarget;
+        const STORAGE_KEY = 'preferred-locale';
+        let chosen = defaultTarget;
         try {
-          var saved = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
+          const saved = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
           if (saved && localeMap[saved]) {
             chosen = localeMap[saved];
           } else {
-            var pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
-            var tag = String(pref).toLowerCase();
-            for (var code in localeMap) {
+            const pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+            const tag = String(pref).toLowerCase();
+            for (const code in localeMap) {
               if (tag === code || tag.indexOf(code + '-') === 0) {
                 chosen = localeMap[code];
                 break;
               }
             }
           }
-        } catch (e) {
+        } catch {
           chosen = defaultTarget;
         }
         window.location.replace(chosen);

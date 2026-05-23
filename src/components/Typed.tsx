@@ -32,8 +32,10 @@ export default function Typed({
       }
     } else if (phase === 'deleting') {
       if (text === '') {
-        setWordIndex((i) => i + 1);
-        setPhase('typing');
+        timer.current = window.setTimeout(() => {
+          setWordIndex((i) => i + 1);
+          setPhase('typing');
+        }, 0);
       } else {
         timer.current = window.setTimeout(
           () => setText(current.slice(0, text.length - 1)),

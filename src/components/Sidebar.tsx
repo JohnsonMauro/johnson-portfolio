@@ -63,7 +63,7 @@ export default function Sidebar({
   const [active, setActive] = useState<string>('hero');
 
   useEffect(() => {
-    const ids = NAV.map((n) => n.href.slice(1));
+    const ids = ['hero', 'about', 'resume'];
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
@@ -205,7 +205,9 @@ export default function Sidebar({
             const persistChoice = () => {
               try {
                 window.localStorage.setItem('preferred-locale', locale);
-              } catch {}
+              } catch {
+                /* localStorage unavailable (privacy mode) — ignore */
+              }
             };
             return (
               <a
