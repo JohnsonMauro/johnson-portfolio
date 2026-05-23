@@ -1,4 +1,18 @@
-export const profile = {
+export interface Social {
+  linkedin: string;
+  github: string;
+  medium: string;
+  whatsapp: string;
+}
+
+export interface Profile {
+  name: string;
+  photo: string;
+  email: string;
+  social: Social;
+}
+
+export const profile: Profile = {
   name: 'Johnson Mauro',
   photo: 'assets/img/JohnsonMauro.png',
   email: 'johnsonmauro@gmail.com',
@@ -8,13 +22,4 @@ export const profile = {
     medium: 'https://medium.com/@johnsonmauro',
     whatsapp: '+5581988146287',
   },
-} as const;
-
-export const skills = [
-  { name: 'JS', value: 90 },
-  { name: 'C#', value: 70 },
-  { name: 'Go', value: 60 },
-  { name: 'DevOps', value: 50 },
-  { name: 'Business', value: 80 },
-  { name: 'Leadership', value: 70 },
-];
+};

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpIcon } from './icons';
+import { ArrowUpIcon } from '../../shared/ui/icons';
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);

@@ -1,17 +1,18 @@
 ---
 import { getAbsoluteLocaleUrl, getRelativeLocaleUrl } from 'astro:i18n';
-import Base from '../../layouts/Base.astro';
-import Sidebar from '../../components/Sidebar';
-import Hero from '../../sections/Hero.astro';
-import About from '../../sections/About.astro';
-import Skills from '../../sections/Skills.astro';
-import Resume from '../../sections/Resume.astro';
-import Footer from '../../components/Footer.astro';
-import BackToTop from '../../components/BackToTop';
-import { profile } from '../../data/profile';
-import { LOCALES, type Locale, isLocale } from '../../i18n/config';
-import { getDict } from '../../i18n/content';
-import { personJsonLd } from '../../i18n/jsonld';
+import BaseLayout from '../../app/layouts/BaseLayout.astro';
+import Sidebar from '../../features/sidebar/Sidebar';
+import BackToTop from '../../features/back-to-top/BackToTop';
+import Hero from '../../widgets/hero/Hero.astro';
+import About from '../../widgets/about/About.astro';
+import Skills from '../../widgets/skills/Skills.astro';
+import Resume from '../../widgets/resume/Resume.astro';
+import Footer from '../../widgets/footer/Footer.astro';
+import { profile } from '../../domain/profile/profile';
+import { LOCALES, type Locale, isLocale } from '../../domain/i18n/config';
+import { getDict } from '../../domain/i18n/content';
+import { personJsonLd } from '../../domain/seo/jsonld';
+import { asset } from '../../shared/lib/asset';
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -24,9 +25,6 @@ if (!isLocale(lang)) {
 
 const typedLang = lang as Locale;
 const dict = getDict(typedLang);
-
-const baseRaw = import.meta.env.BASE_URL.replace(/\/$/, '');
-const asset = (p: string) => `${baseRaw}/${p.replace(/^\//, '')}`;
 
 const localeUrls = Object.fromEntries(
   LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')])
@@ -46,7 +44,7 @@ const jsonLd = personJsonLd({
 });
 ---
 
-<Base
+<BaseLayout
   lang={typedLang}
   title={dict.meta.title}
   description={dict.meta.description}
@@ -74,4 +72,4 @@ const jsonLd = personJsonLd({
   </main>
   <Footer />
   <BackToTop client:idle />
-</Base>
+</BaseLayout>

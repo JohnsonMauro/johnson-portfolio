@@ -1,6 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
-import { LOCALES, DEFAULT_LOCALE } from '../i18n/config';
+import { LOCALES, DEFAULT_LOCALE } from '../domain/i18n/config';
 
 const defaultTarget = getRelativeLocaleUrl(DEFAULT_LOCALE, '');
 const localeMap = Object.fromEntries(

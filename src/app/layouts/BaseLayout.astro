@@ -1,7 +1,8 @@
 ---
-import '../styles/global.css';
+import '../../styles/global.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
-import { LOCALES, DEFAULT_LOCALE, type Locale } from '../i18n/config';
+import { LOCALES, DEFAULT_LOCALE, type Locale } from '../../domain/i18n/config';
+import { asset } from '../../shared/lib/asset';
 
 interface Props {
   lang: Locale;
@@ -12,9 +13,6 @@ interface Props {
 }
 
 const { lang, title, description, keywords, jsonLd } = Astro.props;
-
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
 
 const HREFLANG_TAGS: Record<Locale, string> = {
   en: 'en',
