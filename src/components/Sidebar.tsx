@@ -4,6 +4,7 @@ import {
   GitHubIcon,
   MediumIcon,
   MailIcon,
+  WhatsAppIcon,
   MenuIcon,
   CloseIcon,
   HomeIcon,
@@ -34,6 +35,7 @@ interface SidebarProps {
     linkedin: string;
     github: string;
     medium: string;
+    whatsapp: string;
   };
   email: string;
   homeHref: string;
@@ -157,6 +159,12 @@ export default function Sidebar({
             </SocialLink>
             <SocialLink href={social.medium} label="Medium">
               <MediumIcon />
+            </SocialLink>
+            <SocialLink
+              href={`https://wa.me/${social.whatsapp.replace(/\D/g, '')}`}
+              label={`WhatsApp ${social.whatsapp}`}
+            >
+              <WhatsAppIcon />
             </SocialLink>
             <SocialLink
               href={`mailto:${email}?subject=${encodeURIComponent(mailSubject)}`}

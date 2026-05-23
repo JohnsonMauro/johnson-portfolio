@@ -6,6 +6,7 @@ export const profile = {
     linkedin: 'https://www.linkedin.com/in/johnsonmauro',
     github: 'https://github.com/JohnsonMauro',
     medium: 'https://medium.com/@johnsonmauro',
+    whatsapp: '+5581988146287',
   },
 } as const;
 
