@@ -1,10 +1,16 @@
 ---
-import { resume, type ResumeItem } from '../data/profile';
 import ResumeColumn from '../components/ResumeColumn.astro';
+import type { Dict } from '../i18n/content';
 
-const half = Math.ceil(resume.length / 2);
-const left: ResumeItem[] = resume.slice(0, half);
-const right: ResumeItem[] = resume.slice(half);
+interface Props {
+  dict: Dict;
+}
+
+const { dict } = Astro.props;
+
+const half = Math.ceil(dict.resume.length / 2);
+const left = dict.resume.slice(0, half);
+const right = dict.resume.slice(half);
 ---
 
 <section
@@ -13,7 +19,7 @@ const right: ResumeItem[] = resume.slice(half);
 >
   <div class="mx-auto max-w-page">
     <header class="mb-10">
-      <h2 class="font-display text-4xl font-bold text-ink-deep">Experience</h2>
+      <h2 class="font-display text-4xl font-bold text-ink-deep">{dict.sections.experienceTitle}</h2>
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 

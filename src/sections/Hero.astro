@@ -1,6 +1,13 @@
 ---
-import { profile } from '../data/profile';
 import Typed from '../components/Typed';
+import { profile } from '../data/profile';
+import type { Dict } from '../i18n/content';
+
+interface Props {
+  dict: Dict;
+}
+
+const { dict } = Astro.props;
 ---
 
 <section
@@ -17,7 +24,7 @@ import Typed from '../components/Typed';
       {profile.name}
     </h1>
     <p class="mt-4 text-lg text-white/70 sm:text-xl">
-      I'm a <Typed client:load words={[...profile.typedRoles]} />
+      {dict.hero.typedPrefix} <Typed client:load words={dict.hero.typedRoles} />
     </p>
   </div>
 </section>

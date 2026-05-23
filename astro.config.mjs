@@ -7,6 +7,14 @@ export default defineConfig({
   base: '/johnson-portfolio',
   trailingSlash: 'ignore',
   output: 'static',
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'pt'],
+    routing: {
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false,
+    },
+  },
   integrations: [
     react(),
     tailwind({ applyBaseStyles: false }),

@@ -4,12 +4,7 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-ink/10 bg-white px-6 py-8 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]">
-  <div class="mx-auto flex max-w-page flex-col items-center justify-between gap-2 text-sm text-ink/70 md:flex-row">
+  <div class="mx-auto max-w-page text-center text-sm text-ink/70">
     <p>&copy; {year} <span class="font-semibold text-ink-deep">{profile.name}</span></p>
-    <p>
-      Built with <a href="https://astro.build" target="_blank" rel="noopener" class="font-semibold">Astro</a>
-      <span aria-hidden="true">·</span>
-      <a href="https://tailwindcss.com" target="_blank" rel="noopener" class="font-semibold">Tailwind</a>
-    </p>
   </div>
 </footer>

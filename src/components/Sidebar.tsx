@@ -10,6 +10,7 @@ import {
   UserIcon,
   FileIcon,
 } from './icons';
+import { LOCALES, LOCALE_LABELS, type Locale } from '../i18n/config';
 
 interface NavItem {
   href: string;
@@ -27,13 +28,18 @@ interface SidebarProps {
   };
   email: string;
   homeHref: string;
+  mailSubject: string;
+  navLabels: { home: string; about: string; experience: string };
+  lang: Locale;
+  localeBase: string;
+  langSwitchLabel: string;
 }
 
-const NAV: NavItem[] = [
-  { href: '#hero', label: 'Home', Icon: HomeIcon },
-  { href: '#about', label: 'About', Icon: UserIcon },
-  { href: '#resume', label: 'Experience', Icon: FileIcon },
-];
+const NAV_ICONS = {
+  home: HomeIcon,
+  about: UserIcon,
+  experience: FileIcon,
+} as const;
 
 export default function Sidebar({
   name,
@@ -41,7 +47,18 @@ export default function Sidebar({
   social,
   email,
   homeHref,
+  mailSubject,
+  navLabels,
+  lang,
+  localeBase,
+  langSwitchLabel,
 }: SidebarProps) {
+  const NAV: NavItem[] = [
+    { href: '#hero', label: navLabels.home, Icon: NAV_ICONS.home },
+    { href: '#about', label: navLabels.about, Icon: NAV_ICONS.about },
+    { href: '#resume', label: navLabels.experience, Icon: NAV_ICONS.experience },
+  ];
+
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>('hero');
 
@@ -133,7 +150,7 @@ export default function Sidebar({
               <MediumIcon />
             </SocialLink>
             <SocialLink
-              href={`mailto:${email}?subject=Mail from johnsonmauro.github.io`}
+              href={`mailto:${email}?subject=${encodeURIComponent(mailSubject)}`}
               label="Email"
               external={false}
             >
@@ -178,8 +195,29 @@ export default function Sidebar({
           </ul>
         </nav>
 
-        <div className="mt-auto pt-8 text-center text-xs text-white/40">
-          {new Date().getFullYear()} — {name}
+        <div
+          role="group"
+          aria-label={langSwitchLabel}
+          className="mt-auto flex items-center justify-center gap-1 pt-6"
+        >
+          {LOCALES.map((locale) => {
+            const isCurrent = locale === lang;
+            return (
+              <a
+                key={locale}
+                href={`${localeBase}/${locale}/`}
+                aria-current={isCurrent ? 'true' : undefined}
+                className={
+                  'rounded-md px-2 py-1 text-xs font-semibold transition ' +
+                  (isCurrent
+                    ? 'bg-accent text-white'
+                    : 'text-white/50 hover:bg-white/10 hover:text-white')
+                }
+              >
+                {LOCALE_LABELS[locale]}
+              </a>
+            );
+          })}
         </div>
       </aside>
     </>

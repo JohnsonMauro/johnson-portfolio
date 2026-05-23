@@ -1,28 +1,28 @@
 ---
 import '../styles/global.css';
+import type { Locale } from '../i18n/config';
 
 interface Props {
-  title?: string;
-  description?: string;
+  lang: Locale;
+  title: string;
+  description: string;
+  keywords: string;
 }
 
-const {
-  title = 'Johnson Mauro - Software Engineer',
-  description = 'Software engineer with 14+ years working with backend, DevOps, and Fintech.',
-} = Astro.props;
+const { lang, title, description, keywords } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="bg-white">
+<html lang={lang} class="bg-white">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content="software engineer, backend, devops, python, golang, csharp, fintech" />
+    <meta name="keywords" content={keywords} />
     <meta name="theme-color" content="#040b14" />
 
     <link rel="icon" type="image/svg+xml" href={asset('assets/img/favicon.svg')} />
@@ -40,6 +40,7 @@ const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'pt' ? 'pt_BR' : 'en_US'} />
   </head>
   <body class="bg-white">
     <slot />

@@ -1,6 +1,13 @@
 ---
 import { skills } from '../data/profile';
 import ProgressBar from '../components/ProgressBar';
+import type { Dict } from '../i18n/content';
+
+interface Props {
+  dict: Dict;
+}
+
+const { dict } = Astro.props;
 
 const half = Math.ceil(skills.length / 2);
 const left = skills.slice(0, half);
@@ -13,7 +20,7 @@ const right = skills.slice(half);
 >
   <div class="mx-auto max-w-page">
     <header class="mb-10">
-      <h2 class="font-display text-4xl font-bold text-ink-deep">Skills</h2>
+      <h2 class="font-display text-4xl font-bold text-ink-deep">{dict.sections.skillsTitle}</h2>
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 
