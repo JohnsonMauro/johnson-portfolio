@@ -18,6 +18,18 @@ const pt: Dict = {
     themeToggleLabel: 'Alternar tema',
     themeToggleToDark: 'Ativar tema escuro',
     themeToggleToLight: 'Ativar tema claro',
+    printCv: 'Imprimir / baixar currículo',
+    printCvShort: 'CV',
+    backToSite: 'Voltar ao site',
+  },
+  cv: {
+    contactLabel: 'Contato',
+    summaryTitle: 'Resumo profissional',
+    skillsTitle: 'Habilidades principais',
+    softSkillsTitle: 'Soft skills',
+    experienceTitle: 'Experiência profissional',
+    printAction: 'Imprimir / Salvar como PDF',
+    generatedOn: 'Gerado em',
   },
   hero: {
     typedPrefix: 'Sou',

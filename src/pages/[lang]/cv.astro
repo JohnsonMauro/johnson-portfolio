@@ -1,0 +1,184 @@
+---
+import { getAbsoluteLocaleUrl, getRelativeLocaleUrl } from 'astro:i18n';
+import { LOCALES, type Locale, isLocale } from '../../domain/i18n/config';
+import { getDict } from '../../domain/i18n/content';
+import { profile } from '../../domain/profile/profile';
+import { asset } from '../../shared/lib/asset';
+import { personJsonLd } from '../../domain/seo/jsonld';
+import CvDocument from '../../widgets/cv/CvDocument.astro';
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+if (!isLocale(lang)) {
+  throw new Error(`Unsupported locale: ${lang}`);
+}
+
+const typedLang = lang as Locale;
+const dict = getDict(typedLang);
+
+const siteHref = getAbsoluteLocaleUrl(typedLang, '');
+const homeHref = getRelativeLocaleUrl(typedLang, '');
+const imageAbsolute = new URL(asset(profile.photo), Astro.site).toString();
+const jsonLd = personJsonLd({
+  name: profile.name,
+  lang: typedLang,
+  url: siteHref,
+  imageUrl: imageAbsolute,
+  jobTitle: dict.meta.jobTitle,
+  description: dict.meta.description,
+  email: profile.email,
+  sameAs: [profile.social.linkedin, profile.social.github, profile.social.medium],
+});
+
+const title = `${profile.name} — ${dict.meta.jobTitle} (CV)`;
+---
+
+<!DOCTYPE html>
+<html lang={typedLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <meta name="description" content={dict.meta.description} />
+
+    <link rel="icon" type="image/svg+xml" href={asset('assets/img/favicon.svg')} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@500;600;700&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={jsonLd} is:inline />
+  </head>
+  <body>
+    <div class="cv-toolbar" role="toolbar" aria-label="CV actions">
+      <a class="cv-toolbar__back" href={homeHref}>← {dict.nav.backToSite}</a>
+      <div class="cv-toolbar__lang">
+        {
+          LOCALES.map((l) => (
+            <a
+              href={getRelativeLocaleUrl(l, 'cv')}
+              aria-current={l === typedLang ? 'true' : undefined}
+              class={l === typedLang ? 'is-current' : ''}
+            >
+              {l.toUpperCase()}
+            </a>
+          ))
+        }
+      </div>
+      <button type="button" class="cv-toolbar__print" onclick="window.print()">
+        {dict.cv.printAction}
+      </button>
+    </div>
+
+    <main class="cv-page">
+      <CvDocument dict={dict} lang={typedLang} siteHref={siteHref} />
+    </main>
+
+    <style is:global>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+        font-family: 'Open Sans', system-ui, sans-serif;
+        color: #1a1a1a;
+      }
+
+      .cv-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        background: #ffffff;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .cv-toolbar__back {
+        font-size: 14px;
+        color: #173b6c;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .cv-toolbar__back:hover {
+        color: #149ddd;
+      }
+
+      .cv-toolbar__lang {
+        display: inline-flex;
+        gap: 6px;
+      }
+
+      .cv-toolbar__lang a {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        color: #173b6c;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+      }
+
+      .cv-toolbar__lang a.is-current {
+        background: #149ddd;
+        color: #ffffff;
+        border-color: #149ddd;
+      }
+
+      .cv-toolbar__print {
+        appearance: none;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 999px;
+        background: #149ddd;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 150ms ease;
+      }
+
+      .cv-toolbar__print:hover {
+        background: #0e7bb0;
+      }
+
+      .cv-page {
+        padding: 24px 16px 48px;
+      }
+
+      .cv-page > article {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        border-radius: 6px;
+      }
+
+      @media print {
+        .cv-toolbar {
+          display: none !important;
+        }
+
+        .cv-page {
+          padding: 0;
+        }
+
+        .cv-page > article {
+          box-shadow: none;
+          border-radius: 0;
+        }
+      }
+    </style>
+  </body>
+</html>

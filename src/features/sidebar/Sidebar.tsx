@@ -12,6 +12,7 @@ import {
   FileIcon,
   SunIcon,
   MoonIcon,
+  PrinterIcon,
 } from '../../shared/ui/icons';
 import {
   LOCALES,
@@ -50,6 +51,9 @@ interface SidebarProps {
   themeToggleLabel: string;
   themeToggleToDark: string;
   themeToggleToLight: string;
+  cvHref: string;
+  printCvLabel: string;
+  printCvShort: string;
 }
 
 const NAV_ICONS = {
@@ -72,6 +76,9 @@ export default function Sidebar({
   themeToggleLabel,
   themeToggleToDark,
   themeToggleToLight,
+  cvHref,
+  printCvLabel,
+  printCvShort,
 }: SidebarProps) {
   const NAV: NavItem[] = [
     { href: '#hero', label: navLabels.home, Icon: NAV_ICONS.home },
@@ -262,7 +269,19 @@ export default function Sidebar({
           </ul>
         </div>
 
-        <nav className="mt-8" aria-label="Primary">
+        <div className="mt-6 px-3">
+          <a
+            href={cvHref}
+            aria-label={printCvLabel}
+            title={printCvLabel}
+            className="group flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            <PrinterIcon width={16} height={16} />
+            <span>{printCvShort}</span>
+          </a>
+        </div>
+
+        <nav className="mt-6" aria-label="Primary">
           <ul className="space-y-1">
             {NAV.map(({ href, label, Icon }) => {
               const id = href.slice(1);

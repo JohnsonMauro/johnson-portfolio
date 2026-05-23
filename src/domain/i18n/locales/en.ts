@@ -18,6 +18,18 @@ const en: Dict = {
     themeToggleLabel: 'Toggle theme',
     themeToggleToDark: 'Switch to dark theme',
     themeToggleToLight: 'Switch to light theme',
+    printCv: 'Print / download CV',
+    printCvShort: 'CV',
+    backToSite: 'Back to site',
+  },
+  cv: {
+    contactLabel: 'Contact',
+    summaryTitle: 'Professional summary',
+    skillsTitle: 'Core skills',
+    softSkillsTitle: 'Soft skills',
+    experienceTitle: 'Professional experience',
+    printAction: 'Print / Save as PDF',
+    generatedOn: 'Generated on',
   },
   hero: {
     typedPrefix: "I'm a",

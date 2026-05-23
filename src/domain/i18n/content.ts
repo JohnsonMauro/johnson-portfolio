@@ -31,6 +31,18 @@ export interface Dict {
     themeToggleLabel: string;
     themeToggleToDark: string;
     themeToggleToLight: string;
+    printCv: string;
+    printCvShort: string;
+    backToSite: string;
+  };
+  cv: {
+    contactLabel: string;
+    summaryTitle: string;
+    skillsTitle: string;
+    softSkillsTitle: string;
+    experienceTitle: string;
+    printAction: string;
+    generatedOn: string;
   };
   hero: {
     typedRoles: string[];

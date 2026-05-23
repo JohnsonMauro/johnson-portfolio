@@ -1,0 +1,387 @@
+---
+import type { Dict } from '../../domain/i18n/content';
+import type { Locale } from '../../domain/i18n/config';
+import { profile } from '../../domain/profile/profile';
+import { expertise, findExpertiseByKey } from '../../domain/profile/expertise';
+import { asset } from '../../shared/lib/asset';
+
+interface Props {
+  dict: Dict;
+  lang: Locale;
+  siteHref: string;
+}
+
+const { dict, lang, siteHref } = Astro.props;
+
+const dateFmt = new Intl.DateTimeFormat(lang === 'pt' ? 'pt-BR' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: '2-digit',
+});
+const generatedOn = dateFmt.format(new Date());
+
+const ICON_BASE = 'assets/icons/tech';
+const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
+---
+
+<article class="cv">
+  <header class="cv__header">
+    <img
+      src={asset(profile.photo)}
+      alt={profile.name}
+      width="96"
+      height="96"
+      class="cv__photo"
+    />
+    <div class="cv__heading">
+      <h1 class="cv__name">{profile.name}</h1>
+      <p class="cv__role">{dict.meta.jobTitle}</p>
+      <ul class="cv__contact" aria-label={dict.cv.contactLabel}>
+        <li>
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        </li>
+        <li>
+          <a
+            href={`https://wa.me/${whatsappDigits}`}
+            target="_blank"
+            rel="noopener noreferrer">{profile.social.whatsapp}</a>
+        </li>
+        <li>
+          <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer">
+            linkedin.com/in/johnsonmauro
+          </a>
+        </li>
+        <li>
+          <a href={profile.social.github} target="_blank" rel="noopener noreferrer">
+            github.com/JohnsonMauro
+          </a>
+        </li>
+        <li>
+          <a href={profile.social.medium} target="_blank" rel="noopener noreferrer">
+            medium.com/@johnsonmauro
+          </a>
+        </li>
+        <li>
+          <a href={siteHref}>{siteHref.replace(/^https?:\/\//, '')}</a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="cv__section">
+    <h2>{dict.cv.summaryTitle}</h2>
+    <p>{dict.about.summary}</p>
+    <p>{dict.about.current}</p>
+  </section>
+
+  <section class="cv__section">
+    <h2>{dict.cv.skillsTitle}</h2>
+    <dl class="cv__skills">
+      {
+        dict.about.expertise.map((entry) => {
+          const category = findExpertiseByKey(entry.key);
+          if (!category) return null;
+          const names = category.items.flatMap((i) => i.names).join(', ');
+          return (
+            <div class="cv__skills-row">
+              <dt>{entry.label}</dt>
+              <dd>
+                <ul class="cv__skill-icons" aria-hidden="true">
+                  {category.items.map((item) => (
+                    <li>
+                      <img
+                        src={asset(`${ICON_BASE}/${item.file}`)}
+                        alt=""
+                        width="18"
+                        height="18"
+                        loading="lazy"
+                      />
+                    </li>
+                  ))}
+                </ul>
+                <span class="cv__skill-names">{names}</span>
+              </dd>
+            </div>
+          );
+        })
+      }
+    </dl>
+  </section>
+
+  <section class="cv__section">
+    <h2>{dict.cv.softSkillsTitle}</h2>
+    <p class="cv__soft">{dict.softSkills.join(' · ')}</p>
+  </section>
+
+  <section class="cv__section cv__section--experience">
+    <h2>{dict.cv.experienceTitle}</h2>
+    <ol class="cv__experience">
+      {
+        dict.resume.map((item) => (
+          <li class="cv__job">
+            <header class="cv__job-header">
+              <h3>{item.role}</h3>
+              <span class="cv__period">{item.period}</span>
+            </header>
+            <p class="cv__org">
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.org}
+                </a>
+              ) : (
+                item.org
+              )}
+            </p>
+            {item.bullets && (
+              <ul class="cv__bullets">
+                {item.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <footer class="cv__footer">
+    <span>{dict.cv.generatedOn} {generatedOn}</span>
+    <span>{siteHref}</span>
+  </footer>
+</article>
+
+<style>
+  .cv {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 40px;
+    color: #1a1a1a;
+    background: #ffffff;
+    font-family: 'Open Sans', system-ui, sans-serif;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  .cv__header {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #149ddd;
+  }
+
+  .cv__photo {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #173b6c;
+  }
+
+  .cv__name {
+    margin: 0;
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: 22pt;
+    font-weight: 700;
+    color: #173b6c;
+    letter-spacing: -0.02em;
+  }
+
+  .cv__role {
+    margin: 2px 0 8px;
+    font-size: 12pt;
+    color: #149ddd;
+    font-weight: 600;
+  }
+
+  .cv__contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 9.5pt;
+  }
+
+  .cv__contact a {
+    color: #1a1a1a;
+    text-decoration: none;
+  }
+
+  .cv__contact a:hover {
+    color: #149ddd;
+    text-decoration: underline;
+  }
+
+  .cv__section {
+    margin-top: 18px;
+  }
+
+  .cv__section h2 {
+    margin: 0 0 8px;
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: 12pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #173b6c;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 4px;
+  }
+
+  .cv__section p {
+    margin: 6px 0;
+  }
+
+  .cv__skills {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .cv__skills-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .cv__skills-row dt {
+    font-weight: 600;
+    color: #173b6c;
+    font-size: 10pt;
+  }
+
+  .cv__skills-row dd {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .cv__skill-icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .cv__skill-icons img {
+    height: 18px;
+    width: 18px;
+    object-fit: contain;
+  }
+
+  .cv__skill-names {
+    font-size: 9.5pt;
+    color: #444;
+  }
+
+  .cv__soft {
+    margin: 0;
+    font-size: 10pt;
+    color: #444;
+  }
+
+  .cv__experience {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .cv__job {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .cv__job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .cv__job-header h3 {
+    margin: 0;
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #173b6c;
+  }
+
+  .cv__period {
+    font-size: 9.5pt;
+    font-weight: 500;
+    color: #149ddd;
+    white-space: nowrap;
+  }
+
+  .cv__org {
+    margin: 2px 0 4px;
+    font-size: 10pt;
+    font-style: italic;
+    color: #555;
+  }
+
+  .cv__org a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .cv__org a:hover {
+    color: #149ddd;
+  }
+
+  .cv__bullets {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    font-size: 10pt;
+  }
+
+  .cv__bullets li {
+    margin-bottom: 2px;
+  }
+
+  .cv__footer {
+    margin-top: 24px;
+    padding-top: 10px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8.5pt;
+    color: #888;
+  }
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 14mm 12mm;
+    }
+
+    html,
+    body {
+      background: #ffffff !important;
+    }
+
+    .cv {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .cv__contact a {
+      color: #1a1a1a !important;
+      text-decoration: none;
+    }
+  }
+</style>
