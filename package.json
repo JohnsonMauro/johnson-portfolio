@@ -12,12 +12,12 @@
     "favicons": "node scripts/gen-favicons.mjs"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.2",
+    "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "3.7.2",
     "@tailwindcss/vite": "4.3.0",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
-    "astro": "^5.14.5",
+    "astro": "^6.3.7",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.0"
