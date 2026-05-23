@@ -18,6 +18,7 @@ export interface Dict {
     description: string;
     keywords: string;
     mailSubject: string;
+    jobTitle: string;
   };
   nav: {
     home: string;
@@ -54,6 +55,7 @@ const en: Dict = {
     keywords:
       'software engineer, backend, devops, python, golang, csharp, fintech',
     mailSubject: 'Mail from johnsonmauro.github.io',
+    jobTitle: 'Software Engineer',
   },
   nav: {
     home: 'Home',
@@ -183,6 +185,7 @@ const pt: Dict = {
     keywords:
       'engenheiro de software, backend, devops, python, golang, csharp, fintech',
     mailSubject: 'Mensagem de johnsonmauro.github.io',
+    jobTitle: 'Engenheiro de Software',
   },
   nav: {
     home: 'Início',

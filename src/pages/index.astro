@@ -16,20 +16,28 @@ const localeMap = Object.fromEntries(
     <link rel="canonical" href={defaultTarget} />
     <title>Redirecting…</title>
     <script is:inline define:vars={{ defaultTarget, localeMap }}>
-      try {
-        const pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
-        const tag = String(pref).toLowerCase();
-        let chosen = defaultTarget;
-        for (const code of Object.keys(localeMap)) {
-          if (tag === code || tag.startsWith(code + '-')) {
-            chosen = localeMap[code];
-            break;
+      (function () {
+        var STORAGE_KEY = 'preferred-locale';
+        var chosen = defaultTarget;
+        try {
+          var saved = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
+          if (saved && localeMap[saved]) {
+            chosen = localeMap[saved];
+          } else {
+            var pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+            var tag = String(pref).toLowerCase();
+            for (var code in localeMap) {
+              if (tag === code || tag.indexOf(code + '-') === 0) {
+                chosen = localeMap[code];
+                break;
+              }
+            }
           }
+        } catch (e) {
+          chosen = defaultTarget;
         }
         window.location.replace(chosen);
-      } catch (e) {
-        window.location.replace(defaultTarget);
-      }
+      })();
     </script>
   </head>
   <body>

@@ -8,9 +8,10 @@ interface Props {
   title: string;
   description: string;
   keywords: string;
+  jsonLd?: string;
 }
 
-const { lang, title, description, keywords } = Astro.props;
+const { lang, title, description, keywords, jsonLd } = Astro.props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const asset = (p: string) => `${base}/${p.replace(/^\//, '')}`;
@@ -73,6 +74,8 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
         <meta property="og:locale:alternate" content={OG_LOCALES[l]} />
       ))
     }
+
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} is:inline />}
   </head>
   <body class="bg-white">
     <slot />

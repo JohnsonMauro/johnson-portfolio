@@ -1,5 +1,5 @@
 ---
-import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getAbsoluteLocaleUrl, getRelativeLocaleUrl } from 'astro:i18n';
 import Base from '../../layouts/Base.astro';
 import Sidebar from '../../components/Sidebar';
 import Hero from '../../sections/Hero.astro';
@@ -11,6 +11,7 @@ import BackToTop from '../../components/BackToTop';
 import { profile } from '../../data/profile';
 import { LOCALES, type Locale, isLocale } from '../../i18n/config';
 import { getDict } from '../../i18n/content';
+import { personJsonLd } from '../../i18n/jsonld';
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -30,6 +31,19 @@ const asset = (p: string) => `${baseRaw}/${p.replace(/^\//, '')}`;
 const localeUrls = Object.fromEntries(
   LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')])
 ) as Record<Locale, string>;
+
+const absoluteCanonical = getAbsoluteLocaleUrl(typedLang, '');
+const imageAbsolute = new URL(asset(profile.photo), Astro.site).toString();
+const jsonLd = personJsonLd({
+  name: profile.name,
+  lang: typedLang,
+  url: absoluteCanonical,
+  imageUrl: imageAbsolute,
+  jobTitle: dict.meta.jobTitle,
+  description: dict.meta.description,
+  email: profile.email,
+  sameAs: [profile.social.linkedin, profile.social.github, profile.social.medium],
+});
 ---
 
 <Base
@@ -37,6 +51,7 @@ const localeUrls = Object.fromEntries(
   title={dict.meta.title}
   description={dict.meta.description}
   keywords={dict.meta.keywords}
+  jsonLd={jsonLd}
 >
   <Sidebar
     client:load

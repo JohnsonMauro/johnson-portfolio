@@ -202,12 +202,18 @@ export default function Sidebar({
         >
           {LOCALES.map((locale) => {
             const isCurrent = locale === lang;
+            const persistChoice = () => {
+              try {
+                window.localStorage.setItem('preferred-locale', locale);
+              } catch {}
+            };
             return (
               <a
                 key={locale}
                 href={localeUrls[locale]}
                 hrefLang={locale === 'pt' ? 'pt-BR' : locale}
                 aria-current={isCurrent ? 'true' : undefined}
+                onClick={persistChoice}
                 className={
                   'rounded-md px-2 py-1 text-xs font-semibold transition ' +
                   (isCurrent
