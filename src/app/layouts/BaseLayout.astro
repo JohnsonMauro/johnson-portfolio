@@ -41,11 +41,11 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
     <script is:inline>
       (function () {
         try {
-          var stored = localStorage.getItem('theme');
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          var dark = stored ? stored === 'dark' : prefersDark;
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const dark = stored ? stored === 'dark' : prefersDark;
           if (dark) document.documentElement.classList.add('dark');
-        } catch (_) {
+        } catch {
           /* localStorage unavailable */
         }
       })();

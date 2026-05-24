@@ -1,17 +1,17 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { profile } from '../../domain/profile/profile';
-import { findExpertiseByKey } from '../../domain/profile/expertise';
 import FadeIn from '../../shared/ui/FadeIn';
-import { asset } from '../../shared/lib/asset';
 import type { Dict } from '../../domain/i18n/content';
+import type { Locale } from '../../domain/i18n/config';
 
 interface Props {
   dict: Dict;
+  lang: Locale;
 }
 
-const { dict } = Astro.props;
-
-const ICON_BASE = 'assets/icons/tech';
+const { dict, lang } = Astro.props;
+const cvHref = getRelativeLocaleUrl(lang, 'cv');
 ---
 
 <section
@@ -19,87 +19,54 @@ const ICON_BASE = 'assets/icons/tech';
   class="section-anchor bg-surface py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
 >
   <div class="mx-auto max-w-page">
-    <header class="mb-10">
+    <header class="mb-12">
       <h2 class="font-display text-4xl font-bold text-ink-deep">{dict.sections.aboutTitle}</h2>
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
-      <p class="mt-4 text-lg">{dict.about.greeting}</p>
-      <p class="mt-3 max-w-3xl text-ink/80">{dict.about.summary}</p>
     </header>
 
     <div class="grid gap-10 lg:grid-cols-12">
-      <FadeIn client:visible variant="fade-right" className="lg:col-span-4" as="div">
-        <img
-          src={asset(profile.photo)}
-          alt={profile.name}
-          width={360}
-          height={360}
-          class="w-full max-w-sm rounded-2xl object-cover shadow-md"
-        />
-      </FadeIn>
-      <FadeIn client:visible variant="fade-left" className="lg:col-span-8" as="div">
-        <p class="text-ink/80">{dict.about.current}</p>
-        <dl class="mt-6 space-y-6">
+      <FadeIn client:visible variant="fade-right" className="lg:col-span-5" as="div">
+        <dl class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-1 lg:gap-y-10">
           {
-            dict.about.expertise.map((entry) => {
-              const category = findExpertiseByKey(entry.key);
-              if (!category) return null;
-              return (
-                <div>
-                  <dt class="font-display text-sm font-semibold uppercase tracking-wide text-ink-deep">
-                    {entry.label}
-                  </dt>
-                  <dd class="mt-2">
-                    <ul class="flex flex-wrap gap-3">
-                      {category.items.map((item) => (
-                        <li class="group relative">
-                          <span
-                            class="flex h-10 w-10 items-center justify-center rounded-lg border border-ink/10 bg-surface-card p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md"
-                            tabindex="0"
-                            aria-label={item.names.join(', ')}
-                            role="img"
-                          >
-                            <img
-                              src={asset(`${ICON_BASE}/${item.file}`)}
-                              alt=""
-                              width="24"
-                              height="24"
-                              class={
-                                'h-6 w-6 ' +
-                                (item.darkFile ? 'block dark:hidden ' : '') +
-                                (item.tone === 'mono' ? 'dark:invert' : '')
-                              }
-                              loading="lazy"
-                              decoding="async"
-                            />
-                            {item.darkFile && (
-                              <img
-                                src={asset(`${ICON_BASE}/${item.darkFile}`)}
-                                alt=""
-                                width="24"
-                                height="24"
-                                class="hidden h-6 w-6 dark:block"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            )}
-                          </span>
-                          <span
-                            role="tooltip"
-                            class="pointer-events-none absolute left-1/2 top-full z-20 mt-2 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap rounded-md bg-ink-dark px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg ring-1 ring-white/10 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
-                          >
-                            {item.names.map((n) => (
-                              <span>{n}</span>
-                            ))}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </dd>
-                </div>
-              );
-            })
+            dict.about.stats.map((stat) => (
+              <div class="border-l-2 border-accent/60 pl-4">
+                <dt class="font-display text-5xl font-bold leading-none text-ink-deep lg:text-6xl">
+                  {stat.value}
+                </dt>
+                <dd class="mt-2 text-xs font-semibold uppercase tracking-wider text-ink/60">
+                  {stat.label}
+                </dd>
+              </div>
+            ))
           }
         </dl>
+      </FadeIn>
+
+      <FadeIn client:visible variant="fade-left" className="lg:col-span-7" as="div">
+        <p class="text-lg text-ink-deep">{dict.about.greeting}</p>
+        <p class="mt-4 text-ink/80">{dict.about.summary}</p>
+
+        <p class="mt-8 text-sm font-semibold uppercase tracking-wider text-accent">
+          <span aria-hidden="true">→ </span>{dict.about.currentLabel}
+        </p>
+        <p class="mt-2 text-ink/80">{dict.about.current}</p>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a
+            href={cvHref}
+            class="inline-flex items-center justify-center rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-accent-dark hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          >
+            {dict.about.ctaCv}
+          </a>
+          <a
+            href={profile.social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-full border border-ink/20 px-5 py-2.5 text-sm font-semibold text-ink-deep transition hover:-translate-y-0.5 hover:border-accent hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          >
+            {dict.about.ctaLinkedin}
+          </a>
+        </div>
       </FadeIn>
     </div>
   </div>

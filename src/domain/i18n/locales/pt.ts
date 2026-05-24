@@ -4,9 +4,9 @@ const pt: Dict = {
   meta: {
     title: 'Johnson Mauro - Engenheiro de Software',
     description:
-      'Engenheiro de software atuando desde 2012, com foco em desenvolvimento full-stack web e mobile.',
+      'Engenheiro de software com 13+ anos em full-stack web e mobile, automação RPA/ETL e BI em telecom, saúde e varejo.',
     keywords:
-      'engenheiro de software, full-stack, front-end, angular, react, typescript, .net core, node.js',
+      'engenheiro de software, software engineer, full-stack, front-end, angular, react, typescript, node.js, .net core, .net standard, rpa, etl, power bi, sql server, azure devops, agile, scrum, mentoria, tech lead',
     mailSubject: 'Mensagem de johnsonmauro.github.io',
     jobTitle: 'Engenheiro de Software',
   },
@@ -42,16 +42,27 @@ const pt: Dict = {
   sections: {
     aboutTitle: 'Sobre mim',
     skillsTitle: 'Habilidades',
-    hardSkillsTitle: 'Hard skills',
     softSkillsTitle: 'Soft skills',
     experienceTitle: 'Experiência',
+    stackPrimaryLabel: 'Stack principal',
+    stackSecondaryLabel: 'Stack secundária',
+    stackToolsLabel: 'Ferramentas & métodos',
   },
   about: {
     greeting: 'Olá 👋🏽',
     summary:
-      'Sou engenheiro de software atuando desde 2012, com vivência em desenvolvimento full-stack, automações RPA/ETL e business intelligence em empresas dos setores de software, telecom, varejo, saúde, educação e setor público. Ênfase em front-end web e mobile, com participação em projetos full-stack e times ágeis.',
+      'Engenheiro de software com 13+ anos entregando aplicações full-stack web e mobile em telecom, saúde, varejo, educação e setor público. Liderança forte em front-end apoiada por serviços full-stack, automação RPA/ETL e entrega de BI. Mentorei desenvolvedores e conduzi squads ágeis da descoberta à produção.',
     current:
-      'Atualmente foco em desenvolvimento web e mobile, projetando interfaces e serviços com Angular, React, Node.js e .Net Core em ambientes ágeis.',
+      'Atuando em plataforma VoIP sediada nos EUA, com foco em desenvolvimento front-end, provas de conceito e eliminação de débito técnico em entrega ágil.',
+    currentLabel: 'Foco atual',
+    stats: [
+      { value: '13+', label: 'Anos entregando software' },
+      { value: '9', label: 'Empresas atendidas' },
+      { value: '5+', label: 'Setores cobertos' },
+      { value: 'Remote', label: 'First, fluente em fusos' },
+    ],
+    ctaCv: 'Baixar CV',
+    ctaLinkedin: 'LinkedIn',
     expertise: [
       { key: 'frontend', label: 'Front-end' },
       { key: 'backend', label: 'Back-end' },
@@ -146,10 +157,11 @@ const pt: Dict = {
       org: 'Avanade',
       url: 'https://www.avanade.com/',
       bullets: [
-        'BI, RPA, relatórios e APIs para as maiores operadoras de telefonia do Brasil.',
-        'ETL de dados tabulados de mainframe para banco analítico, alimentando tomada de decisão.',
-        'Desenvolvimento de robôs para automatizar processos antes executados pelo back office.',
-        'Stack: .Net Standard, .Net Core, MVC, Power BI, SQL Server, Azure DevOps, Scrum.',
+        'Entreguei 8 dashboards Power BI para 3 das maiores operadoras de telefonia do Brasil, reduzindo o lag de relatórios executivos de D+5 para D+1.',
+        'Construí 5 bots RPA que eliminaram ~30 horas/semana de back-office em fluxos de billing e triagem de chamados.',
+        'Migrei ~2M linhas/dia de tabelas legadas em mainframe para warehouse analítico SQL Server via pipeline ETL agendado.',
+        'Entreguei 6 endpoints REST em .NET Core consumidos por 3 portais internos, substituindo troca de CSV por e-mail entre times.',
+        'Stack: .NET Core, .NET Standard, MVC, Power BI, SQL Server, Azure DevOps, Scrum.',
       ],
     },
     {

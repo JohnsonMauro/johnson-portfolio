@@ -80,3 +80,62 @@ export const expertise: ExpertiseCategory[] = [
 export function findExpertiseByKey(key: string): ExpertiseCategory | undefined {
   return expertise.find((c) => c.key === key);
 }
+
+export type StackTierKey = 'primary' | 'secondary' | 'tools';
+
+export interface StackTier {
+  key: StackTierKey;
+  items: TechIcon[];
+}
+
+export const stackTiers: StackTier[] = [
+  {
+    key: 'primary',
+    items: [
+      { names: ['HTML5'], file: 'html5.svg' },
+      { names: ['CSS3'], file: 'css3.svg' },
+      { names: ['JavaScript'], file: 'javascript.svg' },
+      { names: ['TypeScript'], file: 'typescript.svg' },
+      { names: ['Angular 2+'], file: 'angular.svg' },
+      { names: ['React', 'React Native'], file: 'react.svg' },
+      { names: ['Expo'], file: 'expo.svg', tone: 'mono' },
+      { names: ['Node.js'], file: 'nodejs.svg' },
+      { names: ['NestJS'], file: 'nestjs.svg' },
+      { names: ['Go'], file: 'go.svg' },
+      { names: ['PostgreSQL'], file: 'postgresql.svg' },
+    ],
+  },
+  {
+    key: 'secondary',
+    items: [
+      { names: ['Vue'], file: 'vue.svg' },
+      { names: ['Svelte'], file: 'svelte.svg' },
+      { names: ['Solid'], file: 'solid.svg' },
+      { names: ['Ionic'], file: 'ionic.svg' },
+      { names: ['Next.js'], file: 'nextjs.svg', tone: 'mono' },
+      {
+        names: ['.Net Standard', '.Net Core', 'ASP.NET MVC'],
+        file: 'dotnet.svg',
+      },
+      { names: ['SQL Server'], file: 'mssql.svg' },
+      { names: ['MySQL'], file: 'mysql.svg' },
+    ],
+  },
+  {
+    key: 'tools',
+    items: [
+      { names: ['AWS'], file: 'aws.svg', darkFile: 'aws-dark.svg' },
+      { names: ['Azure DevOps'], file: 'azuredevops.svg' },
+      { names: ['Git'], file: 'git.svg' },
+      {
+        names: ['GitHub'],
+        file: 'github.svg',
+        darkFile: 'github-dark.svg',
+      },
+      { names: ['Jira'], file: 'jira.svg' },
+      { names: ['Toggl'], file: 'toggl.svg', tone: 'mono' },
+      { names: ['Claude'], file: 'claude.svg', tone: 'mono' },
+      { names: ['Codex'], file: 'codex.svg', tone: 'mono' },
+    ],
+  },
+];

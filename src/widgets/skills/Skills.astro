@@ -1,6 +1,6 @@
 ---
-import { hardSkills } from '../../domain/profile/skills';
-import ProgressBar from '../../shared/ui/ProgressBar';
+import { stackTiers, type StackTierKey, type TechIcon } from '../../domain/profile/expertise';
+import { asset } from '../../shared/lib/asset';
 import type { Dict } from '../../domain/i18n/content';
 
 interface Props {
@@ -9,9 +9,48 @@ interface Props {
 
 const { dict } = Astro.props;
 
-const half = Math.ceil(hardSkills.length / 2);
-const leftHard = hardSkills.slice(0, half);
-const rightHard = hardSkills.slice(half);
+const ICON_BASE = 'assets/icons/tech';
+
+const tierLabel: Record<StackTierKey, string> = {
+  primary: dict.sections.stackPrimaryLabel,
+  secondary: dict.sections.stackSecondaryLabel,
+  tools: dict.sections.stackToolsLabel,
+};
+
+const tierTileClass: Record<StackTierKey, string> = {
+  primary:
+    'flex h-16 w-16 items-center justify-center rounded-xl border border-ink/10 bg-surface-card p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
+  secondary:
+    'flex h-12 w-12 items-center justify-center rounded-lg border border-ink/10 bg-surface-card p-2 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
+  tools:
+    'flex h-9 w-9 items-center justify-center rounded-md border border-ink/10 bg-surface-card p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
+};
+
+const tierIconClass: Record<StackTierKey, string> = {
+  primary: 'h-10 w-10',
+  secondary: 'h-7 w-7',
+  tools: 'h-5 w-5',
+};
+
+const tierGapClass: Record<StackTierKey, string> = {
+  primary: 'gap-5',
+  secondary: 'gap-4',
+  tools: 'gap-3',
+};
+
+function iconClasses(item: TechIcon, tierKey: StackTierKey, variant: 'light' | 'dark'): string {
+  const base = tierIconClass[tierKey];
+  if (variant === 'light') {
+    return [
+      base,
+      item.darkFile ? 'block dark:hidden' : '',
+      item.tone === 'mono' ? 'dark:invert' : '',
+    ]
+      .filter(Boolean)
+      .join(' ');
+  }
+  return `${base} hidden dark:block`;
+}
 ---
 
 <section
@@ -19,26 +58,64 @@ const rightHard = hardSkills.slice(half);
   class="section-anchor bg-surface-alt py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
 >
   <div class="mx-auto max-w-page">
-    <header class="mb-10">
+    <header class="mb-12">
       <h2 class="font-display text-4xl font-bold text-ink-deep">{dict.sections.skillsTitle}</h2>
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 
-    <div class="mb-12">
-      <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
-        {dict.sections.hardSkillsTitle}
-      </h3>
-      <div class="mt-5 grid gap-x-12 md:grid-cols-2">
-        <div>
-          {leftHard.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
-        </div>
-        <div>
-          {rightHard.map((s) => <ProgressBar client:visible label={s.name} value={s.value} />)}
-        </div>
-      </div>
+    <div class="space-y-10">
+      {
+        stackTiers.map((tier) => (
+          <div>
+            <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
+              {tierLabel[tier.key]}
+            </h3>
+            <ul class={`mt-5 flex flex-wrap items-center ${tierGapClass[tier.key]}`}>
+              {tier.items.map((item) => (
+                <li class="group relative">
+                  <span
+                    class={tierTileClass[tier.key]}
+                    aria-label={item.names.join(', ')}
+                    role="img"
+                  >
+                    <img
+                      src={asset(`${ICON_BASE}/${item.file}`)}
+                      alt=""
+                      width="40"
+                      height="40"
+                      class={iconClasses(item, tier.key, 'light')}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {item.darkFile && (
+                      <img
+                        src={asset(`${ICON_BASE}/${item.darkFile}`)}
+                        alt=""
+                        width="40"
+                        height="40"
+                        class={iconClasses(item, tier.key, 'dark')}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
+                  </span>
+                  <span
+                    role="tooltip"
+                    class="pointer-events-none absolute left-1/2 top-full z-20 mt-2 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap rounded-md bg-ink-dark px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg ring-1 ring-white/10 transition-opacity duration-150 group-hover:opacity-100"
+                  >
+                    {item.names.map((n) => (
+                      <span>{n}</span>
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
 
-    <div>
+    <div class="mt-12">
       <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
         {dict.sections.softSkillsTitle}
       </h3>

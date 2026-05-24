@@ -7,6 +7,11 @@ export interface ExpertiseEntry {
   label: string;
 }
 
+export interface StatEntry {
+  value: string;
+  label: string;
+}
+
 export interface ResumeEntry {
   role: string;
   period: string;
@@ -51,14 +56,20 @@ export interface Dict {
   sections: {
     aboutTitle: string;
     skillsTitle: string;
-    hardSkillsTitle: string;
     softSkillsTitle: string;
     experienceTitle: string;
+    stackPrimaryLabel: string;
+    stackSecondaryLabel: string;
+    stackToolsLabel: string;
   };
   about: {
     greeting: string;
     summary: string;
     current: string;
+    currentLabel: string;
+    stats: StatEntry[];
+    ctaCv: string;
+    ctaLinkedin: string;
     expertise: ExpertiseEntry[];
   };
   softSkills: string[];

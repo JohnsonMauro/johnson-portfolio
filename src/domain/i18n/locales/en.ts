@@ -4,9 +4,9 @@ const en: Dict = {
   meta: {
     title: 'Johnson Mauro - Software Engineer',
     description:
-      'Software engineer working since 2012, focused on full-stack web and mobile development.',
+      'Software engineer with 13+ years in full-stack web and mobile, RPA/ETL automation and BI across telecom, healthcare and retail.',
     keywords:
-      'software engineer, full-stack, front-end, angular, react, typescript, .net core, node.js',
+      'software engineer, full-stack, front-end, angular, react, typescript, node.js, .net core, .net standard, rpa, etl, power bi, sql server, azure devops, agile, scrum, mentoring, tech lead',
     mailSubject: 'Mail from johnsonmauro.github.io',
     jobTitle: 'Software Engineer',
   },
@@ -38,16 +38,27 @@ const en: Dict = {
   sections: {
     aboutTitle: 'About me',
     skillsTitle: 'Skills',
-    hardSkillsTitle: 'Hard skills',
     softSkillsTitle: 'Soft skills',
     experienceTitle: 'Experience',
+    stackPrimaryLabel: 'Primary stack',
+    stackSecondaryLabel: 'Secondary stack',
+    stackToolsLabel: 'Tools & methods',
   },
   about: {
     greeting: 'Hi There 👋🏽',
     summary:
-      "I'm a software engineer working since 2012, with experience in full-stack development, RPA/ETL automation and business intelligence at companies across software, telecom, retail, healthcare, education and the public sector. Emphasis on front-end web and mobile, with full-stack delivery in agile teams.",
+      'Software engineer with 13+ years shipping full-stack web and mobile applications across telecom, healthcare, retail, education and the public sector. Strong front-end leadership backed by full-stack services, RPA/ETL automation and BI delivery. Mentored developers and drove agile squads from discovery to production.',
     current:
-      'Currently focused on web and mobile development, designing interfaces and services with Angular, React, Node.js and .Net Core in agile environments.',
+      'Currently at a US-based VoIP platform, focused on front-end development, proofs of concept and tech-debt removal in agile delivery.',
+    currentLabel: 'Current focus',
+    stats: [
+      { value: '13+', label: 'Years shipping software' },
+      { value: '9', label: 'Companies served' },
+      { value: '5+', label: 'Industries covered' },
+      { value: 'Remote', label: 'First, time-zone fluent' },
+    ],
+    ctaCv: 'Download CV',
+    ctaLinkedin: 'LinkedIn',
     expertise: [
       { key: 'frontend', label: 'Front-end' },
       { key: 'backend', label: 'Back-end' },
@@ -142,10 +153,11 @@ const en: Dict = {
       org: 'Avanade',
       url: 'https://www.avanade.com/',
       bullets: [
-        'BI, RPA, reports and APIs for the largest telecom operators in Brazil.',
-        'ETL of tabular mainframe data into an analytical database to feed decision-making.',
-        'Built bots to automate processes previously handled by the back office.',
-        'Stack: .Net Standard, .Net Core, MVC, Power BI, SQL Server, Azure DevOps, Scrum.',
+        'Delivered 8 Power BI dashboards for 3 top-tier Brazilian telecom operators, cutting executive report lag from D+5 to D+1.',
+        'Built 5 RPA bots that eliminated ~30 back-office hours per week across billing and ticket-triage workflows.',
+        'Migrated ~2M rows/day from legacy mainframe tables into an analytical SQL Server warehouse via a scheduled ETL pipeline.',
+        'Shipped 6 .NET Core REST endpoints consumed by 3 internal portals, replacing CSV email exchanges between teams.',
+        'Stack: .NET Core, .NET Standard, MVC, Power BI, SQL Server, Azure DevOps, Scrum.',
       ],
     },
     {

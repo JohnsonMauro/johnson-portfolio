@@ -88,11 +88,9 @@ export default function Sidebar({
 
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>('hero');
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    setIsDark(document.documentElement.classList.contains('dark'));
-  }, []);
+  const [isDark, setIsDark] = useState(() =>
+    typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+  );
 
   const toggleTheme = () => {
     const root = document.documentElement;

@@ -140,6 +140,80 @@ References:
   [`src/styles/`](src/styles/).
 - Mutate locale objects in place — content is read-only at runtime.
 
+## Visual design rules (2026 portfolio direction)
+
+References that informed these rules:
+- [myseera — best developer portfolio templates 2026](https://myseera.com/blog/best-developer-portfolio-templates-2026)
+- [Awwwards — editorial layout](https://www.awwwards.com/inspiration/editorial-layout)
+- [Tilda — web design trends 2026](https://tilda.education/en/web-design-trends-2026)
+- [Wavespace — best website design examples 2026](https://www.wavespace.agency/blog/best-website-design-examples)
+- [format.com — portfolio about page guide](https://www.format.com/magazine/resources/photography/online-portfolio-about-page-step-by-step-guide)
+
+### Layering rule (no duplicated assets)
+
+The sidebar is fixed on `xl` viewports and already carries:
+
+- profile photo (120×120)
+- name
+- social icons (LinkedIn, GitHub, Medium, WhatsApp, Mail)
+- locale switcher + theme toggle
+- CV CTA
+
+Main sections (About, Resume, etc.) must **not** repeat any of these. If a
+piece of identity content already lives in the sidebar, the main column
+spends its real estate on something else (stats, prose, CTA, skills).
+
+This rule also applies to mobile: when the sidebar collapses into a drawer,
+the drawer still owns photo + socials. Hero may show the photo *once* on
+mobile, but never About.
+
+### Section depth over section count
+
+Aim for 4–5 deep sections, not 8 shallow ones. If a section answers fewer
+than 2 recruiter questions ("who is this", "what did they ship", "what stack",
+"how do I contact them"), merge it or delete it.
+
+### About section composition
+
+Required blocks, in order:
+
+1. **Section header** — `h2` + accent rule.
+2. **Stat anchors** — 3–5 numbers (years, companies, sectors, remote-first
+   flag). Editorial typography: number oversized, label small uppercase.
+   No stat unless it survives a fact-check.
+3. **Prose** — `about.summary` (career positioning) + `about.current`
+   (present focus) with a small kicker label between them
+   (e.g., `→ Current focus`).
+4. **CTA pair** — primary "Download CV", secondary LinkedIn.
+
+Skills do **not** belong inside About. They get their own section.
+
+### Skills section composition
+
+Three tiers, never six flat categories:
+
+| Tier | Contents | Visual treatment |
+|------|----------|------------------|
+| **Primary** | Stack you'd ship tomorrow (Angular, React, TypeScript, Node.js, .NET Core). | Larger tiles, full color icons. |
+| **Secondary** | Stack with real production exposure but not current focus. | Medium tiles, slightly muted. |
+| **Tools & methods** | Azure DevOps, AWS, Scrum, Jira, Power BI, BI/AI tooling. | Compact chips, smallest. |
+
+Banned: single-icon categories. If only one icon survives a category,
+absorb it into Tools & methods.
+
+### Typography hierarchy in editorial blocks
+
+- Stat number — `font-display`, oversized (clamp ~3rem → ~5rem).
+- Stat label — `text-xs` or `text-sm`, uppercase, muted.
+- Kicker label (`→ Current focus`) — `text-sm`, accent color, sentence case.
+- Body prose — `text-base` or `text-lg`, ink/80.
+
+### CTA placement
+
+Every editorial section that explains *who you are* must end with at least
+one navigable next step (CV download, contact, resume jump). No dead-end
+sections.
+
 ## When in doubt
 
 - Content question → re-read [`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md).
