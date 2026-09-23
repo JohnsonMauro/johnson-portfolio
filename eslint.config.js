@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
+import jsxA11y from 'eslint-plugin-jsx-a11y-x';
 import astro from 'eslint-plugin-astro';
 import globals from 'globals';
 
@@ -34,7 +34,7 @@ export default tseslint.config(
     plugins: {
       react,
       'react-hooks': reactHooks,
-      'jsx-a11y': jsxA11y,
+      'jsx-a11y-x': jsxA11y,
     },
     languageOptions: {
       ...react.configs.flat.recommended.languageOptions,
@@ -47,7 +47,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      ...jsxA11y.flatConfigs.strict.rules,
+      ...jsxA11y.configs.strict.rules,
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
     },

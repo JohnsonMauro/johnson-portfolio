@@ -1,0 +1,12 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+minimumReleaseAgeExclude:
+  - '@astrojs/markdown-satteri@0.4.2'
+  - '@astrojs/react@7.0.0'
+  - astro@7.3.4
+peerDependencyRules:
+  allowedVersions:
+    # eslint-plugin-react has not published ESLint 10 support yet (last
+    # release 7.37.5, Apr 2025). Lint verified green on ESLint 10.
+    eslint-plugin-react>eslint: '10'

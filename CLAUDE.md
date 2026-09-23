@@ -4,8 +4,8 @@ Project-level instructions for Claude Code. Read before editing.
 
 ## What this is
 
-Personal portfolio + printable CV for Johnson Mauro. Astro 6 + React 19 +
-Tailwind 4. Bilingual (EN / PT-BR). Deploys to GitHub Pages via
+Personal portfolio + printable CV for Johnson Mauro. Astro 7 + React 19.3 +
+Tailwind 4. ESLint 10, pnpm 11, Node `^22.22.3 || >=24.16.0`. Bilingual (EN / PT-BR). Deploys to GitHub Pages via
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
 Two surfaces share one content source:
@@ -29,6 +29,26 @@ is no second copy.
 
 Always run `pnpm lint` and `pnpm build` before declaring CV / content edits
 done. Build catches locale-shape regressions; lint catches a11y / React rules.
+
+## Astro 7 rules (post-upgrade)
+
+- **JSX whitespace.** `compressHTML` defaults to `'jsx'`: a newline between
+  inline elements is dropped, not collapsed to a space. Adjacent inline items
+  (CTA pairs, locale links, footer spans) must sit in a flex/gap container or
+  use an explicit `{' '}`. After markup edits, diff the rendered text of
+  `/en/` and `/en/cv` for merged words.
+- **Strict compiler.** Close every non-void tag; no block elements inside
+  `<p>`. The build fails instead of auto-correcting.
+- **Reserved `src/fetch.ts`** (Advanced Routing entrypoint) — do not create.
+- **No `babel` option on `react()`** — `@astrojs/react` 7 uses Oxc. Custom
+  transforms go in `vite.plugins` via `@rolldown/plugin-babel`.
+- **Lint a11y plugin is `jsx-a11y-x`.** Disable comments use the
+  `jsx-a11y-x/<rule>` prefix in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
+  Keep legacy `eslint-plugin-jsx-a11y` out of the tree — `eslint-plugin-astro`
+  prefers it when present.
+- **`eslint-plugin-react` has no ESLint 10 peer yet** — allowed explicitly in
+  `pnpm-workspace.yaml` (`peerDependencyRules`). Drop the override once it
+  ships support.
 
 ## Architecture (FSD-inspired)
 

@@ -1,6 +1,6 @@
 # johnson-portfolio
 
-Personal portfolio + printable CV. Astro 6 · React 19 · Tailwind 4. Bilingual
+Personal portfolio + printable CV. Astro 7 · React 19 · Tailwind 4. Bilingual
 (EN / PT-BR). Static build deployed to GitHub Pages.
 
 Live: <https://johnsonmauro.github.io/johnson-portfolio/>
@@ -16,12 +16,18 @@ Both surfaces read from the same dictionaries — content is never duplicated.
 
 ## Stack
 
-- **Astro 6** — static output, file-based routing, native i18n (`/en/`, `/pt/`).
-- **React 19** — interactive islands only (sidebar, back-to-top).
+- **Astro 7** — static output, file-based routing, native i18n (`/en/`, `/pt/`).
+  Rust compiler + Vite 8 (Rolldown).
+- **React 19.3** — interactive islands only (sidebar, back-to-top), via
+  `@astrojs/react` 7 (Oxc JSX transform, no Babel).
 - **Tailwind 4** — via `@tailwindcss/vite`; design tokens in `src/styles/`.
 - **TypeScript** strict.
-- **ESLint** flat config + `eslint-plugin-astro`, `react`, `jsx-a11y`.
-- **pnpm** as the package manager.
+- **ESLint 10** flat config + `eslint-plugin-astro` 3, `react`, `react-hooks`,
+  `jsx-a11y-x` (ESLint 10-compatible fork of `jsx-a11y`).
+- **pnpm 11** — pinned via `packageManager` in `package.json`.
+
+Requires Node `^22.22.3 || >=24.16.0` (floor set by `eslint-plugin-astro` 3;
+Astro 7 alone needs `>=22.12`).
 
 ## Quick start
 
@@ -85,9 +91,22 @@ Workflow:
 ## Deployment
 
 GitHub Actions: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-Pushes to `main` build with Node 24 + pnpm, then publish `dist/` to GitHub
-Pages. `astro.config.mjs` sets `base: '/johnson-portfolio'` — keep relative
+Pushes to `main` build with Node 24 + pnpm (version read from
+`packageManager`), then publish `dist/` to GitHub Pages. `astro.config.mjs` sets `base: '/johnson-portfolio'` — keep relative
 asset URLs.
+
+## Astro 7 gotchas
+
+- **Whitespace is JSX-style** (`compressHTML: 'jsx'` default). Line breaks
+  between inline elements no longer render as a space:
+  `<span>a</span>\n<em>b</em>` → "ab". Put inline siblings inside a flex/gap
+  container (current pattern) or add an explicit `{' '}`.
+- **Rust compiler is strict** — unclosed non-void tags are build errors and
+  invalid nesting (`<div>` inside `<p>`) is no longer auto-fixed.
+- **`src/fetch.ts` is reserved** for Advanced Routing. Don't create it unless
+  you mean to take over the request pipeline.
+- **Markdown** uses the Sätteri (Rust) processor; remark/rehype plugins need
+  `markdown: { processor: unified() }`. (No Markdown in this repo today.)
 
 ## Conventions
 
@@ -96,7 +115,8 @@ asset URLs.
 - **Animation** — compositor-friendly only (`transform`, `opacity`,
   `clip-path`). Never animate layout properties.
 - **Styling** — use tokens in `src/styles/`; no hardcoded palette or spacing.
-- **A11y** — semantic HTML first; lint enforces `jsx-a11y` rules.
+- **A11y** — semantic HTML first; lint enforces `jsx-a11y-x` rules in `.tsx`
+  and `astro/jsx-a11y/*` in `.astro`.
 
 ## Docs
 
