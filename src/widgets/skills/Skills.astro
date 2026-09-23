@@ -17,25 +17,22 @@ const tierLabel: Record<StackTierKey, string> = {
   tools: dict.sections.stackToolsLabel,
 };
 
-const tierTileClass: Record<StackTierKey, string> = {
+const tierTileClass: Record<'primary' | 'secondary', string> = {
   primary:
-    'flex h-16 w-16 items-center justify-center rounded-xl border border-ink/10 bg-surface-card p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
+    'flex h-16 w-16 items-center justify-center rounded-xl border border-ink/10 bg-surface-card p-3 shadow-sm transition group-hover:-translate-y-0.5 group-hover:border-accent group-hover:shadow-md',
   secondary:
-    'flex h-12 w-12 items-center justify-center rounded-lg border border-ink/10 bg-surface-card p-2 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
-  tools:
-    'flex h-9 w-9 items-center justify-center rounded-md border border-ink/10 bg-surface-card p-1.5 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md',
+    'flex h-12 w-12 items-center justify-center rounded-lg border border-ink/10 bg-surface-card p-2 shadow-sm transition group-hover:-translate-y-0.5 group-hover:border-accent group-hover:shadow-md',
 };
 
 const tierIconClass: Record<StackTierKey, string> = {
   primary: 'h-10 w-10',
   secondary: 'h-7 w-7',
-  tools: 'h-5 w-5',
+  tools: 'h-4 w-4',
 };
 
-const tierGapClass: Record<StackTierKey, string> = {
-  primary: 'gap-5',
-  secondary: 'gap-4',
-  tools: 'gap-3',
+const tierCaptionClass: Record<'primary' | 'secondary', string> = {
+  primary: 'w-20 text-xs font-medium text-ink/80',
+  secondary: 'w-16 text-[0.6875rem] text-ink/60',
 };
 
 function iconClasses(item: TechIcon, tierKey: StackTierKey, variant: 'light' | 'dark'): string {
@@ -51,6 +48,8 @@ function iconClasses(item: TechIcon, tierKey: StackTierKey, variant: 'light' | '
   }
   return `${base} hidden dark:block`;
 }
+
+const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
 <section
@@ -63,71 +62,126 @@ function iconClasses(item: TechIcon, tierKey: StackTierKey, variant: 'light' | '
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 
-    <div class="space-y-10">
-      {
-        stackTiers.map((tier) => (
-          <div>
-            <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
-              {tierLabel[tier.key]}
-            </h3>
-            <ul class={`mt-5 flex flex-wrap items-center ${tierGapClass[tier.key]}`}>
-              {tier.items.map((item) => (
-                <li class="group relative">
-                  <span
-                    class={tierTileClass[tier.key]}
-                    aria-label={item.names.join(', ')}
-                    role="img"
-                  >
-                    <img
-                      src={asset(`${ICON_BASE}/${item.file}`)}
-                      alt=""
-                      width="40"
-                      height="40"
-                      class={iconClasses(item, tier.key, 'light')}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {item.darkFile && (
-                      <img
-                        src={asset(`${ICON_BASE}/${item.darkFile}`)}
-                        alt=""
-                        width="40"
-                        height="40"
-                        class={iconClasses(item, tier.key, 'dark')}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    )}
-                  </span>
-                  <span
-                    role="tooltip"
-                    class="pointer-events-none absolute left-1/2 top-full z-20 mt-2 flex -translate-x-1/2 flex-col items-center gap-0.5 whitespace-nowrap rounded-md bg-ink-dark px-2 py-1 text-xs font-medium text-white opacity-0 shadow-lg ring-1 ring-white/10 transition-opacity duration-150 group-hover:opacity-100"
-                  >
-                    {item.names.map((n) => (
-                      <span>{n}</span>
-                    ))}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
+    <div class="grid gap-8 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <p class="text-sm font-semibold text-accent">
+          <span aria-hidden="true">→ </span>{dict.skills.aiKicker}
+        </p>
+        <h3 class="mt-3 font-display text-2xl font-bold leading-tight text-ink-deep lg:text-3xl">
+          {dict.skills.aiTitle}
+        </h3>
+        <p class="mt-4 text-ink/80">{dict.skills.aiIntro}</p>
+      </div>
+
+      <ol class="grid gap-4 sm:grid-cols-2 lg:col-span-8">
+        {
+          dict.skills.aiPractices.map((practice, i) => (
+            <li class="rounded-xl border border-ink/10 bg-surface-card p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-accent hover:shadow-md">
+              <span class="font-display text-sm font-semibold text-accent" aria-hidden="true">
+                {pad(i + 1)}
+              </span>
+              <h4 class="mt-1 font-display text-lg font-semibold text-ink-deep">
+                {practice.title}
+              </h4>
+              <p class="mt-2 text-sm text-ink/70">{practice.proof}</p>
+            </li>
+          ))
+        }
+      </ol>
     </div>
 
-    <div class="mt-12">
+    <div class="mt-14">
       <h3 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
-        {dict.sections.softSkillsTitle}
+        {dict.skills.judgmentTitle}
       </h3>
       <ul class="mt-5 flex flex-wrap gap-2">
         {
-          dict.softSkills.map((skill) => (
+          dict.skills.judgment.map((item) => (
             <li class="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-sm font-medium text-accent-dark dark:text-accent-light">
-              {skill}
+              {item}
             </li>
           ))
         }
       </ul>
+    </div>
+
+    <div class="mt-14 border-t border-ink/10 pt-10">
+      <h3 class="font-display text-xl font-bold text-ink-deep">{dict.skills.stackTitle}</h3>
+
+      <div class="mt-8 space-y-10">
+        {
+          stackTiers.map((tier) => (
+            <div>
+              <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
+                {tierLabel[tier.key]}
+              </h4>
+              {tier.key === 'tools' ? (
+                <ul class="mt-5 flex flex-wrap gap-2">
+                  {tier.items.map((item) => (
+                    <li class="inline-flex items-center gap-2 rounded-md border border-ink/10 bg-surface-card px-2.5 py-1.5 text-sm text-ink/80 shadow-sm">
+                      {item.file && (
+                        <img
+                          src={asset(`${ICON_BASE}/${item.file}`)}
+                          alt=""
+                          width="16"
+                          height="16"
+                          class={iconClasses(item, tier.key, 'light')}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
+                      {item.file && item.darkFile && (
+                        <img
+                          src={asset(`${ICON_BASE}/${item.darkFile}`)}
+                          alt=""
+                          width="16"
+                          height="16"
+                          class={iconClasses(item, tier.key, 'dark')}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
+                      <span>{item.names.join(' / ')}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <ul class={`mt-5 flex flex-wrap items-start ${tier.key === 'primary' ? 'gap-4' : 'gap-3'}`}>
+                  {tier.items.map((item) => (
+                    <li class="group flex flex-col items-center gap-2 text-center">
+                      <span class={tierTileClass[tier.key]}>
+                        {item.file && (
+                          <img
+                            src={asset(`${ICON_BASE}/${item.file}`)}
+                            alt=""
+                            width="40"
+                            height="40"
+                            class={iconClasses(item, tier.key, 'light')}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                        {item.file && item.darkFile && (
+                          <img
+                            src={asset(`${ICON_BASE}/${item.darkFile}`)}
+                            alt=""
+                            width="40"
+                            height="40"
+                            class={iconClasses(item, tier.key, 'dark')}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        )}
+                      </span>
+                      <span class={tierCaptionClass[tier.key]}>{item.names.join(' / ')}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>

@@ -12,6 +12,11 @@ export interface StatEntry {
   label: string;
 }
 
+export interface PracticeEntry {
+  title: string;
+  proof: string;
+}
+
 export interface ResumeEntry {
   role: string;
   period: string;
@@ -44,7 +49,8 @@ export interface Dict {
     contactLabel: string;
     summaryTitle: string;
     skillsTitle: string;
-    softSkillsTitle: string;
+    aiTitle: string;
+    practicesTitle: string;
     experienceTitle: string;
     printAction: string;
     generatedOn: string;
@@ -56,7 +62,6 @@ export interface Dict {
   sections: {
     aboutTitle: string;
     skillsTitle: string;
-    softSkillsTitle: string;
     experienceTitle: string;
     stackPrimaryLabel: string;
     stackSecondaryLabel: string;
@@ -72,7 +77,15 @@ export interface Dict {
     ctaLinkedin: string;
     expertise: ExpertiseEntry[];
   };
-  softSkills: string[];
+  skills: {
+    aiKicker: string;
+    aiTitle: string;
+    aiIntro: string;
+    aiPractices: PracticeEntry[];
+    judgmentTitle: string;
+    judgment: string[];
+    stackTitle: string;
+  };
   resume: ResumeEntry[];
   footer: {
     builtWith: string;

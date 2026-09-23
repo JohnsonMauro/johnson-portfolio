@@ -75,6 +75,20 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   </section>
 
   <section class="cv__section">
+    <h2>{dict.cv.aiTitle}</h2>
+    <ul class="cv__practices">
+      {
+        dict.skills.aiPractices.map((practice) => (
+          <li>
+            <strong>{practice.title}.</strong>{' '}
+            {practice.proof}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="cv__section">
     <h2>{dict.cv.skillsTitle}</h2>
     <dl class="cv__skills">
       {
@@ -82,23 +96,26 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
           const category = findExpertiseByKey(entry.key);
           if (!category) return null;
           const names = category.items.flatMap((i) => i.names).join(', ');
+          const icons = category.items.filter((item) => item.file);
           return (
             <div class="cv__skills-row">
               <dt>{entry.label}</dt>
               <dd>
-                <ul class="cv__skill-icons" aria-hidden="true">
-                  {category.items.map((item) => (
-                    <li>
-                      <img
-                        src={asset(`${ICON_BASE}/${item.file}`)}
-                        alt=""
-                        width="18"
-                        height="18"
-                        loading="lazy"
-                      />
-                    </li>
-                  ))}
-                </ul>
+                {icons.length > 0 && (
+                  <ul class="cv__skill-icons" aria-hidden="true">
+                    {icons.map((item) => (
+                      <li>
+                        <img
+                          src={asset(`${ICON_BASE}/${item.file}`)}
+                          alt=""
+                          width="18"
+                          height="18"
+                          loading="lazy"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <span class="cv__skill-names">{names}</span>
               </dd>
             </div>
@@ -109,8 +126,8 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   </section>
 
   <section class="cv__section">
-    <h2>{dict.cv.softSkillsTitle}</h2>
-    <p class="cv__soft">{dict.softSkills.join(' · ')}</p>
+    <h2>{dict.cv.practicesTitle}</h2>
+    <p class="cv__soft">{dict.skills.judgment.join(' · ')}</p>
   </section>
 
   <section class="cv__section cv__section--experience">
@@ -282,6 +299,21 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   .cv__skill-names {
     font-size: 9.5pt;
     color: #444;
+  }
+
+  .cv__practices {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 10pt;
+  }
+
+  .cv__practices li {
+    margin-bottom: 2px;
+  }
+
+  .cv__practices strong {
+    color: #173b6c;
+    font-weight: 600;
   }
 
   .cv__soft {

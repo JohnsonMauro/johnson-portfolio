@@ -137,7 +137,7 @@ For every `resume[].bullets[]` entry, confirm:
 | `about.summary` | About section paragraph | CV summary |
 | `about.current` | About section paragraph | CV summary (continued) |
 | `about.expertise` | Tech-icon clusters | Skills grid (text + icons) |
-| `softSkills` | Skills section | Optional skills row |
+| `skills.aiPractices`, `skills.judgment` | Skills section (AI practices + engineering judgment) | "How I build with AI" + practices rows |
 | `resume[]` | Experience timeline | Experience block |
 | `profile.social.*` | Sidebar icons | Header contact line |
 
