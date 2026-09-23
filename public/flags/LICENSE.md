@@ -1,12 +1,18 @@
-# Circle Flags License
+# Flag Icons License
 
-The SVG icons in this directory (`br.svg`, `en.svg`) are sourced from the
+`br.svg` is sourced from the
 [HatScripts/circle-flags](https://github.com/HatScripts/circle-flags)
-collection and are licensed under the MIT License.
+collection and is licensed under the MIT License (below).
 
-`en.svg` is the flag of England (St George's Cross) — chosen here to
-represent the English language without favoring any particular
-English-speaking country.
+`en.svg` is a hand-built SVG recreation of a fan-made "Anglosphere" flag
+(Union Jack saltire + cross, US stripes, Canadian maple leaf inside a ring of
+50 stars) — chosen to represent the English language across the main
+English-speaking countries rather than a single one. No vector original was
+found upstream, so it was redrawn from a raster reference. The maple leaf path
+comes from the public-domain
+[Flag of Canada](https://commons.wikimedia.org/wiki/File:Flag_of_Canada_(Pantone).svg);
+all other geometry (stripes, saltire, stars, disc) is original. It follows the
+circle-flags format (512×512, circular mask) to match `br.svg`.
 
 ---
 
