@@ -24,7 +24,7 @@ Both surfaces read from the same dictionaries — content is never duplicated.
 - **TypeScript** strict.
 - **ESLint 10** flat config + `eslint-plugin-astro` 3, `react`, `react-hooks`,
   `jsx-a11y-x` (ESLint 10-compatible fork of `jsx-a11y`).
-- **pnpm 11** — pinned via `packageManager` in `package.json`.
+- **pnpm 12** — pinned via `packageManager` in `package.json`.
 
 Requires Node `^22.22.3 || >=24.16.0` (floor set by `eslint-plugin-astro` 3;
 Astro 7 alone needs `>=22.12`).
