@@ -5,7 +5,7 @@ Project-level instructions for Claude Code. Read before editing.
 ## What this is
 
 Personal portfolio + printable CV for Johnson Mauro. Astro 7 + React 19.3 +
-Tailwind 4. ESLint 10, pnpm 11, Node `^22.22.3 || >=24.16.0`. Bilingual (EN / PT-BR). Deploys to GitHub Pages via
+Tailwind 4. ESLint 10, pnpm 12, Node `^22.22.3 || >=24.16.0`. Bilingual (EN / PT-BR). Deploys to GitHub Pages via
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
 
 Two surfaces share one content source:
