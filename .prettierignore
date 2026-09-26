@@ -1,0 +1,8 @@
+# Generated or vendored
+dist/
+.astro/
+pnpm-lock.yaml
+public/
+
+# Prose and agent context stay as written (see prettier.config.mjs).
+*.md

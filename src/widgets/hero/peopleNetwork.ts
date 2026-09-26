@@ -9,6 +9,7 @@ import { createTspEgg, type EggArea, type EggCopy } from './tspEgg';
  * Depth layers, far to near. Farther people are smaller, dimmer, blurred and
  * drift and parallax less; links only join a layer to itself or a neighbour.
  */
+// prettier-ignore
 const LAYERS = [
   { share: 0.45, size: 13, alpha: 0.45, blur: 1.4, glow: 0, speed: 4, parallax: 6, link: 150, line: 0.6 },
   { share: 0.35, size: 20, alpha: 0.75, blur: 0.3, glow: 8, speed: 7, parallax: 14, link: 190, line: 0.9 },
