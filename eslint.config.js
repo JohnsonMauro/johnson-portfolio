@@ -68,5 +68,41 @@ export default tseslint.config(
     languageOptions: {
       globals: globals.node,
     },
-  }
+  },
+
+  ...layerBoundaries()
 );
+
+/*
+ * FSD layer direction: pages → app / widgets → features → domain → shared.
+ * Each layer may import only the layers below it; widgets and features may
+ * not import a sibling slice. Imports are relative (or the @/ alias), so the
+ * patterns match the specifier: `../../domain/x` reaches domain/, `../other/x`
+ * from a slice root reaches a sibling slice.
+ */
+function layerBoundaries() {
+  const reach = (layers) => `^(?:(?:\\.\\./)+|@/)(?:${layers.join('|')})(?:/|$)`;
+  const sibling = '^\\.\\./[^./][^/]*(?:/|$)';
+  const rule = (files, patterns) => ({
+    files,
+    rules: { 'no-restricted-imports': ['error', { patterns }] },
+  });
+  const upward = (layers, where) => ({
+    regex: reach(layers),
+    message: `${where} may not import ${layers.join(', ')}: imports only point down the layers (see CLAUDE.md → Architecture).`,
+  });
+
+  return [
+    rule(['src/shared/**'], [upward(['app', 'pages', 'widgets', 'features', 'domain'], 'shared/')]),
+    rule(['src/domain/**'], [upward(['app', 'pages', 'widgets', 'features'], 'domain/')]),
+    rule(['src/features/*/*'], [
+      upward(['app', 'pages', 'widgets'], 'features/'),
+      { regex: sibling, message: 'A feature may not import another feature: extract the shared part to shared/ or domain/.' },
+    ]),
+    rule(['src/widgets/*/*'], [
+      upward(['app', 'pages'], 'widgets/'),
+      { regex: sibling, message: 'A widget may not import another widget: extract the shared part to shared/ui or domain/.' },
+    ]),
+    rule(['src/app/**'], [upward(['pages', 'widgets', 'features'], 'app/')]),
+  ];
+}
