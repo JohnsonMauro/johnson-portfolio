@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { LOCALES, DEFAULT_LOCALE } from '../domain/i18n/config';
+import { LOCALE_STORAGE_KEY } from '../shared/lib/storage-keys';
 
 const defaultTarget = getRelativeLocaleUrl(DEFAULT_LOCALE, '');
 const localeMap = Object.fromEntries(
@@ -15,12 +16,11 @@ const localeMap = Object.fromEntries(
     <meta http-equiv="refresh" content={`0; url=${defaultTarget}`} />
     <link rel="canonical" href={defaultTarget} />
     <title>Redirecting…</title>
-    <script is:inline define:vars={{ defaultTarget, localeMap }}>
+    <script is:inline define:vars={{ defaultTarget, localeMap, localeStorageKey: LOCALE_STORAGE_KEY }}>
       (function () {
-        const STORAGE_KEY = 'preferred-locale';
         let chosen = defaultTarget;
         try {
-          const saved = window.localStorage && window.localStorage.getItem(STORAGE_KEY);
+          const saved = window.localStorage && window.localStorage.getItem(localeStorageKey);
           if (saved && localeMap[saved]) {
             chosen = localeMap[saved];
           } else {

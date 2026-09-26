@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { SunIcon, MoonIcon } from '../../shared/ui/icons';
+import { THEME_STORAGE_KEY } from '../../shared/lib/storage-keys';
 
 interface ThemeToggleProps {
   label: string;
@@ -19,7 +20,7 @@ export default function ThemeToggle({ label, toDarkLabel, toLightLabel }: ThemeT
     const next = !root.classList.contains('dark');
     root.classList.toggle('dark', next);
     try {
-      window.localStorage.setItem('theme', next ? 'dark' : 'light');
+      window.localStorage.setItem(THEME_STORAGE_KEY, next ? 'dark' : 'light');
     } catch {
       /* localStorage unavailable — ignore */
     }

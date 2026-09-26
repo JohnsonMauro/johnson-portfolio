@@ -3,6 +3,7 @@ import '../../styles/global.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import { LOCALES, DEFAULT_LOCALE, HREFLANG_TAGS, type Locale } from '../../domain/i18n/config';
 import { asset } from '../../shared/lib/asset';
+import { THEME_STORAGE_KEY } from '../../shared/lib/storage-keys';
 
 interface Props {
   lang: Locale;
@@ -33,10 +34,10 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
     <meta name="keywords" content={keywords} />
     <meta name="theme-color" content="#040b14" />
 
-    <script is:inline>
+    <script is:inline define:vars={{ themeStorageKey: THEME_STORAGE_KEY }}>
       (function () {
         try {
-          const stored = localStorage.getItem('theme');
+          const stored = localStorage.getItem(themeStorageKey);
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           const dark = stored ? stored === 'dark' : prefersDark;
           if (dark) document.documentElement.classList.add('dark');

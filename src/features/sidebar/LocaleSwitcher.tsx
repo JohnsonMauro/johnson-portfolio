@@ -7,6 +7,7 @@ import {
   type Locale,
 } from '../../domain/i18n/config';
 import { asset } from '../../shared/lib/asset';
+import { LOCALE_STORAGE_KEY } from '../../shared/lib/storage-keys';
 
 interface LocaleSwitcherProps {
   lang: Locale;
@@ -21,7 +22,7 @@ export default function LocaleSwitcher({ lang, localeUrls, label }: LocaleSwitch
         const isCurrent = locale === lang;
         const persistChoice = () => {
           try {
-            window.localStorage.setItem('preferred-locale', locale);
+            window.localStorage.setItem(LOCALE_STORAGE_KEY, locale);
           } catch {
             /* localStorage unavailable (privacy mode) — ignore */
           }
