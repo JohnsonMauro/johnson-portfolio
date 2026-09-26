@@ -33,8 +33,9 @@ const pt: Dict = {
     aiTitle: 'Como construo com IA',
     practicesTitle: 'Práticas de engenharia',
     experienceTitle: 'Experiência profissional',
+    educationTitle: 'Formação',
+    languagesTitle: 'Idiomas',
     printAction: 'Imprimir / Salvar como PDF',
-    generatedOn: 'Gerado em',
     toolbarLabel: 'Ações do CV',
   },
   hero: {
@@ -268,6 +269,17 @@ const pt: Dict = {
         'Por 5 anos, construí o ConsegnaERP para pequenas empresas e atendi clientes de energia, educação e imobiliário como fábrica de software (WebForms, .NET, SQL Server).',
       ],
     },
+  ],
+  education: [
+    {
+      degree: 'Bacharelado em Sistemas de Informação',
+      school: 'Uninabuco',
+      period: '2013 – 2019',
+    },
+  ],
+  languages: [
+    { name: 'Português', level: 'Nativo' },
+    { name: 'Inglês', level: 'Proficiência profissional' },
   ],
 };
 

@@ -36,6 +36,17 @@ export interface ResumeEntry {
   bullets?: string[];
 }
 
+export interface EducationEntry {
+  degree: string;
+  school: string;
+  period: string;
+}
+
+export interface LanguageEntry {
+  name: string;
+  level: string;
+}
+
 export interface Dict {
   meta: {
     title: string;
@@ -67,8 +78,9 @@ export interface Dict {
     aiTitle: string;
     practicesTitle: string;
     experienceTitle: string;
+    educationTitle: string;
+    languagesTitle: string;
     printAction: string;
-    generatedOn: string;
     toolbarLabel: string;
   };
   hero: {
@@ -106,6 +118,8 @@ export interface Dict {
     chapters: CareerChapter[];
   };
   resume: ResumeEntry[];
+  education: EducationEntry[];
+  languages: LanguageEntry[];
 }
 
 const content: Record<Locale, Dict> = { en, pt };

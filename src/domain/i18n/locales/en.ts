@@ -33,8 +33,9 @@ const en: Dict = {
     aiTitle: 'How I build with AI',
     practicesTitle: 'Engineering practices',
     experienceTitle: 'Professional experience',
+    educationTitle: 'Education',
+    languagesTitle: 'Languages',
     printAction: 'Print / Save as PDF',
-    generatedOn: 'Generated on',
     toolbarLabel: 'CV actions',
   },
   hero: {
@@ -264,6 +265,17 @@ const en: Dict = {
         'Over 5 years, built ConsegnaERP for small businesses and ran software-factory projects for utility, education and real-estate clients (WebForms, .NET, SQL Server).',
       ],
     },
+  ],
+  education: [
+    {
+      degree: 'Bachelor of Information Systems',
+      school: 'Uninabuco',
+      period: '2013 – 2019',
+    },
+  ],
+  languages: [
+    { name: 'Portuguese', level: 'Native' },
+    { name: 'English', level: 'Professional working proficiency' },
   ],
 };
 
