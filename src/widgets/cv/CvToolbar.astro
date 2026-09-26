@@ -12,7 +12,7 @@ const { dict, lang } = Astro.props;
 const homeHref = getRelativeLocaleUrl(lang, '');
 ---
 
-<div class="cv-toolbar" role="toolbar" aria-label="CV actions">
+<div class="cv-toolbar" role="toolbar" aria-label={dict.cv.toolbarLabel}>
   <a class="cv-toolbar__back" href={homeHref}>← {dict.nav.backToSite}</a>
   <div class="cv-toolbar__lang">
     {

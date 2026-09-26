@@ -110,7 +110,7 @@ export default function Sidebar({
     <>
       <button
         type="button"
-        aria-label={open ? 'Close menu' : 'Open menu'}
+        aria-label={open ? nav.closeMenu : nav.openMenu}
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
         className="fixed top-4 right-4 z-50 flex h-11 w-11 items-center justify-center rounded-full bg-sidebar text-white shadow-lg ring-1 ring-white/10 transition hover:bg-sidebar-ring xl:hidden"
@@ -194,7 +194,7 @@ export default function Sidebar({
           </a>
         </div>
 
-        <nav className="mt-6" aria-label="Primary">
+        <nav className="mt-6" aria-label={nav.primaryNavLabel}>
           <ul className="space-y-1">
             {NAV.map(({ href, label, Icon }) => {
               const id = href.slice(1);

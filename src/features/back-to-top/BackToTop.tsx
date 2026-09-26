@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpIcon } from '../../shared/ui/icons';
 
-export default function BackToTop() {
+interface BackToTopProps {
+  label: string;
+}
+
+export default function BackToTop({ label }: BackToTopProps) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export default function BackToTop() {
   return (
     <button
       type="button"
-      aria-label="Back to top"
+      aria-label={label}
       onClick={scrollUp}
       className={
         'fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-white shadow-lg transition hover:bg-accent-hover ' +

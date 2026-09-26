@@ -21,6 +21,10 @@ const pt: Dict = {
     printCv: 'Imprimir / baixar currículo',
     printCvShort: 'CV',
     backToSite: 'Voltar ao site',
+    openMenu: 'Abrir menu',
+    closeMenu: 'Fechar menu',
+    primaryNavLabel: 'Principal',
+    backToTop: 'Voltar ao topo',
   },
   cv: {
     contactLabel: 'Contato',
@@ -31,6 +35,7 @@ const pt: Dict = {
     experienceTitle: 'Experiência profissional',
     printAction: 'Imprimir / Salvar como PDF',
     generatedOn: 'Gerado em',
+    toolbarLabel: 'Ações do CV',
   },
   hero: {
     typedPrefix: 'Sou',

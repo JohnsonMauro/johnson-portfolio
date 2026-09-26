@@ -44,6 +44,10 @@ export interface Dict {
     printCv: string;
     printCvShort: string;
     backToSite: string;
+    openMenu: string;
+    closeMenu: string;
+    primaryNavLabel: string;
+    backToTop: string;
   };
   cv: {
     contactLabel: string;
@@ -54,6 +58,7 @@ export interface Dict {
     experienceTitle: string;
     printAction: string;
     generatedOn: string;
+    toolbarLabel: string;
   };
   hero: {
     typedRoles: string[];
