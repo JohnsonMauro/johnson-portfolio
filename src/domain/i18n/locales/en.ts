@@ -164,7 +164,7 @@ const en: Dict = {
       org: 'Accountfy',
       url: 'https://accountfy.com/',
       bullets: [
-        'Delivered front-end features, proofs of concept and tech-debt removal, and trained the team (AngularJS, Commerce Cloud).',
+        'Delivered front-end features, proofs of concept and tech-debt removal in 5 months, and trained the team (AngularJS, Commerce Cloud).',
       ],
     },
     {
@@ -173,7 +173,7 @@ const en: Dict = {
       org: 'IT Lean',
       url: 'https://www.itlean.com.br/',
       bullets: [
-        'Built the front end of Leanbot, a proprietary conversational-AI product (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
+        'Built the front end of Leanbot, a proprietary conversational-AI product, over 9 months (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
       ],
     },
     {
@@ -182,7 +182,7 @@ const en: Dict = {
       org: 'nevtec.eu',
       url: 'https://nevtec.eu/',
       bullets: [
-        'Delivered on-demand front-end work as a freelancer (React, React Native, Node.js, GraphQL).',
+        'Delivered on-demand front-end work as a freelancer for 18 months (React, React Native, Node.js, GraphQL).',
       ],
     },
     {
@@ -191,7 +191,7 @@ const en: Dict = {
       org: 'Foco Aluguel de Carros',
       url: 'https://www.aluguefoco.com.br/',
       bullets: [
-        'Built Coral, a fleet check-in and check-out system, and ran client and supplier meetings (Angular, Node.js, MySQL, Power BI).',
+        'In 3 months, built Coral, a fleet check-in and check-out system, and ran client and supplier meetings (Angular, Node.js, MySQL, Power BI).',
       ],
     },
     {
@@ -200,7 +200,7 @@ const en: Dict = {
       org: 'Devexo (OrtoClin)',
       url: 'https://clin.digital/',
       bullets: [
-        'Developed a dental-health product across web and mobile (Angular, Ionic, React Native, .NET Core, SQL Server).',
+        'Developed a dental-health product across 2 platforms, web and mobile (Angular, Ionic, React Native, .NET Core, SQL Server).',
       ],
     },
     {
@@ -219,7 +219,7 @@ const en: Dict = {
       period: 'Jan 2018 - May 2018',
       org: 'Tella World',
       bullets: [
-        'Built the front end of iBoltt, a ride- and delivery-sharing mobile app (AngularJS, Node.js).',
+        'Built the front end of iBoltt, a ride- and delivery-sharing mobile app, in 5 months (AngularJS, Node.js).',
       ],
     },
     {
@@ -227,7 +227,7 @@ const en: Dict = {
       period: 'Oct 2012 - Dec 2017',
       org: 'Qualytech',
       bullets: [
-        'Built ConsegnaERP for small businesses and ran software-factory projects for utility, education and real-estate clients (WebForms, .NET, SQL Server).',
+        'Over 5 years, built ConsegnaERP for small businesses and ran software-factory projects for utility, education and real-estate clients (WebForms, .NET, SQL Server).',
       ],
     },
   ],

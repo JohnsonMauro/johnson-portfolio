@@ -126,7 +126,7 @@ const pt: Dict = {
       bullets: [
         'Coliderei a reescrita de um admin de telefonia (227k linhas) de React 16/CRA para React 19, Vite 8 e TypeScript 6: 788 commits, 2º/22.',
         'Levei a cobertura de zero a ~3.000 casos e 71,5% das linhas, adicionando 459 arquivos de teste com Vitest e Testing Library.',
-        'Construí de ponta a ponta a integração CRM-telefonia, com API de 14 módulos, SDK de chamadas embarcado e 985 testes, em NestJS, NATS e Playwright.',
+        'Construí de ponta a ponta a integração CRM-telefonia: API de 14 módulos, SDK de chamadas embarcado e 985 testes, em NestJS, NATS e Playwright.',
         'Padronizei a entrega assistida por IA em 4 repositórios do time com 26 skills de Claude Code e ~1,2k linhas de contexto para agentes.',
         'Reduzi em 37% o tamanho da instalação de dependências (720 para 454 MB) migrando de Yarn para pnpm.',
         'Entreguei 1.135 commits no produto AngularJS de 12 anos enquanto a reescrita avançava.',
@@ -139,7 +139,7 @@ const pt: Dict = {
       bullets: [
         'Construí sozinho um app de força de vendas em 6 semanas: 92 commits, 13 telas, ~18k linhas, em Expo SDK 56, React Native 0.85, TypeScript.',
         'Desenhei pedidos offline-first em 8 módulos DDD, enfileirando no SQLite do aparelho e sincronizando em segundo plano.',
-        'Escrevi ~347 testes unitários e de componente; 53% dos commits foram em par com Claude Code, guiados por 8 skills próprias do projeto.',
+        'Escrevi ~347 testes unitários e de componente; 53% dos commits foram em par com Claude Code, guiados por 8 skills do projeto.',
         'Entreguei o módulo de devoluções do ERP em 5 fases (~6k linhas), cobrindo API .NET 10, wizard em React e NF-e de devolução.',
       ],
     },
@@ -168,7 +168,7 @@ const pt: Dict = {
       org: 'Accountfy',
       url: 'https://accountfy.com/',
       bullets: [
-        'Entreguei features front-end, provas de conceito e eliminação de débito técnico, e treinei o time (AngularJS, Commerce Cloud).',
+        'Entreguei em 5 meses features front-end, POCs e eliminação de débito técnico, e treinei o time (AngularJS, Commerce Cloud).',
       ],
     },
     {
@@ -177,7 +177,7 @@ const pt: Dict = {
       org: 'IT Lean',
       url: 'https://www.itlean.com.br/',
       bullets: [
-        'Construí o front-end do Leanbot, produto proprietário de IA conversacional (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
+        'Construí em 9 meses o front-end do Leanbot, IA conversacional proprietária (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
       ],
     },
     {
@@ -186,7 +186,7 @@ const pt: Dict = {
       org: 'nevtec.eu',
       url: 'https://nevtec.eu/',
       bullets: [
-        'Entreguei trabalhos front-end sob demanda como freelancer (React, React Native, Node.js, GraphQL).',
+        'Entreguei front-end sob demanda por 18 meses como freelancer (React, React Native, Node.js, GraphQL).',
       ],
     },
     {
@@ -195,7 +195,7 @@ const pt: Dict = {
       org: 'Foco Aluguel de Carros',
       url: 'https://www.aluguefoco.com.br/',
       bullets: [
-        'Construí o Coral, sistema de entrada e saída de frota, e conduzi reuniões com clientes e fornecedores (Angular, Node.js, MySQL, Power BI).',
+        'Em 3 meses, construí o Coral (entrada e saída de frota) e conduzi reuniões com clientes e fornecedores (Angular, Node.js, MySQL, Power BI).',
       ],
     },
     {
@@ -204,7 +204,7 @@ const pt: Dict = {
       org: 'Devexo (OrtoClin)',
       url: 'https://clin.digital/',
       bullets: [
-        'Desenvolvi um produto de odontologia sanitária em web e mobile (Angular, Ionic, React Native, .NET Core, SQL Server).',
+        'Desenvolvi um produto de odontologia sanitária em 2 plataformas, web e mobile (Angular, Ionic, React Native, .NET Core, SQL Server).',
       ],
     },
     {
@@ -223,7 +223,7 @@ const pt: Dict = {
       period: 'Jan 2018 - Mai 2018',
       org: 'Tella World',
       bullets: [
-        'Construí o front-end do iBoltt, app mobile de caronas e entregas compartilhadas (AngularJS, Node.js).',
+        'Construí em 5 meses o front-end do iBoltt, app mobile de caronas e entregas (AngularJS, Node.js).',
       ],
     },
     {
@@ -231,7 +231,7 @@ const pt: Dict = {
       period: 'Out 2012 - Dez 2017',
       org: 'Qualytech',
       bullets: [
-        'Construí o ConsegnaERP para pequenas empresas e atuei como fábrica de software para clientes de energia, educação e imobiliário (WebForms, .NET, SQL Server).',
+        'Por 5 anos, construí o ConsegnaERP para pequenas empresas e atendi clientes de energia, educação e imobiliário como fábrica de software (WebForms, .NET, SQL Server).',
       ],
     },
   ],
