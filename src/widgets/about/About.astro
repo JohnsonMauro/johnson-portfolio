@@ -27,18 +27,16 @@ const cvHref = getRelativeLocaleUrl(lang, 'cv');
     <div class="grid gap-10 lg:grid-cols-12">
       <FadeIn client:visible variant="fade-right" className="lg:col-span-5" as="div">
         <dl class="grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-1 lg:gap-y-10">
-          {
-            dict.about.stats.map((stat) => (
-              <div class="border-l-2 border-accent/60 pl-4">
-                <dt class="font-display text-2xl font-bold leading-none text-ink-deep min-[22.5rem]:text-3xl min-[25rem]:text-4xl sm:text-5xl lg:text-6xl">
-                  {stat.value}
-                </dt>
-                <dd class="mt-2 text-xs font-semibold uppercase tracking-wider text-ink/60">
-                  {stat.label}
-                </dd>
-              </div>
-            ))
-          }
+          {dict.about.stats.map((stat) => (
+            <div class="border-l-2 border-accent/60 pl-4">
+              <dt class="font-display text-2xl font-bold leading-none text-ink-deep min-[22.5rem]:text-3xl min-[25rem]:text-4xl sm:text-5xl lg:text-6xl">
+                {stat.value}
+              </dt>
+              <dd class="mt-2 text-xs font-semibold uppercase tracking-wider text-ink/60">
+                {stat.label}
+              </dd>
+            </div>
+          ))}
         </dl>
       </FadeIn>
 
@@ -47,7 +45,8 @@ const cvHref = getRelativeLocaleUrl(lang, 'cv');
         <p class="mt-4 text-ink/80">{dict.about.summary}</p>
 
         <p class="mt-8 text-sm font-semibold uppercase tracking-wider text-accent">
-          <span aria-hidden="true">→ </span>{dict.about.currentLabel}
+          <span aria-hidden="true">→ </span>
+          {dict.about.currentLabel}
         </p>
         <p class="mt-2 text-ink/80">{dict.about.current}</p>
 

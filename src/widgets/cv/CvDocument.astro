@@ -20,17 +20,9 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
 
 <article class="cv">
   <header class:list={['cv__header', { 'cv__header--photo': showPhoto }]}>
-    {
-      showPhoto && (
-        <img
-          src={asset(profile.photo)}
-          alt={profile.name}
-          width="80"
-          height="80"
-          class="cv__photo"
-        />
-      )
-    }
+    {showPhoto && (
+      <img src={asset(profile.photo)} alt={profile.name} width="80" height="80" class="cv__photo" />
+    )}
     <div class="cv__heading">
       <h1 class="cv__name">{profile.name}</h1>
       <p class="cv__role">{dict.meta.jobTitle}</p>
@@ -39,10 +31,9 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
           <a href={`mailto:${profile.email}`}>{profile.email}</a>
         </li>
         <li>
-          <a
-            href={`https://wa.me/${whatsappDigits}`}
-            target="_blank"
-            rel="noopener noreferrer">{profile.social.whatsapp}</a>
+          <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer">
+            {profile.social.whatsapp}
+          </a>
         </li>
         <li>
           <a href={profile.social.linkedin} target="_blank" rel="noopener noreferrer">
@@ -75,19 +66,17 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   <section class="cv__section">
     <h2>{dict.cv.skillsTitle}</h2>
     <dl class="cv__skills">
-      {
-        dict.about.expertise.map((entry) => {
-          const category = findExpertiseByKey(entry.key);
-          if (!category) return null;
-          const names = category.items.flatMap((i) => i.names).join(', ');
-          return (
-            <div class="cv__skills-row">
-              <dt>{entry.label}</dt>
-              <dd>{names}</dd>
-            </div>
-          );
-        })
-      }
+      {dict.about.expertise.map((entry) => {
+        const category = findExpertiseByKey(entry.key);
+        if (!category) return null;
+        const names = category.items.flatMap((i) => i.names).join(', ');
+        return (
+          <div class="cv__skills-row">
+            <dt>{entry.label}</dt>
+            <dd>{names}</dd>
+          </div>
+        );
+      })}
       <div class="cv__skills-row">
         <dt>{dict.cv.practicesTitle}</dt>
         <dd>{dict.skills.judgment.join(' · ')}</dd>
@@ -102,68 +91,60 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   <section class="cv__section cv__section--experience">
     <h2>{dict.cv.experienceTitle}</h2>
     <ol class="cv__experience">
-      {
-        dict.resume.map((item) => (
-          <li class="cv__job">
-            <header class="cv__job-header">
-              <h3>
-                {item.role}
-                <span class="cv__org">
-                  {' · '}
-                  {item.url ? (
-                    <a href={item.url} target="_blank" rel="noopener noreferrer">
-                      {item.org}
-                    </a>
-                  ) : (
-                    item.org
-                  )}
-                </span>
-              </h3>
-              <span class="cv__period">{item.period}</span>
-            </header>
-            {item.bullets && (
-              <ul class="cv__bullets">
-                {item.bullets.map((b) => (
-                  <li>{b}</li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))
-      }
+      {dict.resume.map((item) => (
+        <li class="cv__job">
+          <header class="cv__job-header">
+            <h3>
+              {item.role}
+              <span class="cv__org">
+                {' · '}
+                {item.url ? (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    {item.org}
+                  </a>
+                ) : (
+                  item.org
+                )}
+              </span>
+            </h3>
+            <span class="cv__period">{item.period}</span>
+          </header>
+          {item.bullets && (
+            <ul class="cv__bullets">
+              {item.bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
     </ol>
   </section>
 
   <section class="cv__section">
     <h2>{dict.cv.aiTitle}</h2>
     <ul class="cv__practices">
-      {
-        dict.skills.aiPractices.map((practice) => (
-          <li>
-            <strong>{practice.title}.</strong>{' '}
-            {practice.proof}
-          </li>
-        ))
-      }
+      {dict.skills.aiPractices.map((practice) => (
+        <li>
+          <strong>{practice.title}.</strong> {practice.proof}
+        </li>
+      ))}
     </ul>
   </section>
 
   <section class="cv__section">
     <h2>{dict.cv.educationTitle}</h2>
     <ul class="cv__plain">
-      {
-        dict.education.map((item) => (
-          <li class="cv__job-header">
-            <span>
-              <strong>{item.degree}</strong>, {item.school}
-            </span>{' '}
-            <span class="cv__period">{item.period}</span>
-          </li>
-        ))
-      }
+      {dict.education.map((item) => (
+        <li class="cv__job-header">
+          <span>
+            <strong>{item.degree}</strong>, {item.school}
+          </span>{' '}
+          <span class="cv__period">{item.period}</span>
+        </li>
+      ))}
     </ul>
   </section>
-
 </article>
 
 <style>

@@ -19,9 +19,6 @@ const sizes = [
 
 for (const { file, size } of sizes) {
   const out = path.join(outDir, file);
-  await sharp(svg, { density: 384 })
-    .resize(size, size)
-    .png()
-    .toFile(out);
+  await sharp(svg, { density: 384 }).resize(size, size).png().toFile(out);
   console.log(`✓ ${file} (${size}x${size})`);
 }

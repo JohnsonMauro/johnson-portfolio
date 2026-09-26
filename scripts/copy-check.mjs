@@ -24,23 +24,32 @@ const isObject = (value) => value !== null && typeof value === 'object' && !Arra
 // Key paths, with array lengths recorded so a missing resume entry or bullet shows up.
 const shape = (value, prefix = '') => {
   if (Array.isArray(value)) {
-    return [`${prefix}[length=${value.length}]`, ...value.flatMap((item, index) => shape(item, `${prefix}[${index}]`))];
+    return [
+      `${prefix}[length=${value.length}]`,
+      ...value.flatMap((item, index) => shape(item, `${prefix}[${index}]`)),
+    ];
   }
   if (isObject(value)) {
-    return Object.entries(value).flatMap(([key, child]) => shape(child, prefix ? `${prefix}.${key}` : key));
+    return Object.entries(value).flatMap(([key, child]) =>
+      shape(child, prefix ? `${prefix}.${key}` : key),
+    );
   }
   return [prefix];
 };
 
 const listSources = async () => {
-  const entries = await readdir(path.join(root, SOURCE_DIR), { withFileTypes: true, recursive: true });
+  const entries = await readdir(path.join(root, SOURCE_DIR), {
+    withFileTypes: true,
+    recursive: true,
+  });
   return entries
     .filter((entry) => entry.isFile() && /\.(astro|tsx?|mjs)$/.test(entry.name))
     .map((entry) => path.join(entry.parentPath, entry.name))
     .filter((file) => !path.relative(root, file).startsWith(DICTIONARY_DIR));
 };
 
-const isRead = (key, sources) => new RegExp(`\\.${key}\\b|\\blabel:\\s*['"\`]${key}['"\`]`).test(sources);
+const isRead = (key, sources) =>
+  new RegExp(`\\.${key}\\b|\\blabel:\\s*['"\`]${key}['"\`]`).test(sources);
 
 const parityProblems = (en, pt) => {
   const enPaths = new Set(shape(en));
@@ -59,7 +68,10 @@ const orphanProblems = async (en) => {
     .flatMap(([section, keys]) =>
       Object.keys(keys)
         .filter((key) => !isRead(key, sources))
-        .map((key) => `unused key: ${section}.${key} (neither ".${key}" nor "label: '${key}'" outside src/domain/i18n)`),
+        .map(
+          (key) =>
+            `unused key: ${section}.${key} (neither ".${key}" nor "label: '${key}'" outside src/domain/i18n)`,
+        ),
     );
 };
 

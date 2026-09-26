@@ -43,7 +43,10 @@ interface PersonStyle {
  * the expensive part of canvas drawing, so they are paid once here and every
  * frame only stamps the result.
  */
-export function personSprite({ size, blur, glow, top, bottom }: PersonStyle, dpr: number): Sprite | null {
+export function personSprite(
+  { size, blur, glow, top, bottom }: PersonStyle,
+  dpr: number,
+): Sprite | null {
   const half = 0.92 * size + glow + blur * 2 + 2;
   const target = canvasFor(half, dpr);
   if (!target) return null;

@@ -72,9 +72,9 @@ export default function Sidebar({
   const [active, setActive] = useState<string>('hero');
 
   useEffect(() => {
-    const sections = NAV_SECTIONS
-      .map(({ id }) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
+    const sections = NAV_SECTIONS.map(({ id }) => document.getElementById(id)).filter(
+      (el): el is HTMLElement => Boolean(el),
+    );
     if (sections.length === 0) return;
 
     const obs = new IntersectionObserver(
@@ -83,7 +83,7 @@ export default function Sidebar({
           if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 },
     );
     sections.forEach((s) => obs.observe(s));
     return () => obs.disconnect();
@@ -208,9 +208,7 @@ export default function Sidebar({
                     aria-current={isActive ? 'page' : undefined}
                     className={
                       'group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition ' +
-                      (isActive
-                        ? 'text-white'
-                        : 'text-white/60 hover:text-white')
+                      (isActive ? 'text-white' : 'text-white/60 hover:text-white')
                     }
                   >
                     <span
@@ -230,9 +228,7 @@ export default function Sidebar({
             })}
           </ul>
         </nav>
-
       </aside>
     </>
   );
 }
-

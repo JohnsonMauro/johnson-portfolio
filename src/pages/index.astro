@@ -5,18 +5,21 @@ import { LOCALE_STORAGE_KEY } from '../shared/lib/storage-keys';
 
 const defaultTarget = getRelativeLocaleUrl(DEFAULT_LOCALE, '');
 const localeMap = Object.fromEntries(
-  LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')])
+  LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')]),
 ) as Record<string, string>;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang={DEFAULT_LOCALE}>
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="refresh" content={`0; url=${defaultTarget}`} />
     <link rel="canonical" href={defaultTarget} />
     <title>Redirecting…</title>
-    <script is:inline define:vars={{ defaultTarget, localeMap, localeStorageKey: LOCALE_STORAGE_KEY }}>
+    <script
+      is:inline
+      define:vars={{ defaultTarget, localeMap, localeStorageKey: LOCALE_STORAGE_KEY }}
+    >
       (function () {
         let chosen = defaultTarget;
         try {
@@ -24,7 +27,8 @@ const localeMap = Object.fromEntries(
           if (saved && localeMap[saved]) {
             chosen = localeMap[saved];
           } else {
-            const pref = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+            const pref =
+              (navigator.languages && navigator.languages[0]) || navigator.language || '';
             const tag = String(pref).toLowerCase();
             for (const code in localeMap) {
               if (tag === code || tag.indexOf(code + '-') === 0) {

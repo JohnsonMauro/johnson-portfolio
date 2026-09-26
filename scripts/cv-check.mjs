@@ -16,15 +16,25 @@ const BANNED = {
   en: {
     openers: ['responsible for', 'in charge of', 'worked on', 'helped with'],
     buzzwords: [
-      'results-driven', 'team player', 'synergy', 'go-getter',
-      'think outside the box', 'passionate', 'rockstar',
+      'results-driven',
+      'team player',
+      'synergy',
+      'go-getter',
+      'think outside the box',
+      'passionate',
+      'rockstar',
     ],
   },
   pt: {
     openers: ['responsável por', 'encarregado de', 'trabalhei em', 'ajudei com', 'ajudei a'],
     buzzwords: [
-      'orientado a resultados', 'focado em resultados', 'trabalho em equipe', 'sinergia',
-      'pensar fora da caixa', 'apaixonado', 'rockstar',
+      'orientado a resultados',
+      'focado em resultados',
+      'trabalho em equipe',
+      'sinergia',
+      'pensar fora da caixa',
+      'apaixonado',
+      'rockstar',
     ],
   },
 };
@@ -47,7 +57,8 @@ const checkLocale = async (locale) => {
   }
   for (const { where, text } of bullets) {
     const count = countWords(text);
-    if (count > MAX_BULLET_WORDS) problems.push(`${count} words (max ${MAX_BULLET_WORDS}) · ${where}: "${text}"`);
+    if (count > MAX_BULLET_WORDS)
+      problems.push(`${count} words (max ${MAX_BULLET_WORDS}) · ${where}: "${text}"`);
     const opener = openers.find((phrase) => text.toLowerCase().startsWith(phrase));
     if (opener) problems.push(`banned opener "${opener}" · ${where}`);
     if (!/\d/.test(text)) warnings.push(`no number · ${where}: "${text}"`);
@@ -63,7 +74,9 @@ const checkLocale = async (locale) => {
 const results = await Promise.all(LOCALES.map(checkLocale));
 for (const { locale, words, bullets, problems, warnings } of results) {
   const status = problems.length ? `${problems.length} problem(s)` : 'ok';
-  console.log(`${locale}: ${words} words · ${bullets} bullets · ${status} · ${warnings.length} warning(s)`);
+  console.log(
+    `${locale}: ${words} words · ${bullets} bullets · ${status} · ${warnings.length} warning(s)`,
+  );
   for (const problem of problems) console.log(`  ✗ ${problem}`);
   for (const warning of warnings) console.log(`  ! ${warning}`);
 }

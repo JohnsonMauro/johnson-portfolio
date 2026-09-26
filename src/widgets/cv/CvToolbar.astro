@@ -13,19 +13,19 @@ const homeHref = getRelativeLocaleUrl(lang, '');
 ---
 
 <div class="cv-toolbar" role="toolbar" aria-label={dict.cv.toolbarLabel}>
-  <a class="cv-toolbar__back" href={homeHref}>← {dict.nav.backToSite}</a>
+  <a class="cv-toolbar__back" href={homeHref}>
+    ← {dict.nav.backToSite}
+  </a>
   <div class="cv-toolbar__lang">
-    {
-      LOCALES.map((l) => (
-        <a
-          href={getRelativeLocaleUrl(l, 'cv')}
-          aria-current={l === lang ? 'true' : undefined}
-          class={l === lang ? 'is-current' : ''}
-        >
-          {LOCALE_LABELS[l]}
-        </a>
-      ))
-    }
+    {LOCALES.map((l) => (
+      <a
+        href={getRelativeLocaleUrl(l, 'cv')}
+        aria-current={l === lang ? 'true' : undefined}
+        class={l === lang ? 'is-current' : ''}
+      >
+        {LOCALE_LABELS[l]}
+      </a>
+    ))}
   </div>
   <button type="button" class="cv-toolbar__print" onclick="window.print()">
     {dict.cv.printAction}

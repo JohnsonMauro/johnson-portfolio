@@ -7,21 +7,14 @@ interface SocialLinkProps {
   children: ReactNode;
 }
 
-export default function SocialLink({
-  href,
-  label,
-  external = true,
-  children,
-}: SocialLinkProps) {
+export default function SocialLink({ href, label, external = true, children }: SocialLinkProps) {
   return (
     <li className="group relative">
       <a
         href={href}
         aria-label={label}
         title={label}
-        {...(external
-          ? { target: '_blank', rel: 'noopener noreferrer' }
-          : {})}
+        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         className="flex h-9 w-9 items-center justify-center rounded-full bg-sidebar-social text-white/80 transition hover:bg-accent hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       >
         <span aria-hidden="true">{children}</span>

@@ -92,7 +92,7 @@ export default defineConfig(
     },
   },
 
-  ...layerBoundaries()
+  ...layerBoundaries(),
 );
 
 /*
@@ -136,10 +136,16 @@ function layerBoundaries() {
         { regex: `^(?:(?:\\.\\./)+|@/)${layer}/(?!${self}(?:/|$))`, message: siblingMessage },
       ];
       const byDepth = Array.from({ length: MAX_DEPTH + 1 }, (_, depth) =>
-        rule([`src/${layer}/${slice}/${'*/'.repeat(depth)}*`], [
-          ...common,
-          { regex: `^(?:\\.\\./){${depth + 1}}(?!(?:${self}|\\.\\.)(?:/|$))[^/]+`, message: siblingMessage },
-        ])
+        rule(
+          [`src/${layer}/${slice}/${'*/'.repeat(depth)}*`],
+          [
+            ...common,
+            {
+              regex: `^(?:\\.\\./){${depth + 1}}(?!(?:${self}|\\.\\.)(?:/|$))[^/]+`,
+              message: siblingMessage,
+            },
+          ],
+        ),
       );
       return [...byDepth, rule([`src/${layer}/${slice}/${'*/'.repeat(MAX_DEPTH + 1)}**`], common)];
     });

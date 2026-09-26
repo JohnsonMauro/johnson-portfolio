@@ -15,7 +15,9 @@ const hexToRgb = (value: string): Rgb | null => {
 export function readPalette<K extends string>(tokens: Record<K, string>): Record<K, Rgb> | null {
   const styles = getComputedStyle(document.documentElement);
   const entries = Object.entries(tokens) as [K, string][];
-  const colors = entries.map(([key, token]) => [key, hexToRgb(styles.getPropertyValue(token))] as const);
+  const colors = entries.map(
+    ([key, token]) => [key, hexToRgb(styles.getPropertyValue(token))] as const,
+  );
   if (colors.some(([, rgb]) => !rgb)) return null;
   return Object.fromEntries(colors) as Record<K, Rgb>;
 }

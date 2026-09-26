@@ -40,7 +40,7 @@ export default function FadeIn({
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -52,11 +52,7 @@ export default function FadeIn({
   };
 
   return (
-    <Tag
-      ref={ref}
-      className={(visible ? ANIM[variant] + ' ' : '') + className}
-      style={style}
-    >
+    <Tag ref={ref} className={(visible ? ANIM[variant] + ' ' : '') + className} style={style}>
       {children}
     </Tag>
   );

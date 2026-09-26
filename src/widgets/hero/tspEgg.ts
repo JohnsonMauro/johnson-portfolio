@@ -113,9 +113,10 @@ const placeCaption = (stops: TourNode[], area: EggArea, halfWidth: number): Capt
   for (const below of [false, true]) {
     const y = captionY(stops, below);
     const box = [y - CAPTION_SIZE, y + CAPTION_DESCENT].flatMap((edge) =>
-      [x - halfWidth, x, x + halfWidth].map((px) => ({ x: px, y: edge }))
+      [x - halfWidth, x, x + halfWidth].map((px) => ({ x: px, y: edge })),
     );
-    if (box.every((point) => inside(area, point) && !area.blocked(point))) return { below, shift: x - centre };
+    if (box.every((point) => inside(area, point) && !area.blocked(point)))
+      return { below, shift: x - centre };
   }
   return null;
 };
@@ -155,7 +156,12 @@ export function createTspEgg(copy: EggCopy, colors: { glint: Rgb }, fontFamily: 
     run = null;
   };
 
-  const tourPath = (ctx: CanvasRenderingContext2D, stops: TourNode[], order: number[], share: number) => {
+  const tourPath = (
+    ctx: CanvasRenderingContext2D,
+    stops: TourNode[],
+    order: number[],
+    share: number,
+  ) => {
     const { points, lengths, total } = legs(stops, order);
     let budget = total * share;
     ctx.beginPath();
@@ -184,7 +190,13 @@ export function createTspEgg(copy: EggCopy, colors: { glint: Rgb }, fontFamily: 
     return { x: points[0].px, y: points[0].py };
   };
 
-  const drawCaption = (ctx: CanvasRenderingContext2D, stops: TourNode[], caption: Caption, count: number, alpha: number) => {
+  const drawCaption = (
+    ctx: CanvasRenderingContext2D,
+    stops: TourNode[],
+    caption: Caption,
+    count: number,
+    alpha: number,
+  ) => {
     const x = centreX(stops) + caption.shift;
     const y = captionY(stops, caption.below);
     ctx.globalAlpha = alpha * 0.85;
@@ -233,13 +245,20 @@ export function createTspEgg(copy: EggCopy, colors: { glint: Rgb }, fontFamily: 
      * when a run is on or no cluster yields a tour and caption clear of the
      * hero copy.
      */
-    start(nodes: readonly TourNode[], area: EggArea, at: Point | null, now: number, still: boolean): boolean {
+    start(
+      nodes: readonly TourNode[],
+      area: EggArea,
+      at: Point | null,
+      now: number,
+      still: boolean,
+    ): boolean {
       if (run) return false;
       const halfWidth = captionHalfWidth();
       let best: Omit<Run, 'start'> | null = null;
       for (const floor of LAYER_FLOORS) {
         const usable = nodes.filter(
-          (node) => node.layer >= floor && node.fade > MIN_FADE && inside(area, { x: node.px, y: node.py })
+          (node) =>
+            node.layer >= floor && node.fade > MIN_FADE && inside(area, { x: node.px, y: node.py }),
         );
         best = usable.length >= MIN_STOPS ? bestCluster(usable, area, at, halfWidth) : null;
         if (best) break;
@@ -287,7 +306,13 @@ export function createTspEgg(copy: EggCopy, colors: { glint: Rgb }, fontFamily: 
           const lap = ((elapsed - SEARCH_MS - REVEAL_MS) % LAP_MS) / LAP_MS;
           const { x, y } = pointOnTour(stops, order, lap);
           ctx.globalCompositeOperation = 'lighter';
-          ctx.drawImage(signal.image, x - signal.half, y - signal.half, signal.half * 2, signal.half * 2);
+          ctx.drawImage(
+            signal.image,
+            x - signal.half,
+            y - signal.half,
+            signal.half * 2,
+            signal.half * 2,
+          );
           ctx.globalCompositeOperation = 'source-over';
         }
         drawCaption(ctx, stops, caption, checked, alpha);

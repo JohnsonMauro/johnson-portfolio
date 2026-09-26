@@ -25,9 +25,7 @@ export default function BackToTop({ label }: BackToTopProps) {
       onClick={scrollUp}
       className={
         'fixed bottom-5 right-5 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-accent text-white shadow-lg transition hover:bg-accent-hover ' +
-        (visible
-          ? 'opacity-100 translate-y-0'
-          : 'pointer-events-none opacity-0 translate-y-2')
+        (visible ? 'opacity-100 translate-y-0' : 'pointer-events-none opacity-0 translate-y-2')
       }
     >
       <ArrowUpIcon />

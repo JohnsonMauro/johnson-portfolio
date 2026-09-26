@@ -27,7 +27,7 @@ const typedLang = lang as Locale;
 const dict = getDict(typedLang);
 
 const localeUrls = Object.fromEntries(
-  LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')])
+  LOCALES.map((l) => [l, getRelativeLocaleUrl(l, '')]),
 ) as Record<Locale, string>;
 
 const absoluteCanonical = getAbsoluteLocaleUrl(typedLang, '');

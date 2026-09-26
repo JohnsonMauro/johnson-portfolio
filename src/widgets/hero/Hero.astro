@@ -16,10 +16,7 @@ const { dict } = Astro.props;
 >
   <div class="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true">
     {/* Backdrop without WebGL, and until the first frame is drawn. */}
-    <div
-      class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,color-mix(in_srgb,var(--color-accent)_18%,transparent),transparent_60%)]"
-    >
-    </div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,color-mix(in_srgb,var(--color-accent)_18%,transparent),transparent_60%)]"></div>
     <canvas data-tide class="backdrop-layer absolute inset-0 h-full w-full"></canvas>
     <canvas
       data-network

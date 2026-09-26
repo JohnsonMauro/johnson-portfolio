@@ -18,7 +18,7 @@ export interface FrameLoop {
 export function frameLoop(
   target: Element,
   draw: (now: number, still: boolean) => void,
-  frameMs = 0
+  frameMs = 0,
 ): FrameLoop {
   let reduced = prefersReducedMotion();
   let visible = true;

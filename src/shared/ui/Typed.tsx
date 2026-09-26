@@ -31,7 +31,7 @@ export default function Typed({
       } else {
         timer.current = window.setTimeout(
           () => setText(current.slice(0, text.length + 1)),
-          typeSpeed
+          typeSpeed,
         );
       }
     } else if (phase === 'deleting') {
@@ -43,7 +43,7 @@ export default function Typed({
       } else {
         timer.current = window.setTimeout(
           () => setText(current.slice(0, text.length - 1)),
-          backSpeed
+          backSpeed,
         );
       }
     }

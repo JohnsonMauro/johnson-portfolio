@@ -16,9 +16,40 @@ const baselineDir = path.join(root, 'node_modules/.cache/rendered-text');
 const CONTEXT_LINES = 2;
 
 const BLOCK_TAGS = [
-  'address', 'article', 'aside', 'blockquote', 'br', 'dd', 'details', 'div', 'dl', 'dt',
-  'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header',
-  'hr', 'li', 'main', 'nav', 'ol', 'p', 'section', 'summary', 'table', 'td', 'th', 'tr', 'ul',
+  'address',
+  'article',
+  'aside',
+  'blockquote',
+  'br',
+  'dd',
+  'details',
+  'div',
+  'dl',
+  'dt',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'header',
+  'hr',
+  'li',
+  'main',
+  'nav',
+  'ol',
+  'p',
+  'section',
+  'summary',
+  'table',
+  'td',
+  'th',
+  'tr',
+  'ul',
 ];
 
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
@@ -26,7 +57,8 @@ const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' }
 const decode = (text) =>
   text.replace(/&(#x[\da-f]+|#\d+|[a-z]+);/gi, (match, code) => {
     if (code[0] !== '#') return ENTITIES[code.toLowerCase()] ?? match;
-    const point = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : Number(code.slice(1));
+    const point =
+      code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : Number(code.slice(1));
     return String.fromCodePoint(point);
   });
 
@@ -74,7 +106,8 @@ const diffLines = (before, after) => {
   const lcs = Array.from({ length: before.length + 1 }, () => new Array(after.length + 1).fill(0));
   for (let i = before.length - 1; i >= 0; i--) {
     for (let j = after.length - 1; j >= 0; j--) {
-      lcs[i][j] = before[i] === after[j] ? lcs[i + 1][j + 1] + 1 : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+      lcs[i][j] =
+        before[i] === after[j] ? lcs[i + 1][j + 1] + 1 : Math.max(lcs[i + 1][j], lcs[i][j + 1]);
     }
   }
   const ops = [];
@@ -94,14 +127,18 @@ const diffLines = (before, after) => {
 };
 
 const formatHunks = (ops) => {
-  const changed = ops.map((op, index) => (op.sign === ' ' ? -1 : index)).filter((index) => index >= 0);
+  const changed = ops
+    .map((op, index) => (op.sign === ' ' ? -1 : index))
+    .filter((index) => index >= 0);
   const visible = new Set(
     changed.flatMap((index) =>
       Array.from({ length: CONTEXT_LINES * 2 + 1 }, (_, k) => index - CONTEXT_LINES + k),
     ),
   );
   return ops
-    .map((op, index) => (visible.has(index) ? `${op.sign} ${op.line}` : visible.has(index - 1) ? '  …' : null))
+    .map((op, index) =>
+      visible.has(index) ? `${op.sign} ${op.line}` : visible.has(index - 1) ? '  …' : null,
+    )
     .filter((line) => line !== null)
     .join('\n');
 };
@@ -113,14 +150,19 @@ const readPages = async () => {
     process.exit(2);
   }
   return Promise.all(
-    pages.map(async (page) => ({ page, text: extract(await readFile(path.join(distDir, page), 'utf8')) })),
+    pages.map(async (page) => ({
+      page,
+      text: extract(await readFile(path.join(distDir, page), 'utf8')),
+    })),
   );
 };
 
 const save = async () => {
   const pages = await readPages();
   await mkdir(baselineDir, { recursive: true });
-  await Promise.all(pages.map(({ page, text }) => writeFile(path.join(baselineDir, snapshotName(page)), text)));
+  await Promise.all(
+    pages.map(({ page, text }) => writeFile(path.join(baselineDir, snapshotName(page)), text)),
+  );
   console.log(`Baseline saved: ${pages.length} pages → ${path.relative(root, baselineDir)}`);
 };
 
@@ -135,7 +177,9 @@ const diff = async () => {
   let drift = 0;
 
   for (const { page, text } of pages) {
-    const before = await readFile(path.join(baselineDir, snapshotName(page)), 'utf8').catch(() => null);
+    const before = await readFile(path.join(baselineDir, snapshotName(page)), 'utf8').catch(
+      () => null,
+    );
     if (before === null) {
       console.log(`\n+++ ${page} (new page)`);
       drift++;
@@ -154,7 +198,9 @@ const diff = async () => {
     console.log(`Rendered text unchanged across ${pages.length} pages.`);
     return;
   }
-  console.log(`\n${drift} page(s) changed. Expected for a copy edit; a bug for a pure markup/refactor change.`);
+  console.log(
+    `\n${drift} page(s) changed. Expected for a copy edit; a bug for a pure markup/refactor change.`,
+  );
   process.exit(1);
 };
 

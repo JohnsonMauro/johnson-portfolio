@@ -22,13 +22,20 @@ const isEditable = (target: EventTarget | null) =>
  */
 export function listenForEgg(
   area: HTMLElement,
-  onTrigger: (at: { clientX: number; clientY: number } | null) => void
+  onTrigger: (at: { clientX: number; clientY: number } | null) => void,
 ): () => void {
   let typed = '';
   let presses: Press[] = [];
 
   const onKeyDown = (event: KeyboardEvent) => {
-    if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1 || isEditable(event.target)) return;
+    if (
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey ||
+      event.key.length !== 1 ||
+      isEditable(event.target)
+    )
+      return;
     typed = (typed + event.key.toLowerCase()).slice(-SEQUENCE.length);
     if (typed !== SEQUENCE) return;
     typed = '';
@@ -40,7 +47,9 @@ export function listenForEgg(
     const press = { time: event.timeStamp, x: event.clientX, y: event.clientY };
     presses = [
       ...presses.filter(
-        (earlier) => press.time - earlier.time < TAP_WINDOW_MS && Math.hypot(earlier.x - press.x, earlier.y - press.y) < TAP_SLOP
+        (earlier) =>
+          press.time - earlier.time < TAP_WINDOW_MS &&
+          Math.hypot(earlier.x - press.x, earlier.y - press.y) < TAP_SLOP,
       ),
       press,
     ];

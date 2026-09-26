@@ -41,7 +41,11 @@ const EGG_COPY_CLEARANCE = 16;
 const EGG_RETRY_MS = 400;
 const EGG_PATIENCE_MS = 3000;
 
-const PALETTE = { light: '--palette-accent-light', mid: '--palette-accent', deep: '--palette-accent-dark' };
+const PALETTE = {
+  light: '--palette-accent-light',
+  mid: '--palette-accent',
+  deep: '--palette-accent-dark',
+};
 
 interface Node {
   x: number;
@@ -102,7 +106,11 @@ const createNode = (width: number, height: number): Node => {
  * The canvas gets `data-ready` after its first frame so CSS can fade it in.
  * With `eggCopy`, the P vs NP easter egg (`tspEgg.ts`) is wired in too.
  */
-export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElement, eggCopy?: EggCopy): () => void {
+export function mountPeopleNetwork(
+  canvas: HTMLCanvasElement,
+  anchor: HTMLElement,
+  eggCopy?: EggCopy,
+): () => void {
   const noop = () => undefined;
   const ctx = canvas.getContext('2d');
   const brand = readPalette(PALETTE);
@@ -140,7 +148,7 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     if (nextDpr !== dpr || people.length === 0) {
       dpr = nextDpr;
       people = LAYERS.map((layer) =>
-        personSprite({ ...layer, top: colors.glint, bottom: colors.light }, dpr)
+        personSprite({ ...layer, top: colors.glint, bottom: colors.light }, dpr),
       );
       signal = glowSprite(10, colors.glint, colors.light, dpr);
     }
@@ -153,10 +161,14 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     const sy = height ? nextHeight / height : 1;
     width = nextWidth;
     height = nextHeight;
-    const count = Math.round(Math.min(MAX_NODES, Math.max(MIN_NODES, (width * height) / AREA_PER_NODE)));
+    const count = Math.round(
+      Math.min(MAX_NODES, Math.max(MIN_NODES, (width * height) / AREA_PER_NODE)),
+    );
     egg?.cancel();
     pendingEgg = null;
-    nodes = nodes.slice(0, count).map((node) => ({ ...node, x: node.x * sx, y: node.y * sy, frozen: false }));
+    nodes = nodes
+      .slice(0, count)
+      .map((node) => ({ ...node, x: node.x * sx, y: node.y * sy, frozen: false }));
     while (nodes.length < count) nodes.push(createNode(width, height));
     nodes.sort((a, b) => a.layer - b.layer);
     pulses.length = 0;
@@ -194,7 +206,10 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
   };
 
   const cursorBoost = (node: Node) =>
-    cursor.active ? 1 + 0.8 * (1 - smoothstep(0, CURSOR_GLOW, Math.hypot(node.px - cursor.x, node.py - cursor.y))) : 1;
+    cursor.active
+      ? 1 +
+        0.8 * (1 - smoothstep(0, CURSOR_GLOW, Math.hypot(node.px - cursor.x, node.py - cursor.y)))
+      : 1;
 
   const drawLinks = () => {
     const links: [Node, Node][] = [];
@@ -209,7 +224,10 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
         const distance = Math.hypot(a.px - b.px, a.py - b.py);
         if (distance >= layer.link) continue;
         const strength = (1 - distance / layer.link) ** 1.4;
-        ctx.globalAlpha = Math.min(1, strength * layer.alpha * 0.7 * Math.min(a.fade, b.fade) * cursorBoost(a));
+        ctx.globalAlpha = Math.min(
+          1,
+          strength * layer.alpha * 0.7 * Math.min(a.fade, b.fade) * cursorBoost(a),
+        );
         ctx.lineWidth = layer.line;
         ctx.beginPath();
         ctx.moveTo(a.px, a.py);
@@ -237,12 +255,23 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     }
     if (signal) {
       ctx.globalAlpha = 0.7;
-      ctx.drawImage(signal.image, cursor.x - signal.half, cursor.y - signal.half, signal.half * 2, signal.half * 2);
+      ctx.drawImage(
+        signal.image,
+        cursor.x - signal.half,
+        cursor.y - signal.half,
+        signal.half * 2,
+        signal.half * 2,
+      );
     }
   };
 
   const drawPulses = (links: [Node, Node][], dt: number, now: number) => {
-    if (dt > 0 && links.length > 0 && pulses.length < MAX_PULSES && now - lastPulse > PULSE_EVERY_MS) {
+    if (
+      dt > 0 &&
+      links.length > 0 &&
+      pulses.length < MAX_PULSES &&
+      now - lastPulse > PULSE_EVERY_MS
+    ) {
       const [a, b] = links[Math.floor(Math.random() * links.length)];
       pulses.push(Math.random() < 0.5 ? { a, b, t: 0 } : { a: b, b: a, t: 0 });
       lastPulse = now;
@@ -262,7 +291,13 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
       const x = a.px + (b.px - a.px) * t;
       const y = a.py + (b.py - a.py) * t;
       ctx.globalAlpha = Math.sin(Math.PI * pulse.t) * Math.min(a.fade, b.fade);
-      ctx.drawImage(signal.image, x - signal.half, y - signal.half, signal.half * 2, signal.half * 2);
+      ctx.drawImage(
+        signal.image,
+        x - signal.half,
+        y - signal.half,
+        signal.half * 2,
+        signal.half * 2,
+      );
     }
     ctx.globalCompositeOperation = 'source-over';
   };
@@ -271,8 +306,16 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     for (const node of nodes) {
       const sprite = people[node.layer];
       if (!sprite || node.fade <= 0) continue;
-      ctx.globalAlpha = node.frozen ? 1 : Math.min(1, LAYERS[node.layer].alpha * node.fade * cursorBoost(node));
-      ctx.drawImage(sprite.image, node.px - sprite.half, node.py - sprite.half, sprite.half * 2, sprite.half * 2);
+      ctx.globalAlpha = node.frozen
+        ? 1
+        : Math.min(1, LAYERS[node.layer].alpha * node.fade * cursorBoost(node));
+      ctx.drawImage(
+        sprite.image,
+        node.px - sprite.half,
+        node.py - sprite.half,
+        sprite.half * 2,
+        sprite.half * 2,
+      );
     }
   };
 
@@ -289,13 +332,20 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     drawPulses(links, dt, now);
     drawPeople();
     if (pendingEgg && now >= pendingEgg.next) {
-      if (egg?.start(nodes, eggArea(), pendingEgg.at, now, false) || now > pendingEgg.until) pendingEgg = null;
+      if (egg?.start(nodes, eggArea(), pendingEgg.at, now, false) || now > pendingEgg.until)
+        pendingEgg = null;
       else pendingEgg.next = now + EGG_RETRY_MS;
     }
     egg?.draw(ctx, signal, now);
     ctx.globalAlpha = 1;
     canvas.dataset.ready = '';
-    if (!still && cursor.active && !idleSpent && lastPointerMove > 0 && now - lastPointerMove > IDLE_MS) {
+    if (
+      !still &&
+      cursor.active &&
+      !idleSpent &&
+      lastPointerMove > 0 &&
+      now - lastPointerMove > IDLE_MS
+    ) {
       idleSpent = true;
       startEgg({ x: cursor.x, y: cursor.y }, now, false);
     }
@@ -359,7 +409,8 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     const box = canvas.getBoundingClientRect();
     cursor.x = event.clientX - box.left;
     cursor.y = event.clientY - box.top;
-    cursor.active = cursor.x >= 0 && cursor.y >= 0 && cursor.x <= box.width && cursor.y <= box.height;
+    cursor.active =
+      cursor.x >= 0 && cursor.y >= 0 && cursor.x <= box.width && cursor.y <= box.height;
     lastPointerMove = performance.now();
     idleSpent = false;
   };

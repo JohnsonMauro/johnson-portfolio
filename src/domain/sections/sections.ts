@@ -21,5 +21,5 @@ export const SECTIONS: readonly PageSection[] = [
 ];
 
 export const NAV_SECTIONS: readonly NavSection[] = SECTIONS.filter(
-  (section): section is NavSection => section.nav !== undefined
+  (section): section is NavSection => section.nav !== undefined,
 );
