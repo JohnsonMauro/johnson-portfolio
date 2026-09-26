@@ -30,7 +30,7 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 - Flat config in `eslint.config.js`: `@eslint/js` recommended, `typescript-eslint` strict + stylistic (no type-aware rules), React + hooks, jsx-a11y strict, Astro recommended + jsx-a11y strict.
 - `pnpm lint` runs with `--max-warnings=0`. A warning fails CI like an error.
 - **Layer direction is a lint rule** (`layerBoundaries()` at the end of `eslint.config.js`): an upward import, or a widget/feature importing a sibling slice, fails. Specifiers are matched as written — relative or `@/` — at any nesting depth inside a slice; slices are read from `src/features/` and `src/widgets/` at config load, so a new slice is covered. Dynamic `import()` is not seen by `no-restricted-imports`. After changing the rule, re-prove it with probe files (forbidden and allowed forms per layer).
-- `tseslint.config()` is deprecated (hint from `pnpm check`); moving to ESLint's `defineConfig` is pending.
+- The config is wrapped in ESLint's own `defineConfig()` (`eslint/config`); `tseslint.config()` is deprecated upstream in its favor. `typescript-eslint` stays for its parser and rule sets.
 - **The a11y plugin is `eslint-plugin-jsx-a11y-x`.** Disable comments use `jsx-a11y-x/<rule>` in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
 - **Keep legacy `eslint-plugin-jsx-a11y` out of the tree.** `eslint-plugin-astro` prefers it when present, which silently swaps the rule set under the `.astro` files.
 - `scripts/` is ignored by ESLint. Scripts there are plain Node ESM (`.mjs`).

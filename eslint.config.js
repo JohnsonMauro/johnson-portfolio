@@ -5,9 +5,10 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y-x';
 import astro from 'eslint-plugin-astro';
 import globals from 'globals';
+import { defineConfig } from 'eslint/config';
 import { readdirSync } from 'node:fs';
 
-export default tseslint.config(
+export default defineConfig(
   {
     ignores: ['dist/', '.astro/', 'node_modules/', 'public/', 'scripts/'],
   },
