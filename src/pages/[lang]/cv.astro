@@ -1,11 +1,12 @@
 ---
-import { getAbsoluteLocaleUrl, getRelativeLocaleUrl } from 'astro:i18n';
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import { LOCALES, type Locale, isLocale } from '../../domain/i18n/config';
 import { getDict } from '../../domain/i18n/content';
 import { profile } from '../../domain/profile/profile';
 import { asset } from '../../shared/lib/asset';
 import { personJsonLd } from '../../domain/seo/jsonld';
 import CvDocument from '../../widgets/cv/CvDocument.astro';
+import CvToolbar from '../../widgets/cv/CvToolbar.astro';
 
 export function getStaticPaths() {
   return LOCALES.map((lang) => ({ params: { lang } }));
@@ -20,7 +21,6 @@ const typedLang = lang as Locale;
 const dict = getDict(typedLang);
 
 const siteHref = getAbsoluteLocaleUrl(typedLang, '');
-const homeHref = getRelativeLocaleUrl(typedLang, '');
 const imageAbsolute = new URL(asset(profile.photo), Astro.site).toString();
 const jsonLd = personJsonLd({
   name: profile.name,
@@ -56,25 +56,7 @@ const title = `${profile.name} — ${dict.meta.jobTitle} (CV)`;
     <script type="application/ld+json" set:html={jsonLd} is:inline />
   </head>
   <body>
-    <div class="cv-toolbar" role="toolbar" aria-label="CV actions">
-      <a class="cv-toolbar__back" href={homeHref}>← {dict.nav.backToSite}</a>
-      <div class="cv-toolbar__lang">
-        {
-          LOCALES.map((l) => (
-            <a
-              href={getRelativeLocaleUrl(l, 'cv')}
-              aria-current={l === typedLang ? 'true' : undefined}
-              class={l === typedLang ? 'is-current' : ''}
-            >
-              {l.toUpperCase()}
-            </a>
-          ))
-        }
-      </div>
-      <button type="button" class="cv-toolbar__print" onclick="window.print()">
-        {dict.cv.printAction}
-      </button>
-    </div>
+    <CvToolbar dict={dict} lang={typedLang} />
 
     <main class="cv-page">
       <CvDocument dict={dict} lang={typedLang} siteHref={siteHref} />
@@ -90,72 +72,6 @@ const title = `${profile.name} — ${dict.meta.jobTitle} (CV)`;
         color: #1a1a1a;
       }
 
-      .cv-toolbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 10px 16px;
-        background: #ffffff;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-      }
-
-      .cv-toolbar__back {
-        font-size: 14px;
-        color: #173b6c;
-        text-decoration: none;
-        font-weight: 600;
-      }
-
-      .cv-toolbar__back:hover {
-        color: #149ddd;
-      }
-
-      .cv-toolbar__lang {
-        display: inline-flex;
-        gap: 6px;
-      }
-
-      .cv-toolbar__lang a {
-        display: inline-flex;
-        align-items: center;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        color: #173b6c;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-      }
-
-      .cv-toolbar__lang a.is-current {
-        background: #149ddd;
-        color: #ffffff;
-        border-color: #149ddd;
-      }
-
-      .cv-toolbar__print {
-        appearance: none;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 999px;
-        background: #149ddd;
-        color: #ffffff;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background 150ms ease;
-      }
-
-      .cv-toolbar__print:hover {
-        background: #0e7bb0;
-      }
-
       .cv-page {
         padding: 24px 16px 48px;
       }
@@ -166,10 +82,6 @@ const title = `${profile.name} — ${dict.meta.jobTitle} (CV)`;
       }
 
       @media print {
-        .cv-toolbar {
-          display: none !important;
-        }
-
         .cv-page {
           padding: 0;
         }

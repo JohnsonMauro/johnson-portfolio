@@ -1,0 +1,107 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { LOCALES, LOCALE_LABELS, type Locale } from '../../domain/i18n/config';
+import type { Dict } from '../../domain/i18n/content';
+
+interface Props {
+  dict: Dict;
+  lang: Locale;
+}
+
+const { dict, lang } = Astro.props;
+const homeHref = getRelativeLocaleUrl(lang, '');
+---
+
+<div class="cv-toolbar" role="toolbar" aria-label="CV actions">
+  <a class="cv-toolbar__back" href={homeHref}>← {dict.nav.backToSite}</a>
+  <div class="cv-toolbar__lang">
+    {
+      LOCALES.map((l) => (
+        <a
+          href={getRelativeLocaleUrl(l, 'cv')}
+          aria-current={l === lang ? 'true' : undefined}
+          class={l === lang ? 'is-current' : ''}
+        >
+          {LOCALE_LABELS[l]}
+        </a>
+      ))
+    }
+  </div>
+  <button type="button" class="cv-toolbar__print" onclick="window.print()">
+    {dict.cv.printAction}
+  </button>
+</div>
+
+<style>
+  .cv-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .cv-toolbar__back {
+    font-size: 14px;
+    color: #173b6c;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .cv-toolbar__back:hover {
+    color: #149ddd;
+  }
+
+  .cv-toolbar__lang {
+    display: inline-flex;
+    gap: 6px;
+  }
+
+  .cv-toolbar__lang a {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #173b6c;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+  }
+
+  .cv-toolbar__lang a.is-current {
+    background: #149ddd;
+    color: #ffffff;
+    border-color: #149ddd;
+  }
+
+  .cv-toolbar__print {
+    appearance: none;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #149ddd;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms ease;
+  }
+
+  .cv-toolbar__print:hover {
+    background: #0e7bb0;
+  }
+
+  @media print {
+    .cv-toolbar {
+      display: none !important;
+    }
+  }
+</style>
