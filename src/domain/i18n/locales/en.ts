@@ -4,11 +4,11 @@ const en: Dict = {
   meta: {
     title: 'Johnson Mauro - Software Engineer',
     description:
-      'Software engineer with 13+ years in full-stack web and mobile. Ships with AI coding agents under specs, tests and review: legacy modernization, integrations and offline-first apps.',
+      'Software engineer with 13+ years in full-stack web and mobile: legacy modernization, integrations and offline-first apps, now delivered with AI coding agents under specs, tests and review.',
     keywords:
       'software engineer, full-stack, front-end, ai-assisted development, agentic workflows, claude code, mcp, context engineering, react, react native, expo, angular, typescript, node.js, nestjs, go, postgresql, .net core, vitest, playwright, tdd, legacy modernization, offline-first, azure devops, agile, mentoring',
     mailSubject: 'Mail from johnsonmauro.github.io',
-    jobTitle: 'Software Engineer · AI-augmented delivery',
+    jobTitle: 'Software Engineer',
   },
   nav: {
     home: 'Home',
@@ -39,7 +39,7 @@ const en: Dict = {
   },
   hero: {
     typedPrefix: "I'm a",
-    typedRoles: ['Software Engineer', 'Full-stack Engineer', 'Coding-agent orchestrator'],
+    typedRoles: ['Software Engineer', 'Full-stack Engineer', 'Front-end & Mobile Engineer'],
   },
   sections: {
     aboutTitle: 'About me',
@@ -52,13 +52,13 @@ const en: Dict = {
   about: {
     greeting: 'Hi There 👋🏽',
     summary:
-      'Software engineer with 13+ years shipping web and mobile products across telecom, healthcare, retail and education. I orchestrate AI coding agents: I write the specs, context and guardrails, delegate implementation, then verify with tests and review before anything merges. Strongest in React, Angular, TypeScript and Node.js, from legacy modernization to offline-first mobile.',
+      'Software engineer with 13+ years across telecom, healthcare, retail and education, from .NET ERPs and RPA bots to web and mobile apps in React, Angular, TypeScript and Node.js. I modernize legacy systems while they keep shipping and back each change with tests. Since 2026 I also deliver with AI coding agents: I write the specs, delegate implementation and verify every diff with tests and review.',
     current:
-      'Co-leading the React 19 rewrite of a US telephony platform, owning its CRM integration, and building a field-sales mobile app as partner in an ERP startup.',
+      'Co-leading the React 19 rewrite of a US telephony platform and, as partner in an ERP startup, building its field-sales mobile app.',
     currentLabel: 'Current focus',
     stats: [
       { value: '13+', label: 'Years shipping software' },
-      { value: '40+', label: 'Claude Code skills authored' },
+      { value: '10+', label: 'Companies served' },
       { value: '0→3k', label: 'Tests in a co-led rewrite' },
       { value: 'Remote', label: 'First, time-zone fluent' },
     ],
@@ -77,7 +77,7 @@ const en: Dict = {
     aiKicker: 'How I work now',
     aiTitle: 'I direct the agents. I own the result.',
     aiIntro:
-      'Less time typing code, more time deciding what gets built, how agents build it, and whether it is right. Each practice below is backed by work in real repositories.',
+      'The same habits, applied to AI agents: less time typing code, more time deciding what gets built, how agents build it, and whether it is right. Each practice below is backed by work in real repositories.',
     aiPractices: [
       {
         title: 'Agent context design',

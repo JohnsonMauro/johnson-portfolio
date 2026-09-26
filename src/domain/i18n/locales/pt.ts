@@ -4,11 +4,11 @@ const pt: Dict = {
   meta: {
     title: 'Johnson Mauro - Engenheiro de Software',
     description:
-      'Engenheiro de software com 13+ anos em full-stack web e mobile. Entrega com agentes de IA sob specs, testes e revisão: modernização de legado, integrações e apps offline-first.',
+      'Engenheiro de software com 13+ anos em full-stack web e mobile: modernização de legado, integrações e apps offline-first, hoje entregues com agentes de IA sob specs, testes e revisão.',
     keywords:
       'engenheiro de software, software engineer, full-stack, front-end, desenvolvimento assistido por ia, agentes de ia, claude code, mcp, engenharia de contexto, react, react native, expo, angular, typescript, node.js, nestjs, go, postgresql, .net core, vitest, playwright, tdd, modernização de legado, offline-first, azure devops, agile, mentoria',
     mailSubject: 'Mensagem de johnsonmauro.github.io',
-    jobTitle: 'Engenheiro de Software · Entrega com agentes de IA',
+    jobTitle: 'Engenheiro de Software',
   },
   nav: {
     home: 'Início',
@@ -42,7 +42,7 @@ const pt: Dict = {
     typedRoles: [
       'Engenheiro de Software',
       'Engenheiro Full-stack',
-      'Orquestrador de agentes de IA',
+      'Engenheiro Front-end & Mobile',
     ],
   },
   sections: {
@@ -56,13 +56,13 @@ const pt: Dict = {
   about: {
     greeting: 'Olá 👋🏽',
     summary:
-      'Engenheiro de software com 13+ anos entregando produtos web e mobile em telecom, saúde, varejo e educação. Orquestro agentes de IA: escrevo as specs, o contexto e as regras, delego a implementação e valido com testes e revisão antes de qualquer merge. Mais forte em React, Angular, TypeScript e Node.js, da modernização de legado ao mobile offline-first.',
+      'Engenheiro de software com 13+ anos em telecom, saúde, varejo e educação, de ERPs em .NET e bots de RPA a apps web e mobile em React, Angular, TypeScript e Node.js. Modernizo legado sem parar as entregas, com testes em cada mudança. Desde 2026 também entrego com agentes de IA: escrevo specs, delego a implementação e valido cada diff com testes e revisão.',
     current:
-      'Coliderando a reescrita em React 19 de uma plataforma de telefonia dos EUA, dono da integração com CRM, e construindo um app mobile de força de vendas como sócio de uma startup de ERP.',
+      'Coliderando a reescrita em React 19 de uma plataforma de telefonia americana e construindo, como sócio, o app mobile de força de vendas de uma startup de ERP.',
     currentLabel: 'Foco atual',
     stats: [
       { value: '13+', label: 'Anos entregando software' },
-      { value: '40+', label: 'Skills de Claude Code criadas' },
+      { value: '10+', label: 'Empresas atendidas' },
       { value: '0→3k', label: 'Testes numa reescrita coliderada' },
       { value: 'Remote', label: 'First, fluente em fusos' },
     ],
@@ -81,7 +81,7 @@ const pt: Dict = {
     aiKicker: 'Como trabalho hoje',
     aiTitle: 'Eu direciono os agentes. O resultado é meu.',
     aiIntro:
-      'Menos tempo digitando código, mais tempo decidindo o que construir, como os agentes constroem e se está certo. Cada prática abaixo tem lastro em repositórios reais.',
+      'Os mesmos hábitos, aplicados a agentes de IA: menos tempo digitando código, mais tempo decidindo o que construir, como os agentes constroem e se está certo. Cada prática abaixo tem lastro em repositórios reais.',
     aiPractices: [
       {
         title: 'Design de contexto para agentes',
