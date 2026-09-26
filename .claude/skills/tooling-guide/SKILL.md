@@ -72,6 +72,14 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 - When it does: remove the `peerDependencyRules` entry, `pnpm install`, `pnpm lint`.
 - Re-checked 2026-09-26: latest `eslint-plugin-react` is 7.37.5 (published 2025-04), peer range still ends at `^9.7`. Hold stays.
 
+## TypeScript config
+
+`tsconfig.json` extends Astro's `strict` preset (which already sets include/exclude) and adds only checks that were at zero errors when enabled: `exactOptionalPropertyTypes`, `noImplicitReturns`, `noFallthroughCasesInSwitch`, `noImplicitOverride`, `allowUnreachableCode: false`, `noUncheckedSideEffectImports`, and `erasableSyntaxOnly` (the scripts import `.ts` through Node's type stripping, which cannot run enums or namespaces).
+
+- Left off on purpose: `noUnusedLocals`/`noUnusedParameters` (ESLint's `no-unused-vars` owns unused code), `noUncheckedIndexedAccess` (38 findings, 34 of them bounded loop indices in the hero animation), `noPropertyAccessFromIndexSignature` (style only).
+- To weigh a new option, probe it without touching the file: a throwaway `tsconfig.probe.json` that extends `./tsconfig.json` with the option, `pnpm astro check --tsconfig tsconfig.probe.json`, count the errors, delete the probe.
+- After editing include/exclude, compare `tsc --listFilesOnly` before and after; `--showConfig` stops expanding the file list once include is inherited.
+
 ## Deliberate hold: typescript 6 line
 
 `@astrojs/check` declares `typescript` as a peer with `^5 || ^6`, so `typescript` stays on the 6 line although a newer major exists.

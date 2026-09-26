@@ -1,12 +1,30 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // Astro's strict preset: ESNext + bundler resolution, verbatimModuleSyntax,
+  // noEmit, strict, and include/exclude for the whole project and .astro types.
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    // React islands (@astrojs/react).
     "jsx": "react-jsx",
     "jsxImportSource": "react",
+
+    // Stricter checks that cost nothing today (zero errors when enabled).
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "allowUnreachableCode": false,
+    "noUncheckedSideEffectImports": true,
+    // scripts/*.mjs import .ts through Node's type stripping, which only
+    // handles syntax that can be erased (no enums, namespaces, parameter
+    // properties).
+    "erasableSyntaxOnly": true,
+
+    // Unused code is ESLint's job (no-unused-vars); noUncheckedIndexedAccess
+    // stays off: its findings are bounded loop indices in the hero animation.
+
     "paths": {
       "@/*": ["./src/*"]
     }
-  },
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"]
+  }
 }
