@@ -15,6 +15,7 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 - Replace with the platform or own code: `IntersectionObserver`, `Intl.*`, `<dialog>`, CSS `scroll-behavior`, a thin wrapper, one function out of a big kit.
 - Anything imported by an island ships to every visitor: it has to earn its bytes. Check last publish and deprecation (`pnpm view <pkg> time deprecated --json`) and install scripts before adding.
 - Say in the commit why this package and not the platform or own code.
+- After `pnpm add` / `remove` / a bump, restart the dev server (`pnpm astro dev stop`, then `pnpm dev`; Astro runs it in the background). A server started before the install mixes re-optimized Vite deps with old ones: every React island throws `_jsxDEV is not a function` and the sidebar disappears, while the build is fine.
 
 ## Bumping
 
