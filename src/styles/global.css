@@ -111,6 +111,28 @@
   }
 }
 
+/*
+ * prefers-reduced-motion: entrance animations jump to their end state, the
+ * caret stops blinking, transitions (drawer slide, hover lift) are instant and
+ * anchor scrolling is not smooth. JS-driven scrolls read the same preference
+ * (shared/lib/motion.ts); the typed-roles effect shows its first role.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
 @layer utilities {
   .section-anchor {
     scroll-margin-top: 2rem;

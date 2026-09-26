@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ArrowUpIcon } from '../../shared/ui/icons';
+import { scrollBehavior } from '../../shared/lib/motion';
 
 interface BackToTopProps {
   label: string;
@@ -15,7 +16,7 @@ export default function BackToTop({ label }: BackToTopProps) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollUp = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const scrollUp = () => window.scrollTo({ top: 0, behavior: scrollBehavior() });
 
   return (
     <button

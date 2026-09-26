@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from '../lib/motion';
 
 interface TypedProps {
   words: string[];
@@ -17,8 +18,11 @@ export default function Typed({
   const [wordIndex, setWordIndex] = useState(0);
   const [phase, setPhase] = useState<'typing' | 'pause' | 'deleting'>('typing');
   const timer = useRef<number | undefined>(undefined);
+  // With reduced motion the roles stop cycling: the first one stays put.
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reducedMotion) return;
     const current = words[wordIndex % words.length];
 
     if (phase === 'typing') {
@@ -47,11 +51,11 @@ export default function Typed({
     return () => {
       if (timer.current) window.clearTimeout(timer.current);
     };
-  }, [text, phase, wordIndex, words, typeSpeed, backSpeed, backDelay]);
+  }, [reducedMotion, text, phase, wordIndex, words, typeSpeed, backSpeed, backDelay]);
 
   return (
     <span>
-      <span>{text}</span>
+      <span>{reducedMotion ? words[0] : text}</span>
       <span
         aria-hidden="true"
         className="ml-0.5 inline-block h-[1em] w-0.5 -translate-y-[-2px] bg-current animate-blink"

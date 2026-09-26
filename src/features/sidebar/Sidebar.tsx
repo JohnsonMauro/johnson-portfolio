@@ -15,6 +15,7 @@ import {
 import type { Locale } from '../../domain/i18n/config';
 import type { Dict } from '../../domain/i18n/content';
 import { NAV_SECTIONS, type NavIcon } from '../../domain/sections/sections';
+import { scrollBehavior } from '../../shared/lib/motion';
 import SocialLink from './SocialLink';
 import LocaleSwitcher from './LocaleSwitcher';
 import ThemeToggle from './ThemeToggle';
@@ -100,7 +101,7 @@ export default function Sidebar({
     const id = href.slice(1);
     const target = document.getElementById(id);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      target.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
       history.replaceState(null, '', href);
     }
     setOpen(false);
