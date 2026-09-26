@@ -88,8 +88,9 @@ skill after.
 runs one unit at a time: audit (`component-auditor` agent) → plan with the
 expected rendered-text drift → **stop for approval** → baseline → structure
 commits → behavior commits → verification → review (`component-reviewer`
-agent) → **stop**. Working files live in `.dev.debug/pipeline/` (gitignored);
-never reference them from committed code.
+agent) → **stop**. Working files live outside the repo, in the sibling
+`../johnson-portfolio.local-context/pipeline/` (create it if missing); never
+reference them from committed code.
 
 ## Verification
 

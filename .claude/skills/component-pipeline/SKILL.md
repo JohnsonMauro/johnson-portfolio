@@ -19,7 +19,7 @@ One skeleton for the three kinds of component work. What changes between them is
 - `next` or empty: take the top `todo` unit from the inventory and run `refactor` on it.
 - `refactor <path>` / `add <name> <intent>` / `remove <path>`: run steps 2–11.
 
-Working files go in `.dev.debug/pipeline/` (gitignored): `inventory.md` plus one `<unit-slug>.md` per unit (audit, plan, status). Never reference that folder from committed code.
+Working files go outside the repo, in the sibling folder `../johnson-portfolio.local-context/pipeline/` (create it if missing; nothing to gitignore): `inventory.md` plus one `<unit-slug>.md` per unit (audit, plan, status). Never reference that folder from committed code.
 
 ## Ground rules
 

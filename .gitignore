@@ -1,8 +1,15 @@
-node_modules
-dist
-.astro
+# Dependencies (pnpm install)
+node_modules/
+
+# Build output and Astro's generated types, both rebuilt from source
+dist/
+.astro/
+
+# Environment files may hold secrets; only a template may be committed
 .env
-.env.production
+.env.*
+!.env.example
+
+# OS and tool noise
 .DS_Store
 *.log
-.dev.debug
