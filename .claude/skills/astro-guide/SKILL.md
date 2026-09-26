@@ -24,6 +24,10 @@ Read the installed Astro version (`node -p "require('astro/package.json').versio
 - Adjacent inline items (CTA pairs, locale links, footer spans, label + value) sit in a flex/gap container or carry an explicit `{' '}`.
 - Visual spacing from `gap` does not put a space in the text. Screen readers, copy-paste and the print CV read the text, so prefer `{' '}` when the words form a sentence.
 
+## Comments ship unless they are Astro comments
+
+`compressHTML` collapses whitespace but keeps HTML comments: `<!-- … -->` in a template reaches every visitor. Write template comments as `{/* … */}`, which the compiler drops. The `<!--astro:end-->` markers in the output are island boundaries and must stay. Comments inside JS strings (a GLSL shader, for example) also ship, since the minifier never touches string contents.
+
 ## Strict compiler
 
 - Close every non-void tag.
@@ -33,6 +37,7 @@ Read the installed Astro version (`node -p "require('astro/package.json').versio
 
 - `src/fetch.ts` is the Advanced Routing entrypoint. Do not create a file with that name.
 - `@astrojs/react` compiles with Oxc and has no `babel` option. A custom transform goes in `vite.plugins` through `@rolldown/plugin-babel`.
+- Markdown renders with Sätteri (Rust), the default processor. remark/rehype plugins need `@astrojs/markdown-remark` and `markdown: { processor: unified() }`; the old top-level plugin options are deprecated. The repo has no Markdown pages today.
 
 ## CSS minifier folds `animation-timeline` into an invalid shorthand
 

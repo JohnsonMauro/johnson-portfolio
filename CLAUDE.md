@@ -105,6 +105,12 @@ steps below still apply, since build and `text:diff` are not in it):
    layout or refactor work the expected result is "unchanged".
 6. `pnpm cv:check` when CV copy changed.
 
+## Commits
+
+Conventional Commits (`feat`, `fix`, `refactor`, `docs`, `chore`, `build`,
+`ci`, `perf`), scoped when it helps (`feat(hero):`). Split structure from
+behavior; dependency bumps go in their own `chore(deps)` (`tooling-guide`).
+
 ## Things to never do
 
 - Duplicate copy into the CV route, or inline a string in a component.
