@@ -17,7 +17,7 @@ The *what* of a component here. The order of work lives in `/component-pipeline`
 | UI primitive | `src/shared/ui/` | `FadeIn`, `Typed`, `icons/` | No copy, no domain data: everything arrives as props. |
 | Content / data | `src/domain/` | locales, `profile.ts`, `expertise.ts` | No markup. |
 
-Direction: `pages → widgets → features → domain → shared`. Nothing imports upward.
+Direction: `pages → app / widgets → features → domain → shared`. Nothing imports upward.
 
 ## Section anatomy
 

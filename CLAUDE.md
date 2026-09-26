@@ -45,15 +45,20 @@ src/
 ├── domain/     # source-of-truth content + i18n + seo
 │   ├── i18n/locales/  ← en.ts, pt.ts  (ALL copy lives here)
 │   ├── profile/       ← contact, social, expertise, skills meta
+│   ├── sections/      ← page section registry (nav + scroll-spy)
 │   └── seo/
 └── shared/     # ui primitives, icons, lib helpers
 ```
 
-Dependency direction: `pages → widgets → features → domain → shared`.
+Dependency direction: `pages → app / widgets → features → domain → shared`.
 Never reach upward. Widgets do not import from other widgets, nor features
 from other features — extract to `shared/ui` or `domain/*` first. `pnpm lint`
-enforces all of this. The page's sections are declared once in
-`src/domain/sections/sections.ts`; colors live in `src/styles/palette.css`. Ask before introducing a new top-level folder.
+fails on an upward or sibling-slice import (relative or `@/`, at any nesting
+depth); dynamic `import()` is not covered. Sections, their order and their
+nav entries are listed in `src/domain/sections/sections.ts` — each widget's
+`<section id>` must match it and `index.astro` renders them in that order.
+Colors live in `src/styles/palette.css`. Ask before introducing a new
+top-level folder.
 
 ## Skills — which to load for which change
 

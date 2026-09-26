@@ -110,8 +110,9 @@ flowchart TB
 
 Rules the diagram encodes:
 
-- **No upward imports.** `domain/` and `shared/` import nothing from the
-  project; `pages/` only composes. `pnpm lint` fails on any violation.
+- **No upward imports.** `shared/` imports nothing from the project and
+  `domain/` only `shared/`; `pages/` only composes. `pnpm lint` fails on an
+  upward or sibling-slice import.
 - **No widget-to-widget imports.** Something two widgets need moves to
   `shared/ui` (presentational) or `domain/*` (content, data).
 - **All visible copy lives in `domain/i18n/locales`**, EN and PT-BR side by

@@ -29,7 +29,7 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 
 - Flat config in `eslint.config.js`: `@eslint/js` recommended, `typescript-eslint` strict + stylistic (no type-aware rules), React + hooks, jsx-a11y strict, Astro recommended + jsx-a11y strict.
 - `pnpm lint` runs with `--max-warnings=0`. A warning fails CI like an error.
-- **Layer direction is a lint rule** (`layerBoundaries()` at the end of `eslint.config.js`): an upward import, or a widget/feature importing a sibling slice, fails. The patterns match relative specifiers; features and widgets are one folder deep.
+- **Layer direction is a lint rule** (`layerBoundaries()` at the end of `eslint.config.js`): an upward import, or a widget/feature importing a sibling slice, fails. Specifiers are matched as written — relative or `@/` — at any nesting depth inside a slice; slices are read from `src/features/` and `src/widgets/` at config load, so a new slice is covered. Dynamic `import()` is not seen by `no-restricted-imports`. After changing the rule, re-prove it with probe files (forbidden and allowed forms per layer).
 - `tseslint.config()` is deprecated (hint from `pnpm check`); moving to ESLint's `defineConfig` is pending.
 - **The a11y plugin is `eslint-plugin-jsx-a11y-x`.** Disable comments use `jsx-a11y-x/<rule>` in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
 - **Keep legacy `eslint-plugin-jsx-a11y` out of the tree.** `eslint-plugin-astro` prefers it when present, which silently swaps the rule set under the `.astro` files.
@@ -66,7 +66,7 @@ The Node range is declared in three places. Change them in one commit:
 | Place | What |
 |---|---|
 | `package.json` → `engines.node` | Supported range |
-| `.github/workflows/ci.yml` → `setup-node` `node-version` | Runs lint + build on PRs to `main` |
+| `.github/workflows/ci.yml` → `setup-node` `node-version` | Runs lint, `pnpm check`, `pnpm copy:check` and build on PRs to `main` |
 | `.github/workflows/deploy.yml` → `setup-node` `node-version` | Builds and deploys to GitHub Pages on push to `main` |
 
 Before moving CI to a new Node major: run `pnpm install`, `pnpm lint`, `pnpm build` and `pnpm text:diff` locally on that major (nvm is installed). Native dependencies (`sharp`, `esbuild`) need a prebuilt binary for the new ABI.

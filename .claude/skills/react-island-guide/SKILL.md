@@ -34,7 +34,7 @@ Pick the latest directive that still works. `client:load` on something below the
 Islands render once on the server at build time, where `window`, `document` and `localStorage` do not exist.
 
 - Touch browser APIs inside `useEffect` or an event handler, never during render.
-- If a render-time read is unavoidable, guard it (`typeof document !== 'undefined'`) and accept that the server output uses the fallback, as the Sidebar theme toggle does.
+- If a render-time read is unavoidable, guard it (`typeof document !== 'undefined'`) and accept that the server output uses the fallback, as `ThemeToggle` (in `features/sidebar`) does.
 - `localStorage` can throw (privacy mode): wrap it in `try/catch` and ignore failures, as the existing code does.
 
 ## useEffect discipline

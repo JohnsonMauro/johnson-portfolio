@@ -57,7 +57,7 @@ Every section that explains who you are ends with a navigable next step (CV down
 
 ## Tokens and motion
 
-- Colors come from `src/styles/palette.css` (light brand palette and the CV's print grays, plain custom properties); `global.css` maps the Tailwind tokens onto it and holds the dark overrides. Spacing and type sizes are Tailwind tokens in `global.css`. Never hardcode any of them, including in the CV's scoped styles.
+- Colors come from `src/styles/palette.css` (light brand palette and the CV's print grays, plain custom properties); `global.css` maps the Tailwind tokens onto it and holds the dark overrides. Spacing and type sizes are Tailwind tokens in `global.css`. Never hardcode any of them, including in the CV's scoped styles. Because the theme tokens are `var()` references, Tailwind's opacity modifiers (`text-ink/60`, `bg-accent/10`) render only through `color-mix()`; the static fallback is the opaque color. That is within Tailwind 4's own floor (it requires `color-mix()`: Chrome 111, Safari 16.4, Firefox 128).
 - Animate only `transform`, `opacity` and `clip-path`. Never width, height, top/left, margin or padding.
 - Motion must respect `prefers-reduced-motion`. Entrance animations go through `src/shared/ui/FadeIn.tsx` and the `--animate-*` tokens in `global.css`. That path does not check `prefers-reduced-motion` yet, so new motion must not add to the gap.
 

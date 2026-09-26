@@ -46,7 +46,7 @@ pnpm build && pnpm text:diff    # expected: "Rendered text unchanged across N pa
 
 ## 5. Where code lives
 
-Direction: `pages → widgets → features → domain → shared`. Never import upward, and widgets never import other widgets.
+Direction: `pages → app / widgets → features → domain → shared`. Never import upward, and widgets never import other widgets.
 
 - **Closest common ancestor.** One consumer → next to it. Used by several widgets → `shared/ui` (presentational) or `domain/*` (content, data, rules).
 - **`shared/` is not a parking lot.** Something only one widget uses stays in that widget.
