@@ -10,23 +10,14 @@ import {
   HomeIcon,
   UserIcon,
   FileIcon,
-  SunIcon,
-  MoonIcon,
   PrinterIcon,
 } from '../../shared/ui/icons';
-import {
-  LOCALES,
-  LOCALE_LABELS,
-  LOCALE_FLAGS,
-  LOCALE_NAMES,
-  type Locale,
-} from '../../domain/i18n/config';
+import type { Locale } from '../../domain/i18n/config';
 import type { Dict } from '../../domain/i18n/content';
 import { NAV_SECTIONS, type NavIcon } from '../../domain/sections/sections';
 import SocialLink from './SocialLink';
-
-const RAW_BASE = import.meta.env.BASE_URL;
-const BASE_URL = RAW_BASE.endsWith('/') ? RAW_BASE : `${RAW_BASE}/`;
+import LocaleSwitcher from './LocaleSwitcher';
+import ThemeToggle from './ThemeToggle';
 
 interface NavItem {
   href: string;
@@ -78,21 +69,6 @@ export default function Sidebar({
 
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>('hero');
-  const [isDark, setIsDark] = useState(() =>
-    typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
-  );
-
-  const toggleTheme = () => {
-    const root = document.documentElement;
-    const next = !root.classList.contains('dark');
-    root.classList.toggle('dark', next);
-    try {
-      window.localStorage.setItem('theme', next ? 'dark' : 'light');
-    } catch {
-      /* localStorage unavailable — ignore */
-    }
-    setIsDark(next);
-  };
 
   useEffect(() => {
     const sections = NAV_SECTIONS
@@ -157,63 +133,13 @@ export default function Sidebar({
         }
       >
         <div className="flex items-center justify-center gap-3 pb-4">
-          <div
-            role="group"
-            aria-label={nav.languageSwitcherLabel}
-            className="flex items-center gap-2"
-          >
-            {LOCALES.map((locale) => {
-              const isCurrent = locale === lang;
-              const persistChoice = () => {
-                try {
-                  window.localStorage.setItem('preferred-locale', locale);
-                } catch {
-                  /* localStorage unavailable (privacy mode) — ignore */
-                }
-              };
-              return (
-                <a
-                  key={locale}
-                  href={localeUrls[locale]}
-                  hrefLang={locale === 'pt' ? 'pt-BR' : locale}
-                  aria-label={LOCALE_NAMES[locale]}
-                  aria-current={isCurrent ? 'true' : undefined}
-                  title={LOCALE_NAMES[locale]}
-                  onClick={persistChoice}
-                  className={
-                    'flex items-center justify-center rounded-full transition ' +
-                    (isCurrent
-                      ? 'ring-2 ring-accent ring-offset-2 ring-offset-sidebar'
-                      : 'opacity-60 hover:opacity-100')
-                  }
-                >
-                  <img
-                    src={`${BASE_URL}${LOCALE_FLAGS[locale]}`}
-                    alt=""
-                    width={28}
-                    height={28}
-                    className="h-7 w-7 rounded-full"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="sr-only">{LOCALE_LABELS[locale]}</span>
-                </a>
-              );
-            })}
-          </div>
+          <LocaleSwitcher lang={lang} localeUrls={localeUrls} label={nav.languageSwitcherLabel} />
           <span aria-hidden="true" className="h-6 w-px bg-white/15" />
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label={nav.themeToggleLabel}
-            aria-pressed={isDark}
-            title={isDark ? nav.themeToggleToLight : nav.themeToggleToDark}
-            className="flex h-7 w-7 items-center justify-center rounded-full bg-sidebar-social text-white/80 transition hover:bg-accent hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-          >
-            <span aria-hidden="true">
-              {isDark ? <SunIcon width={16} height={16} /> : <MoonIcon width={16} height={16} />}
-            </span>
-          </button>
+          <ThemeToggle
+            label={nav.themeToggleLabel}
+            toDarkLabel={nav.themeToggleToDark}
+            toLightLabel={nav.themeToggleToLight}
+          />
         </div>
 
         <div className="flex flex-col items-center pt-2">

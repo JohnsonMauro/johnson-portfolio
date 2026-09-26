@@ -13,6 +13,12 @@ export const LOCALE_NAMES: Record<Locale, string> = {
   pt: 'Português (BR)',
 };
 
+/** BCP 47 tags for hreflang attributes. */
+export const HREFLANG_TAGS: Record<Locale, string> = {
+  en: 'en',
+  pt: 'pt-BR',
+};
+
 export const LOCALE_FLAGS: Record<Locale, string> = {
   en: 'flags/en.svg',
   pt: 'flags/br.svg',

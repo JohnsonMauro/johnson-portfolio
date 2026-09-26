@@ -1,7 +1,7 @@
 ---
 import '../../styles/global.css';
 import { getAbsoluteLocaleUrl } from 'astro:i18n';
-import { LOCALES, DEFAULT_LOCALE, type Locale } from '../../domain/i18n/config';
+import { LOCALES, DEFAULT_LOCALE, HREFLANG_TAGS, type Locale } from '../../domain/i18n/config';
 import { asset } from '../../shared/lib/asset';
 
 interface Props {
@@ -13,11 +13,6 @@ interface Props {
 }
 
 const { lang, title, description, keywords, jsonLd } = Astro.props;
-
-const HREFLANG_TAGS: Record<Locale, string> = {
-  en: 'en',
-  pt: 'pt-BR',
-};
 
 const OG_LOCALES: Record<Locale, string> = {
   en: 'en_US',
