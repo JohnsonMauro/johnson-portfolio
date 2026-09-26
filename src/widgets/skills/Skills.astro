@@ -110,14 +110,14 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
       <div class="mt-8 space-y-10">
         {
-          stackTiers.map((tier) => (
+          stackTiers.map(({ key, items }) => (
             <div>
               <h4 class="font-display text-sm font-semibold uppercase tracking-wider text-ink/60">
-                {tierLabel[tier.key]}
+                {tierLabel[key]}
               </h4>
-              {tier.key === 'tools' ? (
+              {key === 'tools' ? (
                 <ul class="mt-5 flex flex-wrap gap-2">
-                  {tier.items.map((item) => (
+                  {items.map((item) => (
                     <li class="inline-flex items-center gap-2 rounded-md border border-ink/10 bg-surface-card px-2.5 py-1.5 text-sm text-ink/80 shadow-sm">
                       {item.file && (
                         <img
@@ -125,7 +125,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                           alt=""
                           width="16"
                           height="16"
-                          class={iconClasses(item, tier.key, 'light')}
+                          class={iconClasses(item, key, 'light')}
                           loading="lazy"
                           decoding="async"
                         />
@@ -136,7 +136,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
                           alt=""
                           width="16"
                           height="16"
-                          class={iconClasses(item, tier.key, 'dark')}
+                          class={iconClasses(item, key, 'dark')}
                           loading="lazy"
                           decoding="async"
                         />
@@ -146,17 +146,17 @@ const pad = (n: number) => String(n).padStart(2, '0');
                   ))}
                 </ul>
               ) : (
-                <ul class={`mt-5 flex flex-wrap items-start ${tier.key === 'primary' ? 'gap-4' : 'gap-3'}`}>
-                  {tier.items.map((item) => (
+                <ul class={`mt-5 flex flex-wrap items-start ${key === 'primary' ? 'gap-4' : 'gap-3'}`}>
+                  {items.map((item) => (
                     <li class="group flex flex-col items-center gap-2 text-center">
-                      <span class={tierTileClass[tier.key]}>
+                      <span class={tierTileClass[key]}>
                         {item.file && (
                           <img
                             src={asset(`${ICON_BASE}/${item.file}`)}
                             alt=""
                             width="40"
                             height="40"
-                            class={iconClasses(item, tier.key, 'light')}
+                            class={iconClasses(item, key, 'light')}
                             loading="lazy"
                             decoding="async"
                           />
@@ -167,13 +167,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
                             alt=""
                             width="40"
                             height="40"
-                            class={iconClasses(item, tier.key, 'dark')}
+                            class={iconClasses(item, key, 'dark')}
                             loading="lazy"
                             decoding="async"
                           />
                         )}
                       </span>
-                      <span class={tierCaptionClass[tier.key]}>{item.names.join(' / ')}</span>
+                      <span class={tierCaptionClass[key]}>{item.names.join(' / ')}</span>
                     </li>
                   ))}
                 </ul>
