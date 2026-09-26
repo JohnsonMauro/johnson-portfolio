@@ -226,9 +226,6 @@ const en: Dict = {
       ],
     },
   ],
-  footer: {
-    builtWith: 'Built with',
-  },
 };
 
 export default en;

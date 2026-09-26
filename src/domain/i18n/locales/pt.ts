@@ -230,9 +230,6 @@ const pt: Dict = {
       ],
     },
   ],
-  footer: {
-    builtWith: 'Feito com',
-  },
 };
 
 export default pt;

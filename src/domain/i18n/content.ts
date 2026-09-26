@@ -87,9 +87,6 @@ export interface Dict {
     stackTitle: string;
   };
   resume: ResumeEntry[];
-  footer: {
-    builtWith: string;
-  };
 }
 
 const content: Record<Locale, Dict> = { en, pt };
