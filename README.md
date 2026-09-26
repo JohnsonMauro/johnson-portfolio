@@ -26,8 +26,10 @@ Both surfaces read from the same dictionaries — content is never duplicated.
   `jsx-a11y-x` (ESLint 10-compatible fork of `jsx-a11y`).
 - **pnpm 12** — pinned via `packageManager` in `package.json`.
 
-Requires Node `^22.22.3 || >=24.16.0` (floor set by `eslint-plugin-astro` 3;
-Astro 7 alone needs `>=22.12`).
+Node: always the **latest LTS** — `.nvmrc` holds `lts/*`, read by `nvm use` and by
+CI and the Pages deploy (`setup-node` resolves it on every run). Today that is
+Node 24; a new LTS line is picked up as soon as Node promotes it. `engines.node`
+(`>=24.16.0`) is only the floor.
 
 ## Quick start
 

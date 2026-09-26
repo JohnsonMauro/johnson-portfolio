@@ -1,6 +1,6 @@
 ---
 name: tooling-guide
-description: Use when touching eslint.config.js, writing an eslint-disable comment, considering, adding, removing or bumping a dependency, changing pnpm-workspace.yaml, the Node engines range, or a GitHub Actions workflow. Covers the a11y plugin naming (jsx-a11y-x), the eslint-plugin-react peer hold, pnpm supply-chain settings, and which files move together on a Node or CI change.
+description: Use when touching eslint.config.js, writing an eslint-disable comment, considering, adding, removing or bumping a dependency, changing pnpm-workspace.yaml, the Node version (.nvmrc, engines), or a GitHub Actions workflow. Covers the a11y plugin naming (jsx-a11y-x), the eslint-plugin-react peer hold, pnpm supply-chain settings, and which files move together on a Node or CI change.
 ---
 
 # Tooling guide
@@ -59,16 +59,18 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
   - `minimumReleaseAgeExclude` names exact `pkg@version` exceptions to the release-age cooldown. Add one only for a release the user asked for, and remove it once the version ages past the cooldown.
 - Never relax the release-age policy to get a package in. Relax the version range instead.
 
-## Node and CI move together
+## Node: always the latest LTS
 
-The Node range is declared in three places. Change them in one commit:
+Policy: the project runs on the newest **LTS** line (recent and stable), never on a Current (odd or not-yet-LTS) release.
 
 | Place | What |
 |---|---|
-| `package.json` → `engines.node` | Supported range |
-| `.github/workflows/ci.yml` → `setup-node` `node-version` | Runs lint, `pnpm check`, `pnpm copy:check` and build on PRs to `main` |
-| `.github/workflows/deploy.yml` → `setup-node` `node-version` | Builds and deploys to GitHub Pages on push to `main` |
+| `.nvmrc` → `lts/*` | The single source. `nvm use` resolves it locally |
+| `.github/workflows/ci.yml` and `deploy.yml` → `setup-node` `node-version-file: .nvmrc` | `setup-node` resolves `lts/*` against the official manifest on every run, so CI and the deploy move to a new LTS line the day Node promotes it |
+| `package.json` → `engines.node` | Only the floor (lowest version known to work). Raise it when the code starts needing something newer, not on every LTS |
 
-Before moving CI to a new Node major: run `pnpm install`, `pnpm lint`, `pnpm build` and `pnpm text:diff` locally on that major (nvm is installed). Native dependencies (`sharp`, `esbuild`) need a prebuilt binary for the new ABI.
+Verified 2026-09-26 in the sources, not assumed: `setup-node` v7 reads a plain `.nvmrc` value as-is and resolves `lts/*` to the highest manifest entry with an `lts` codename (`official_builds.ts`, `resolveLtsAliasFromManifest`); nvm 0.40 resolves the same file to the latest LTS.
+
+Because the switch is automatic, a new LTS line reaches CI without a commit. When one is announced (Node's release schedule: new even major goes LTS in late October), run `pnpm install`, `pnpm lint`, `pnpm check`, `pnpm build` and `pnpm text:diff` locally on it first (`nvm install --lts`). Native dependencies (`sharp`, `esbuild`) need a prebuilt binary for the new ABI. If it breaks, pin `.nvmrc` to the previous major until it is fixed.
 
 Scripts in `scripts/` that import `.ts` files (`cv-check.mjs`) depend on Node's built-in type stripping, so the Node floor must keep it enabled by default.
