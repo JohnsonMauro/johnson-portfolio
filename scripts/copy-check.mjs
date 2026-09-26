@@ -2,7 +2,8 @@
 // without checking them):
 //   1. parity: en and pt have the same key paths and the same array lengths;
 //   2. orphans: every second-level key (dict.<section>.<key>) is read somewhere
-//      outside src/domain/i18n.
+//      outside src/domain/i18n — as `.key` (property access) or as a quoted
+//      'key' (indexed access through a registry, e.g. nav[section.label]).
 //
 //   pnpm copy:check
 //
@@ -13,7 +14,8 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const root = path.resolve(fileURLToPath(import.meta.url), '../..');
-const CONSUMER_DIRS = ['src/app', 'src/pages', 'src/widgets', 'src/features', 'src/shared', 'src/domain/profile', 'src/domain/seo'];
+const SOURCE_DIR = 'src';
+const DICTIONARY_DIR = path.join('src', 'domain', 'i18n');
 
 const load = async (locale) => (await import(`../src/domain/i18n/locales/${locale}.ts`)).default;
 
@@ -30,12 +32,15 @@ const shape = (value, prefix = '') => {
   return [prefix];
 };
 
-const listSources = async (dir) => {
-  const entries = await readdir(path.join(root, dir), { withFileTypes: true, recursive: true }).catch(() => []);
+const listSources = async () => {
+  const entries = await readdir(path.join(root, SOURCE_DIR), { withFileTypes: true, recursive: true });
   return entries
     .filter((entry) => entry.isFile() && /\.(astro|tsx?|mjs)$/.test(entry.name))
-    .map((entry) => path.join(entry.parentPath, entry.name));
+    .map((entry) => path.join(entry.parentPath, entry.name))
+    .filter((file) => !path.relative(root, file).startsWith(DICTIONARY_DIR));
 };
+
+const isRead = (key, sources) => new RegExp(`\\.${key}\\b|['"\`]${key}['"\`]`).test(sources);
 
 const parityProblems = (en, pt) => {
   const enPaths = new Set(shape(en));
@@ -47,14 +52,14 @@ const parityProblems = (en, pt) => {
 };
 
 const orphanProblems = async (en) => {
-  const files = (await Promise.all(CONSUMER_DIRS.map(listSources))).flat();
+  const files = await listSources();
   const sources = (await Promise.all(files.map((file) => readFile(file, 'utf8')))).join('\n');
   return Object.entries(en)
     .filter(([, section]) => isObject(section))
     .flatMap(([section, keys]) =>
       Object.keys(keys)
-        .filter((key) => !new RegExp(`\\.${key}\\b`).test(sources))
-        .map((key) => `unused key: ${section}.${key} (no ".${key}" read outside src/domain/i18n)`),
+        .filter((key) => !isRead(key, sources))
+        .map((key) => `unused key: ${section}.${key} (neither ".${key}" nor '${key}' outside src/domain/i18n)`),
     );
 };
 
