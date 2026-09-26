@@ -25,6 +25,7 @@ Two surfaces share one content source: `/<lang>/` (interactive portfolio) and `/
 - **Numbers are identical across locales.** Years, counts, percentages and dates match exactly; only the formatting follows the locale (`1,300+` in EN, `1.300+` in PT).
 - **Content is read-only at runtime.** Never mutate a locale object or an entry array; derive a new value instead.
 - Contact and social data live only in `profile.ts`. Canonical URLs, no UTM or tracking parameters.
+- The link-card images (`public/assets/img/og-{en,pt}.png`, the `og:image` LinkedIn and chat apps show) print `profile.name`, `meta.jobTitle` and the first entry of `about.stats`. They are committed PNGs: after changing any of those, run `pnpm og:images` and commit the images with the copy.
 
 ## Verify
 

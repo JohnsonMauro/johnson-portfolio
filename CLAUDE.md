@@ -34,6 +34,7 @@ is no second copy.
 | CV content rules (words, bullets, buzzwords) | `pnpm cv:check` |
 | Locale parity EN/PT + unused dictionary keys | `pnpm copy:check` |
 | Regenerate favicons | `pnpm favicons` |
+| Regenerate link-card images (og:image, EN/PT) | `pnpm og:images` |
 
 ## Architecture (FSD-inspired)
 
