@@ -150,11 +150,11 @@ export default function Sidebar({
             height={120}
             className="h-[120px] w-[120px] rounded-full border-8 border-sidebar-ring object-cover"
           />
-          <h1 className="mt-4 text-center font-display text-2xl font-semibold text-white">
+          <p className="mt-4 text-center font-display text-2xl font-semibold text-white">
             <a href={homeHref} className="text-white hover:text-white">
               {name}
             </a>
-          </h1>
+          </p>
 
           <ul className="mt-3 flex items-center gap-2">
             <SocialLink href={social.linkedin} label="LinkedIn">
