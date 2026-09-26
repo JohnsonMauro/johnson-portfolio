@@ -12,19 +12,95 @@ const { dict } = Astro.props;
 
 <section
   id="hero"
-  class="section-anchor relative flex min-h-screen flex-col items-center justify-center bg-sidebar px-6 text-white xl:pl-sidebar"
+  class="hero section-anchor relative flex min-h-screen flex-col items-center justify-center overflow-clip bg-sidebar px-6 text-white xl:pl-sidebar"
 >
-  <div
-    class="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(20,157,221,0.18),transparent_60%)]"
-    aria-hidden="true"
-  >
+  <div class="hero-backdrop pointer-events-none absolute inset-0" aria-hidden="true">
+    <!-- Backdrop without WebGL, and until the first frame is drawn. -->
+    <div
+      class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,color-mix(in_srgb,var(--color-accent)_18%,transparent),transparent_60%)]"
+    >
+    </div>
+    <canvas data-tide class="backdrop-layer absolute inset-0 h-full w-full"></canvas>
+    <canvas data-network class="backdrop-layer absolute inset-0 h-full w-full"></canvas>
   </div>
-  <div class="relative z-10 text-center">
-    <h1 class="font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
+  <div data-backdrop-anchor class="hero-copy relative z-10 text-center">
+    <h1 class="animate-rise font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
       {profile.name}
     </h1>
-    <p class="mt-4 text-lg text-white/70 sm:text-xl">
+    <p class="mt-4 animate-rise text-lg text-white/70 [animation-delay:120ms] sm:text-xl">
       {dict.hero.typedPrefix} <Typed client:load words={dict.hero.typedRoles} />
     </p>
   </div>
 </section>
+
+<script>
+  import { mountPeopleNetwork } from './peopleNetwork';
+  import { mountTide } from './tideBackdrop';
+
+  const anchor = document.querySelector<HTMLElement>('[data-backdrop-anchor]');
+  const tide = document.querySelector<HTMLCanvasElement>('[data-tide]');
+  const network = document.querySelector<HTMLCanvasElement>('[data-network]');
+  if (anchor && tide) mountTide(tide, anchor);
+  if (anchor && network) mountPeopleNetwork(network, anchor);
+</script>
+
+<style>
+  .backdrop-layer {
+    opacity: 0;
+    transition: opacity 1.2s ease-out;
+  }
+
+  .backdrop-layer[data-ready] {
+    opacity: 1;
+  }
+
+  /*
+   * Leaving the hero: the copy sinks and fades while the backdrop drifts at a
+   * slower rate, a parallax driven by the scrollbar itself. Browsers without
+   * scroll-driven animations (and anyone who asked for less motion) keep a
+   * plain scroll.
+   */
+  /*
+   * Longhands on purpose: the build's CSS minifier folds `animation` plus
+   * `animation-timeline` into one shorthand that browsers reject, dropping
+   * the whole declaration.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .hero {
+        view-timeline: --hero block;
+      }
+
+      .hero-copy,
+      .hero-backdrop {
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: --hero;
+      }
+
+      .hero-copy {
+        animation-name: hero-copy-exit;
+        animation-range: exit 0% exit 70%;
+      }
+
+      .hero-backdrop {
+        animation-name: hero-backdrop-exit;
+        animation-range: exit 0% exit 100%;
+      }
+    }
+  }
+
+  @keyframes hero-copy-exit {
+    to {
+      transform: translateY(30vh) scale(0.94);
+      opacity: 0;
+    }
+  }
+
+  @keyframes hero-backdrop-exit {
+    to {
+      transform: translateY(35%);
+      opacity: 0.35;
+    }
+  }
+</style>

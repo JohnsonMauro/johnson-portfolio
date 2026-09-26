@@ -38,6 +38,8 @@
   --animate-fade-right: fadeRight 600ms ease-out both;
   --animate-fade-left: fadeLeft 600ms ease-out both;
   --animate-blink: blink 1s steps(1) infinite;
+  /* Above-the-fold entrance: moves only, never hides, so it cannot delay LCP. */
+  --animate-rise: rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /*
@@ -66,6 +68,11 @@
 @keyframes fadeLeft {
   0% { opacity: 0; transform: translateX(24px); }
   100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes rise {
+  0% { transform: translateY(24px); }
+  100% { transform: translateY(0); }
 }
 
 @keyframes blink {

@@ -8,7 +8,8 @@ export const prefersReducedMotion = () => window.matchMedia(REDUCED_MOTION).matc
 /** Scroll behavior that honors the user's motion preference. */
 export const scrollBehavior = (): ScrollBehavior => (prefersReducedMotion() ? 'auto' : 'smooth');
 
-const subscribe = (onChange: () => void) => {
+/** Calls `onChange` whenever the preference flips; returns the unsubscribe. */
+export const onReducedMotionChange = (onChange: () => void) => {
   const query = window.matchMedia(REDUCED_MOTION);
   query.addEventListener('change', onChange);
   return () => query.removeEventListener('change', onChange);
@@ -18,4 +19,5 @@ const subscribe = (onChange: () => void) => {
  * Live motion preference for rendering. The server snapshot is `false` (full
  * motion), so hydration matches the static HTML before the real value applies.
  */
-export const useReducedMotion = () => useSyncExternalStore(subscribe, prefersReducedMotion, () => false);
+export const useReducedMotion = () =>
+  useSyncExternalStore(onReducedMotionChange, prefersReducedMotion, () => false);
