@@ -1,103 +1,110 @@
-# johnson-portfolio
+# Johnson Mauro — Portfolio & CV
 
-Personal portfolio + printable CV. Astro 7 · React 19 · Tailwind 4. Bilingual
-(EN / PT-BR). Static build deployed to GitHub Pages.
+[![Deploy to GitHub Pages](https://github.com/JohnsonMauro/johnson-portfolio/actions/workflows/deploy.yml/badge.svg)](https://github.com/JohnsonMauro/johnson-portfolio/actions/workflows/deploy.yml)
 
-Live: <https://johnsonmauro.github.io/johnson-portfolio/>
+Personal portfolio of Johnson Mauro, software engineer, with a printable CV
+built from the same content. English and Brazilian Portuguese.
 
-## Surfaces
+**Live:** [Portfolio (EN)](https://johnsonmauro.github.io/johnson-portfolio/en/) ·
+[Portfólio (PT-BR)](https://johnsonmauro.github.io/johnson-portfolio/pt/) ·
+[CV (EN)](https://johnsonmauro.github.io/johnson-portfolio/en/cv/) ·
+[CV (PT-BR)](https://johnsonmauro.github.io/johnson-portfolio/pt/cv/)
 
-| Route | Purpose |
-|-------|---------|
-| `/en/`, `/pt/` | Interactive portfolio (hero, about, skills, resume, sidebar) |
-| `/en/cv`, `/pt/cv` | Printable / PDF-friendly CV (A4) |
+![Portfolio hero: the name over an animated network of connected people in brand blues](docs/preview.jpg)
 
-Both surfaces read from the same dictionaries — content is never duplicated.
+## Highlights
 
-## Stack
+- **One source, two surfaces.** The interactive portfolio and the A4 CV read
+  the same content, so they never drift apart. The CV prints or saves as PDF
+  straight from the browser.
+- **Bilingual.** Every page in English and Brazilian Portuguese, switchable
+  from the sidebar.
+- **Animated first screen, written from scratch.** A WebGL tide in the brand
+  blues under a network of connected people: they drift in depth, link to
+  whoever is near, pass signals along the links and follow the cursor. The
+  copy sinks away as you scroll. No animation library, about 5 KB gzipped.
+- **Considerate motion.** With reduced motion enabled everything holds still;
+  the animation pauses when the hero is off screen or the tab is hidden, and
+  without WebGL the network still shows over a CSS gradient.
+- **Light and dark themes**, remembered per visitor.
+- **Accessible and static.** Semantic HTML with strict accessibility linting;
+  the pages are plain HTML, with JavaScript only for the interactive parts
+  and the hero animation.
 
-- **Astro 7** — static output, file-based routing, native i18n (`/en/`, `/pt/`).
-  Rust compiler + Vite 8 (Rolldown).
-- **React 19.3** — interactive islands only (sidebar, back-to-top), via
-  `@astrojs/react` 7 (Oxc JSX transform, no Babel).
-- **Tailwind 4** — via `@tailwindcss/vite`; colors in `src/styles/palette.css`, tokens in `src/styles/global.css`.
-- **TypeScript** strict.
-- **ESLint 10** flat config + `eslint-plugin-astro` 3, `react`, `react-hooks`,
-  `jsx-a11y-x` (ESLint 10-compatible fork of `jsx-a11y`).
-- **pnpm 12** — pinned via `packageManager` in `package.json`.
+## Built with
 
-Node: always the **latest LTS** — `.nvmrc` holds `lts/*`, read by `nvm use` and by
-CI and the Pages deploy (`setup-node` resolves it on every run). Today that is
-Node 24; a new LTS line is picked up as soon as Node promotes it. `engines.node`
-(`>=24.16.0`) is only the floor.
+[Astro](https://astro.build) (static output, i18n routing) ·
+[React](https://react.dev) islands for the interactive parts ·
+[Tailwind CSS](https://tailwindcss.com) · TypeScript · WebGL and Canvas 2D ·
+ESLint · pnpm · GitHub Pages.
 
-## Quick start
+## Run it locally
+
+Requires the current Node.js LTS (`nvm use` reads `.nvmrc`) and pnpm, at the
+version pinned in `packageManager` in `package.json`.
 
 ```bash
-pnpm install
-pnpm dev          # local dev at http://localhost:4321/johnson-portfolio/
-pnpm build        # static build to dist/
-pnpm check        # type check (astro check)
-pnpm preview      # serve dist/
-pnpm lint         # zero-warning lint
-pnpm lint:fix     # autofix
-pnpm text:save    # after a build: save the rendered text of every page as a baseline
-pnpm text:diff    # after a build: diff the rendered text against that baseline
-pnpm cv:check     # CV copy rules: 475–600 words, bullet length, buzzwords
-pnpm copy:check   # EN/PT locale parity and unused dictionary keys
-pnpm favicons     # regenerate favicons from source
+pnpm install     # also installs the pre-commit hook
+pnpm dev         # http://localhost:4321/johnson-portfolio/
 ```
 
-## Project layout
+| Command | What it does |
+|---|---|
+| `pnpm build` / `pnpm preview` | Build the static site into `dist/` and serve it |
+| `pnpm lint` | Lint code and stylesheets (zero warnings) |
+| `pnpm check` | Type check |
+| `pnpm copy:check` | English and Portuguese content in step, no unused text |
+| `pnpm cv:check` | CV length, bullet and wording rules |
 
-FSD-inspired layered architecture under `src/`. Each arrow is a real import
-between layers; the flow only runs downward.
+## Where things live
 
 ```mermaid
 flowchart TB
-  subgraph pages["pages/ · Astro routes"]
+  subgraph pages["pages/ · routes"]
     direction LR
-    portfolio["[lang]/index.astro · portfolio"]
-    cv["[lang]/cv.astro · printable CV"]
+    portfolio["Portfolio · /en/ /pt/"]
+    cv["CV · /en/cv /pt/cv"]
   end
 
-  app["app/ · BaseLayout"]
+  app["app/ · page shell"]
 
-  subgraph widgets["widgets/ · static sections (.astro)"]
+  subgraph widgets["widgets/ · page sections"]
     direction LR
     sections["Hero · About · Skills · Resume · Footer"]
-    cvdoc["CvDocument · CvToolbar"]
+    backdrop["Hero backdrop"]
+    cvdoc["CV document"]
   end
 
-  subgraph features["features/ · React islands"]
+  subgraph features["features/ · interactive parts"]
     direction LR
-    sidebar["Sidebar · LocaleSwitcher · ThemeToggle · client:load"]
-    backtotop["BackToTop · client:idle"]
+    sidebar["Sidebar"]
+    backtotop["Back to top"]
   end
 
-  subgraph domain["domain/ · content source of truth"]
+  subgraph domain["domain/ · content"]
     direction LR
-    locales[("i18n/locales · en.ts · pt.ts")]
-    profile["profile/ · contact · social · expertise"]
-    sectionsreg["sections/ · section registry"]
-    seo["seo/ · JSON-LD"]
+    locales[("Texts · EN + PT")]
+    profile["Profile"]
+    seo["SEO"]
   end
 
-  subgraph shared["shared/ · primitives"]
+  subgraph shared["shared/ · building blocks"]
     direction LR
-    ui["ui/ · FadeIn · Typed · icons"]
-    lib["lib/ · asset() · storage keys"]
+    ui["UI · icons"]
+    lib["Helpers"]
   end
 
   pages e1@--> app
   pages e2@--> widgets
   pages e3@--> features
-  app e4@--> domain
-  widgets e5@--> domain
-  features e6@--> domain
-  widgets e7@--> shared
-  features e8@--> shared
+  pages e4@--> domain
+  app e5@--> domain
+  widgets e6@--> domain
+  features e7@--> domain
+  pages e8@--> shared
   app e9@--> shared
+  widgets e10@--> shared
+  features e11@--> shared
 
   e1@{ animate: true }
   e2@{ animate: true }
@@ -108,84 +115,25 @@ flowchart TB
   e7@{ animate: true }
   e8@{ animate: true }
   e9@{ animate: true }
+  e10@{ animate: true }
+  e11@{ animate: true }
 ```
 
-Rules the diagram encodes:
-
-- **No upward imports.** `shared/` imports nothing from the project and
-  `domain/` only `shared/`; `pages/` only composes. `pnpm lint` fails on an
-  upward or sibling-slice import.
-- **No widget-to-widget imports.** Something two widgets need moves to
-  `shared/ui` (presentational) or `domain/*` (content, data).
-- **All visible copy lives in `domain/i18n/locales`**, EN and PT-BR side by
-  side; widgets and islands receive it as props.
-- **React runs only in islands**: the `features/` units and the `shared/ui`
-  primitives (`FadeIn`, `Typed`) that widgets hydrate with a `client:*`
-  directive. The rest of `widgets/` renders to static HTML at build time.
-
-## Content source of truth
-
-All visible text → `src/domain/i18n/locales/{en,pt}.ts`.
-All contact / identity → `src/domain/profile/profile.ts`.
-
-If a string is hardcoded inside a component, that is a bug — lift it to the
-dictionary.
-
-## Editing the CV
-
-CV content follows Jeff Su's resume rules. Full mentorship in
-[`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md). Compact operating
-checklist for AI / contributors in [`CLAUDE.md`](CLAUDE.md).
-
-Workflow:
-
-1. Pull target job description → extract 10–15 keywords.
-2. Edit `en.ts` and `pt.ts` **together** (locales must not drift).
-3. Rewrite each bullet through the XYZ formula
-   (`Accomplished [X] as measured by [Y], by doing [Z]`); ≥ 1 metric per bullet.
-4. Verify EN word count: 475 – 600 across `about.summary` + `about.current`
-   + all `resume[].bullets`.
-5. Strip buzzwords (*results-driven*, *team player*, *synergy*, *rockstar*, …).
-6. `pnpm dev` → verify `/en/`, `/en/cv`, `/pt/`, `/pt/cv`.
-7. Browser print-to-PDF from `/cv` → verify A4, no orphan headings.
-8. `pnpm lint && pnpm build`.
+All visible text lives in `src/domain/i18n/locales/` (`en.ts`, `pt.ts`);
+contact details in `src/domain/profile/profile.ts`.
 
 ## Deployment
 
-GitHub Actions: [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-Pushes to `main` build with Node 24 + pnpm (version read from
-`packageManager`), then publish `dist/` to GitHub Pages. `astro.config.mjs` sets `base: '/johnson-portfolio'` — keep relative
-asset URLs.
+Every push to `main` builds the site and publishes it to GitHub Pages
+([workflow](.github/workflows/deploy.yml)). Pull requests run lint, type
+check, content checks and the build first ([CI](.github/workflows/ci.yml)).
 
-## Astro 7 gotchas
+## Contributing
 
-- **Whitespace is JSX-style** (`compressHTML: 'jsx'` default). Line breaks
-  between inline elements no longer render as a space:
-  `<span>a</span>\n<em>b</em>` → "ab". Put inline siblings inside a flex/gap
-  container (current pattern) or add an explicit `{' '}`.
-- **Rust compiler is strict** — unclosed non-void tags are build errors and
-  invalid nesting (`<div>` inside `<p>`) is no longer auto-fixed.
-- **`src/fetch.ts` is reserved** for Advanced Routing. Don't create it unless
-  you mean to take over the request pipeline.
-- **Markdown** uses the Sätteri (Rust) processor; remark/rehype plugins need
-  `markdown: { processor: unified() }`. (No Markdown in this repo today.)
-
-## Conventions
-
-- **Commits** — Conventional Commits (`feat:`, `fix:`, `refactor:`, `docs:`,
-  `chore:`, `ci:`, `perf:`).
-- **Animation** — compositor-friendly only (`transform`, `opacity`,
-  `clip-path`). Never animate layout properties.
-- **Styling** — colors from `src/styles/palette.css`, other tokens from `src/styles/global.css`; no hardcoded palette or spacing.
-- **A11y** — semantic HTML first; lint enforces `jsx-a11y-x` rules in `.tsx`
-  and `astro/jsx-a11y/*` in `.astro`.
-
-## Docs
-
-- [`CLAUDE.md`](CLAUDE.md) — AI-agent operating rules (project map + Jeff Su
-  compact checklist).
-- [`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md) — full CV writing
-  guide.
+The engineering rules (architecture, content, design, tooling) are written for
+people and coding agents alike in [`CLAUDE.md`](CLAUDE.md) and the guides
+under [`.claude/skills/`](.claude/skills/). The CV writing guide is
+[`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md).
 
 ## License
 
