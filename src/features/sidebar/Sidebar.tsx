@@ -22,6 +22,7 @@ import {
   type Locale,
 } from '../../domain/i18n/config';
 import type { Dict } from '../../domain/i18n/content';
+import { NAV_SECTIONS, type NavIcon } from '../../domain/sections/sections';
 import SocialLink from './SocialLink';
 
 const RAW_BASE = import.meta.env.BASE_URL;
@@ -51,11 +52,11 @@ interface SidebarProps {
   cvHref: string;
 }
 
-const NAV_ICONS = {
+const NAV_ICONS: Record<NavIcon, typeof HomeIcon> = {
   home: HomeIcon,
-  about: UserIcon,
-  experience: FileIcon,
-} as const;
+  user: UserIcon,
+  file: FileIcon,
+};
 
 export default function Sidebar({
   name,
@@ -69,11 +70,11 @@ export default function Sidebar({
   localeUrls,
   cvHref,
 }: SidebarProps) {
-  const NAV: NavItem[] = [
-    { href: '#hero', label: nav.home, Icon: NAV_ICONS.home },
-    { href: '#about', label: nav.about, Icon: NAV_ICONS.about },
-    { href: '#resume', label: nav.experience, Icon: NAV_ICONS.experience },
-  ];
+  const NAV: NavItem[] = NAV_SECTIONS.map((section) => ({
+    href: `#${section.id}`,
+    label: nav[section.nav.label],
+    Icon: NAV_ICONS[section.nav.icon],
+  }));
 
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>('hero');
@@ -94,9 +95,8 @@ export default function Sidebar({
   };
 
   useEffect(() => {
-    const ids = ['hero', 'about', 'resume'];
-    const sections = ids
-      .map((id) => document.getElementById(id))
+    const sections = NAV_SECTIONS
+      .map(({ id }) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
     if (sections.length === 0) return;
 
