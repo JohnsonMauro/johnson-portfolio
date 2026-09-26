@@ -65,12 +65,12 @@ const en: Dict = {
     ctaCv: 'Download CV',
     ctaLinkedin: 'LinkedIn',
     expertise: [
-      { key: 'ai', label: 'AI engineering' },
       { key: 'frontend', label: 'Front-end & mobile' },
       { key: 'backend', label: 'Back-end' },
       { key: 'database', label: 'Database' },
       { key: 'quality', label: 'Testing' },
       { key: 'devops', label: 'DevOps & delivery' },
+      { key: 'ai', label: 'AI engineering' },
     ],
   },
   skills: {

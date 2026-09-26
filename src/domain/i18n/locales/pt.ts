@@ -69,12 +69,12 @@ const pt: Dict = {
     ctaCv: 'Baixar CV',
     ctaLinkedin: 'LinkedIn',
     expertise: [
-      { key: 'ai', label: 'Engenharia com IA' },
       { key: 'frontend', label: 'Front-end & mobile' },
       { key: 'backend', label: 'Back-end' },
       { key: 'database', label: 'Banco de dados' },
       { key: 'quality', label: 'Testes' },
       { key: 'devops', label: 'DevOps & entrega' },
+      { key: 'ai', label: 'Engenharia com IA' },
     ],
   },
   skills: {

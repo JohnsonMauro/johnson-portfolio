@@ -12,15 +12,6 @@ export interface ExpertiseCategory {
 
 export const expertise: ExpertiseCategory[] = [
   {
-    key: 'ai',
-    items: [
-      { names: ['Claude Code'], file: 'claude.svg', tone: 'mono' },
-      { names: ['Codex'], file: 'codex.svg', tone: 'mono' },
-      { names: ['MCP'] },
-      { names: ['Agent skills & context engineering'] },
-    ],
-  },
-  {
     key: 'frontend',
     items: [
       { names: ['TypeScript'], file: 'typescript.svg' },
@@ -73,6 +64,15 @@ export const expertise: ExpertiseCategory[] = [
       { names: ['Jira'], file: 'jira.svg' },
     ],
   },
+  {
+    key: 'ai',
+    items: [
+      { names: ['Claude Code'], file: 'claude.svg', tone: 'mono' },
+      { names: ['Codex'], file: 'codex.svg', tone: 'mono' },
+      { names: ['MCP'] },
+      { names: ['Agent skills & context engineering'] },
+    ],
+  },
 ];
 
 export function findExpertiseByKey(key: string): ExpertiseCategory | undefined {
@@ -116,15 +116,15 @@ export const stackTiers: StackTier[] = [
   {
     key: 'tools',
     items: [
-      { names: ['Claude Code'], file: 'claude.svg', tone: 'mono' },
-      { names: ['Codex'], file: 'codex.svg', tone: 'mono' },
-      { names: ['MCP'] },
       { names: ['Vitest'] },
       { names: ['Playwright'] },
       { names: ['GitHub Actions'], file: 'github.svg', darkFile: 'github-dark.svg' },
       { names: ['AWS'], file: 'aws.svg', darkFile: 'aws-dark.svg' },
       { names: ['Azure DevOps'], file: 'azuredevops.svg' },
       { names: ['Jira'], file: 'jira.svg' },
+      { names: ['Claude Code'], file: 'claude.svg', tone: 'mono' },
+      { names: ['Codex'], file: 'codex.svg', tone: 'mono' },
+      { names: ['MCP'] },
     ],
   },
 ];

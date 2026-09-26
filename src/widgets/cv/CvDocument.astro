@@ -75,20 +75,6 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   </section>
 
   <section class="cv__section">
-    <h2>{dict.cv.aiTitle}</h2>
-    <ul class="cv__practices">
-      {
-        dict.skills.aiPractices.map((practice) => (
-          <li>
-            <strong>{practice.title}.</strong>{' '}
-            {practice.proof}
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <section class="cv__section">
     <h2>{dict.cv.skillsTitle}</h2>
     <dl class="cv__skills">
       {
@@ -160,6 +146,20 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
         ))
       }
     </ol>
+  </section>
+
+  <section class="cv__section">
+    <h2>{dict.cv.aiTitle}</h2>
+    <ul class="cv__practices">
+      {
+        dict.skills.aiPractices.map((practice) => (
+          <li>
+            <strong>{practice.title}.</strong>{' '}
+            {practice.proof}
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <footer class="cv__footer">
