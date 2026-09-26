@@ -15,6 +15,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "favicons": "node scripts/gen-favicons.mjs",
+    "og:images": "node scripts/gen-og-images.mjs",
     "text:save": "node scripts/rendered-text.mjs save",
     "text:diff": "node scripts/rendered-text.mjs diff",
     "cv:check": "node scripts/cv-check.mjs",

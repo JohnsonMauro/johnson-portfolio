@@ -22,6 +22,9 @@ const OG_LOCALES: Record<Locale, string> = {
 
 const canonical = getAbsoluteLocaleUrl(lang, '');
 const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
+// Link-card image, one per locale (scripts/gen-og-images.mjs). LinkedIn
+// requires og:image and needs an absolute URL.
+const ogImage = new URL(asset(`assets/img/og-${lang}.png`), Astro.site).href;
 ---
 
 <!doctype html>
@@ -69,6 +72,13 @@ const defaultUrl = getAbsoluteLocaleUrl(DEFAULT_LOCALE, '');
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={OG_LOCALES[lang]} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
     {LOCALES.filter((l) => l !== lang).map((l) => (
       <meta property="og:locale:alternate" content={OG_LOCALES[l]} />
     ))}
