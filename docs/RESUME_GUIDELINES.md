@@ -137,8 +137,11 @@ For every `resume[].bullets[]` entry, confirm:
 | `about.summary` | About section paragraph | CV summary |
 | `about.current` | About section paragraph | CV summary (continued) |
 | `about.expertise` | Tech-icon clusters | Skills grid (text + icons) |
-| `skills.aiPractices`, `skills.judgment` | Skills section (AI practices + engineering judgment) | "How I build with AI" + practices rows |
-| `resume[]` | Experience timeline | Experience block |
+| `skills.judgment`, `skills.aiPractices` | Skills section, after the stack (engineering judgment, then AI practices) | "Engineering practices" row in Core skills; "How I build with AI" after Experience |
+| `languages[]` | — | "Languages" row in Core skills |
+| `education[]` | — | Education, last section |
+| `career.chapters` | Experience grouped into career chapters (period, title, arc) | — (the CV stays a flat list) |
+| `resume[]` | Experience timeline, each entry under its `chapter` | Experience block |
 | `profile.social.*` | Sidebar icons | Header contact line |
 
 Single source of truth means: **never duplicate text into the print route**.
@@ -155,4 +158,4 @@ If it's worth showing on the CV, lift it into a locale file.
 4. Word-count: paste rendered EN content into Google Docs, target 475-600.
 5. Strip buzzwords / clichés.
 6. Preview `/en/` and `/en/cv` (same for `pt`) in the browser.
-7. Print to PDF from the `/cv` route — verify A4 layout, no orphaned headings.
+7. Print to PDF from the `/cv` route — verify A4 layout, exactly 2 full pages, no orphaned headings.

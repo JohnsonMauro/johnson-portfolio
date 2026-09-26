@@ -55,7 +55,7 @@ References:
 4. `pnpm cv:check`. It fails on a word count outside 475–600, a bullet over 25 words, a banned opener or a buzzword, in either locale. It warns (no failure) on a bullet with no number: read each warning and decide whether it carries an outcome instead.
 5. `pnpm build && pnpm text:diff` (baseline saved before step 2): read the drift on `/en/cv` and `/pt/cv`.
 6. `pnpm dev`, open `/en/`, `/en/cv`, `/pt/`, `/pt/cv`.
-7. Print to PDF from `/cv`: A4, no orphan headings, contact line intact.
+7. Print to PDF from `/cv`: A4, exactly 2 full pages in both locales (count on the production build, not the dev server), no orphan headings, contact line intact.
 8. `pnpm lint`.
 
 `cv:check` covers the mechanical rules only. XYZ shape, keyword fit and whether a number is true still need a human read.
