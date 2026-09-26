@@ -46,7 +46,7 @@ Islands render once on the server at build time, where `window`, `document` and 
 - Scroll listeners are `{ passive: true }`. Prefer `IntersectionObserver` to scroll math for visibility.
 - Hooks are never conditional. Custom hooks start with `use`.
 
-Known gap: after a reload with the dark theme stored, hydration logs React error #418. `ThemeToggle` reads the `dark` class during render, so the server HTML (light: Moon icon, `aria-pressed="false"`) differs from the first client render. Reading it after mount fixes it, and that fix is a behavior change (B).
+**DOM state the server cannot know** (the `dark` class, a media query): read it with `useSyncExternalStore` and a server snapshot equal to what the static HTML shows. Hydration then matches, and the real value applies right after. `ThemeToggle` (class via `MutationObserver`) and `useReducedMotion` (`shared/lib/motion.ts`) are the references. Reading it inside `useState(() => …)` during render produced React error #418 here.
 
 ## Memoization
 

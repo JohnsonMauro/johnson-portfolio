@@ -19,7 +19,7 @@ Two surfaces share one content source: `/<lang>/` (interactive portfolio) and `/
 
 ## Rules
 
-- **Never inline copy in a component.** A hardcoded string in `.astro` or `.tsx` is a bug: lift it to the locale files. That includes `aria-label`, `alt` and `title` attributes.
+- **Never inline copy in a component.** A hardcoded string in `.astro` or `.tsx` is a bug: lift it to the locale files. That includes `aria-label`, `alt` and `title` attributes. Exceptions, because they read the same in every locale: brand names (LinkedIn, GitHub, Medium, WhatsApp) and locale endonyms (`LOCALE_NAMES`, `LOCALE_LABELS` in `domain/i18n/config.ts`).
 - **Edit `en.ts` and `pt.ts` in the same change.** A new key goes into `Dict` first, then into both locales.
 - **Translate intent, not words.** PT-BR reads as native Portuguese, not a calque.
 - **Numbers are identical across locales.** Years, counts, percentages and dates match exactly; only the formatting follows the locale (`1,300+` in EN, `1.300+` in PT).

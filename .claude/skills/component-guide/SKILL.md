@@ -72,12 +72,12 @@ Work the add table backwards, then prove it:
 
 ## Accessibility checklist (every component)
 
-- One `h1` per page. Sections start at `h2`; no skipped levels. Known gap: the portfolio page renders two, the name in `Sidebar.tsx` and the title in `Hero.astro`; don't add a third.
+- One `h1` per page (the hero title; the sidebar name is a `<p>` link). Sections start at `h2`; no skipped levels.
 - Landmarks: sections inside `<main>`; nav stays in the sidebar `<nav>`.
 - Interactive elements are `<a>` (navigation) or `<button>` (action), with visible `focus-visible` styles matching the existing ring (`ring-accent`).
 - Every icon-only control has an `aria-label` from the dictionary; decorative images `alt=""`, meaningful ones a real alt.
 - Both themes: text meets contrast on `bg-surface`, `bg-surface-alt` and the dark variants.
-- Motion: entrance animation goes through `FadeIn`, and new motion must not ignore `prefers-reduced-motion`.
+- Motion: entrance animation goes through `FadeIn`. Under `prefers-reduced-motion: reduce`, `global.css` collapses CSS animation and transition time; JS scrolls use `scrollBehavior()` and motion driven by JS reads `useReducedMotion()` (`shared/lib/motion.ts`). New motion goes through one of these, never around them.
 - Print (`/cv`): nothing interactive, no progress bars, no dark backgrounds.
 
 `pnpm lint` (jsx-a11y strict) catches part of this. Heading order, contrast and focus order need a look in `pnpm dev`.
