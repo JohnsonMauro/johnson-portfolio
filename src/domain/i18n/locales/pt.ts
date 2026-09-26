@@ -117,8 +117,31 @@ const pt: Dict = {
     ],
     stackTitle: 'Stack',
   },
+  career: {
+    chapters: [
+      {
+        key: 'modernization',
+        period: '2022 – hoje',
+        title: 'Modernização, agora com agentes de IA',
+        arc: 'Reescrevendo um produto de 12 anos sem parar as entregas, cuidando de integrações de ponta a ponta e construindo mobile e web para clientes. Desde 2026, o mesmo trabalho sai com agentes de IA, sob specs, testes e revisão.',
+      },
+      {
+        key: 'product',
+        period: '2018 – 2022',
+        title: 'Produto, mobile e automação',
+        arc: 'Quatro anos entre produtos web e mobile em saúde e mobilidade, dashboards de BI e bots de RPA para operadoras de telefonia e o front-end de um produto de IA conversacional.',
+      },
+      {
+        key: 'foundations',
+        period: '2012 – 2017',
+        title: 'Fundamentos',
+        arc: 'Cinco anos de .NET full-stack: um ERP próprio e projetos de fábrica de software, cuidando da entrega do banco de dados à tela.',
+      },
+    ],
+  },
   resume: [
     {
+      chapter: 'modernization',
       role: 'Software Engineer',
       period: 'Jan 2022 - Presente',
       org: 'InPhonex',
@@ -133,6 +156,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'modernization',
       role: 'Sócio & Software Engineer',
       period: 'Mai 2026 - Presente',
       org: 'Startup de ERP',
@@ -144,6 +168,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'modernization',
       role: 'Software Engineer Freelancer',
       period: 'Set 2025 - Presente',
       org: 'Clientes freelance',
@@ -155,6 +180,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'modernization',
       role: 'Contribuidor open source',
       period: 'Jul 2026 - Presente',
       org: 'Extensão de navegador para site de trade de jogo',
@@ -163,6 +189,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer',
       period: 'Out 2021 - Fev 2022',
       org: 'Accountfy',
@@ -172,6 +199,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer',
       period: 'Out 2020 - Jun 2021',
       org: 'IT Lean',
@@ -181,6 +209,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer (projeto pessoal paralelo)',
       period: 'Jan 2020 - Jun 2021',
       org: 'nevtec.eu',
@@ -190,6 +219,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer',
       period: 'Jun 2020 - Ago 2020',
       org: 'Foco Aluguel de Carros',
@@ -199,6 +229,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer',
       period: 'Ago 2019 - Jun 2020',
       org: 'Devexo (OrtoClin)',
@@ -208,6 +239,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Associate Software Engineer',
       period: 'Jun 2018 - Ago 2019',
       org: 'Avanade',
@@ -219,6 +251,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'product',
       role: 'Software Engineer',
       period: 'Jan 2018 - Mai 2018',
       org: 'Tella World',
@@ -227,6 +260,7 @@ const pt: Dict = {
       ],
     },
     {
+      chapter: 'foundations',
       role: 'Software Engineer',
       period: 'Out 2012 - Dez 2017',
       org: 'Qualytech',

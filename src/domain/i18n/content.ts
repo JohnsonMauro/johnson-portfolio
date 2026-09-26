@@ -17,7 +17,18 @@ export interface PracticeEntry {
   proof: string;
 }
 
+/** Career chapter an experience entry belongs to; chapters render in `career.chapters` order. */
+export type CareerChapterKey = 'modernization' | 'product' | 'foundations';
+
+export interface CareerChapter {
+  key: CareerChapterKey;
+  period: string;
+  title: string;
+  arc: string;
+}
+
 export interface ResumeEntry {
+  chapter: CareerChapterKey;
   role: string;
   period: string;
   org: string;
@@ -90,6 +101,9 @@ export interface Dict {
     judgmentTitle: string;
     judgment: string[];
     stackTitle: string;
+  };
+  career: {
+    chapters: CareerChapter[];
   };
   resume: ResumeEntry[];
 }

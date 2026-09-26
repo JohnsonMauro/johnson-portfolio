@@ -8,9 +8,10 @@ interface Props {
 
 const { dict } = Astro.props;
 
-const half = Math.ceil(dict.resume.length / 2);
-const left = dict.resume.slice(0, half);
-const right = dict.resume.slice(half);
+const chapters = dict.career.chapters.map((chapter) => ({
+  ...chapter,
+  items: dict.resume.filter((entry) => entry.chapter === chapter.key),
+}));
 ---
 
 <section
@@ -23,9 +24,23 @@ const right = dict.resume.slice(half);
       <div class="mt-2 h-1 w-12 rounded-full bg-accent"></div>
     </header>
 
-    <div class="grid gap-10 lg:grid-cols-2">
-      <ResumeColumn items={left} />
-      <ResumeColumn items={right} />
+    <div class="space-y-16">
+      {
+        chapters.map((chapter) => (
+          <div class="grid gap-8 lg:grid-cols-12">
+            <div class="lg:sticky lg:top-8 lg:col-span-4 lg:self-start">
+              <p class="text-sm font-semibold text-accent">{chapter.period}</p>
+              <h3 class="mt-2 font-display text-2xl font-bold leading-tight text-ink-deep">
+                {chapter.title}
+              </h3>
+              <p class="mt-3 text-ink/80">{chapter.arc}</p>
+            </div>
+            <div class="lg:col-span-8">
+              <ResumeColumn items={chapter.items} />
+            </div>
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
