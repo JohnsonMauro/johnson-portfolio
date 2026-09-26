@@ -1,6 +1,8 @@
 /**
- * Pre-commit gates (run by .husky/pre-commit). lint-staged hides unstaged
- * edits while these run, so every check sees exactly what is being committed.
+ * Pre-commit gates (run by .husky/pre-commit). The hook passes --hide-all, so
+ * unstaged edits and untracked files are stashed while these run and every
+ * check sees exactly what is being committed (by default lint-staged hides
+ * only the unstaged part of partially staged files).
  *
  * ESLint gets the staged files; the project-wide checks are functions so they
  * run once, without the file list, when a matching file is staged.
