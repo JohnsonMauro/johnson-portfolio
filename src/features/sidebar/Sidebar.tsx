@@ -21,6 +21,7 @@ import {
   LOCALE_NAMES,
   type Locale,
 } from '../../domain/i18n/config';
+import type { Dict } from '../../domain/i18n/content';
 import SocialLink from './SocialLink';
 
 const RAW_BASE = import.meta.env.BASE_URL;
@@ -44,16 +45,10 @@ interface SidebarProps {
   email: string;
   homeHref: string;
   mailSubject: string;
-  navLabels: { home: string; about: string; experience: string };
+  nav: Dict['nav'];
   lang: Locale;
   localeUrls: Record<Locale, string>;
-  langSwitchLabel: string;
-  themeToggleLabel: string;
-  themeToggleToDark: string;
-  themeToggleToLight: string;
   cvHref: string;
-  printCvLabel: string;
-  printCvShort: string;
 }
 
 const NAV_ICONS = {
@@ -69,21 +64,15 @@ export default function Sidebar({
   email,
   homeHref,
   mailSubject,
-  navLabels,
+  nav,
   lang,
   localeUrls,
-  langSwitchLabel,
-  themeToggleLabel,
-  themeToggleToDark,
-  themeToggleToLight,
   cvHref,
-  printCvLabel,
-  printCvShort,
 }: SidebarProps) {
   const NAV: NavItem[] = [
-    { href: '#hero', label: navLabels.home, Icon: NAV_ICONS.home },
-    { href: '#about', label: navLabels.about, Icon: NAV_ICONS.about },
-    { href: '#resume', label: navLabels.experience, Icon: NAV_ICONS.experience },
+    { href: '#hero', label: nav.home, Icon: NAV_ICONS.home },
+    { href: '#about', label: nav.about, Icon: NAV_ICONS.about },
+    { href: '#resume', label: nav.experience, Icon: NAV_ICONS.experience },
   ];
 
   const [open, setOpen] = useState(false);
@@ -170,7 +159,7 @@ export default function Sidebar({
         <div className="flex items-center justify-center gap-3 pb-4">
           <div
             role="group"
-            aria-label={langSwitchLabel}
+            aria-label={nav.languageSwitcherLabel}
             className="flex items-center gap-2"
           >
             {LOCALES.map((locale) => {
@@ -216,9 +205,9 @@ export default function Sidebar({
           <button
             type="button"
             onClick={toggleTheme}
-            aria-label={themeToggleLabel}
+            aria-label={nav.themeToggleLabel}
             aria-pressed={isDark}
-            title={isDark ? themeToggleToLight : themeToggleToDark}
+            title={isDark ? nav.themeToggleToLight : nav.themeToggleToDark}
             className="flex h-7 w-7 items-center justify-center rounded-full bg-sidebar-social text-white/80 transition hover:bg-accent hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <span aria-hidden="true">
@@ -270,12 +259,12 @@ export default function Sidebar({
         <div className="mt-6 px-3">
           <a
             href={cvHref}
-            aria-label={printCvLabel}
-            title={printCvLabel}
+            aria-label={nav.printCv}
+            title={nav.printCv}
             className="group flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <PrinterIcon width={16} height={16} />
-            <span>{printCvShort}</span>
+            <span>{nav.printCvShort}</span>
           </a>
         </div>
 

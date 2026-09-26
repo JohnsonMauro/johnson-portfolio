@@ -59,16 +59,10 @@ const jsonLd = personJsonLd({
     email={profile.email}
     homeHref={localeUrls[typedLang]}
     mailSubject={dict.meta.mailSubject}
-    navLabels={dict.nav}
+    nav={dict.nav}
     lang={typedLang}
     localeUrls={localeUrls}
-    langSwitchLabel={dict.nav.languageSwitcherLabel}
-    themeToggleLabel={dict.nav.themeToggleLabel}
-    themeToggleToDark={dict.nav.themeToggleToDark}
-    themeToggleToLight={dict.nav.themeToggleToLight}
     cvHref={getRelativeLocaleUrl(typedLang, 'cv')}
-    printCvLabel={dict.nav.printCv}
-    printCvShort={dict.nav.printCvShort}
   />
   <Hero dict={dict} />
   <main>
