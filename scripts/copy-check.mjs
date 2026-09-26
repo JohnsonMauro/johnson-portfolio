@@ -2,8 +2,8 @@
 // without checking them):
 //   1. parity: en and pt have the same key paths and the same array lengths;
 //   2. orphans: every second-level key (dict.<section>.<key>) is read somewhere
-//      outside src/domain/i18n — as `.key` (property access) or as a quoted
-//      'key' (indexed access through a registry, e.g. nav[section.label]).
+//      outside src/domain/i18n — as `.key` (property access) or as a registry
+//      entry `label: 'key'` (indexed access, e.g. nav[section.nav.label]).
 //
 //   pnpm copy:check
 //
@@ -40,7 +40,7 @@ const listSources = async () => {
     .filter((file) => !path.relative(root, file).startsWith(DICTIONARY_DIR));
 };
 
-const isRead = (key, sources) => new RegExp(`\\.${key}\\b|['"\`]${key}['"\`]`).test(sources);
+const isRead = (key, sources) => new RegExp(`\\.${key}\\b|\\blabel:\\s*['"\`]${key}['"\`]`).test(sources);
 
 const parityProblems = (en, pt) => {
   const enPaths = new Set(shape(en));
@@ -59,7 +59,7 @@ const orphanProblems = async (en) => {
     .flatMap(([section, keys]) =>
       Object.keys(keys)
         .filter((key) => !isRead(key, sources))
-        .map((key) => `unused key: ${section}.${key} (neither ".${key}" nor '${key}' outside src/domain/i18n)`),
+        .map((key) => `unused key: ${section}.${key} (neither ".${key}" nor "label: '${key}'" outside src/domain/i18n)`),
     );
 };
 
