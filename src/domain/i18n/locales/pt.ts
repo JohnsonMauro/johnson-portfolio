@@ -45,6 +45,9 @@ const pt: Dict = {
       'Engenheiro Full-stack',
       'Engenheiro Front-end & Mobile',
     ],
+    eggChecked: '{count} rotas testadas para achar a menor',
+    eggHint:
+      'Grafos por toda parte, e uma pergunta em aberto: P = NP? Digite "pnp", dê um triplo clique no topo da página ou deixe o cursor parado sobre a rede.',
   },
   sections: {
     aboutTitle: 'Sobre mim',

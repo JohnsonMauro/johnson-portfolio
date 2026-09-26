@@ -41,6 +41,9 @@ const en: Dict = {
   hero: {
     typedPrefix: "I'm a",
     typedRoles: ['Software Engineer', 'Full-stack Engineer', 'Front-end & Mobile Engineer'],
+    eggChecked: '{count} tours checked to find the shortest',
+    eggHint:
+      'Graphs everywhere, and one open question: does P = NP? Type "pnp", triple-click the hero or rest the cursor on the network.',
   },
   sections: {
     aboutTitle: 'About me',

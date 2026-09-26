@@ -21,7 +21,12 @@ const { dict } = Astro.props;
     >
     </div>
     <canvas data-tide class="backdrop-layer absolute inset-0 h-full w-full"></canvas>
-    <canvas data-network class="backdrop-layer absolute inset-0 h-full w-full"></canvas>
+    <canvas
+      data-network
+      data-egg-checked={dict.hero.eggChecked}
+      data-egg-hint={dict.hero.eggHint}
+      class="backdrop-layer absolute inset-0 h-full w-full"
+    ></canvas>
   </div>
   <div data-backdrop-anchor class="hero-copy relative z-10 text-center">
     <h1 class="animate-rise font-display text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
@@ -41,7 +46,15 @@ const { dict } = Astro.props;
   const tide = document.querySelector<HTMLCanvasElement>('[data-tide]');
   const network = document.querySelector<HTMLCanvasElement>('[data-network]');
   if (anchor && tide) mountTide(tide, anchor);
-  if (anchor && network) mountPeopleNetwork(network, anchor);
+  if (anchor && network) {
+    const { eggChecked, eggHint } = network.dataset;
+    const eggCopy = eggChecked
+      ? { checked: eggChecked, locale: document.documentElement.lang || 'en' }
+      : undefined;
+    mountPeopleNetwork(network, anchor, eggCopy);
+    // Deliberate console output: the easter egg's hint, for whoever opens DevTools.
+    if (eggHint) console.info(eggHint);
+  }
 </script>
 
 <style>

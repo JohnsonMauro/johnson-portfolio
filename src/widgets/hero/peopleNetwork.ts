@@ -1,6 +1,9 @@
+import { listenForEgg } from './eggTriggers';
 import { frameLoop } from './frameLoop';
 import { glowSprite, personSprite, rgba, type Sprite } from './networkSprites';
 import { lighten, readPalette } from './palette';
+import type { Point } from './tsp';
+import { createTspEgg, type EggArea, type EggCopy } from './tspEgg';
 
 /**
  * Depth layers, far to near. Farther people are smaller, dimmer, blurred and
@@ -27,6 +30,15 @@ const PULSE_SECONDS = 1.6;
 const CURSOR_LINK = 170;
 const CURSOR_GLOW = 220;
 const POINTER_EASE = 0.06;
+/** A mouse resting this long over the network starts the easter egg around it. */
+const IDLE_MS = 8000;
+/** The easter egg's tour keeps this far from the visible edges. */
+const EGG_EDGE = 40;
+/** Clearance the egg's tour and caption keep around the hero copy. */
+const EGG_COPY_CLEARANCE = 16;
+/** When no clear tour fits yet, the network drifts and the egg retries this often, for this long. */
+const EGG_RETRY_MS = 400;
+const EGG_PATIENCE_MS = 3000;
 
 const PALETTE = { light: '--palette-accent-light', mid: '--palette-accent', deep: '--palette-accent-dark' };
 
@@ -41,6 +53,8 @@ interface Node {
   px: number;
   py: number;
   fade: number;
+  /** Held in place while the easter egg's tour runs through it. */
+  frozen: boolean;
 }
 
 interface Pulse {
@@ -74,6 +88,7 @@ const createNode = (width: number, height: number): Node => {
     px: 0,
     py: 0,
     fade: 1,
+    frozen: false,
   };
 };
 
@@ -84,8 +99,9 @@ const createNode = (width: number, height: number): Node => {
  * hero copy) stays empty so the name reads cleanly. Returns the teardown.
  *
  * The canvas gets `data-ready` after its first frame so CSS can fade it in.
+ * With `eggCopy`, the P vs NP easter egg (`tspEgg.ts`) is wired in too.
  */
-export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElement): () => void {
+export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElement, eggCopy?: EggCopy): () => void {
   const noop = () => undefined;
   const ctx = canvas.getContext('2d');
   const brand = readPalette(PALETTE);
@@ -93,6 +109,10 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
   // People and links read as light over the tide, so they sit a step above
   // the brand blues rather than on them.
   const colors = { ...brand, glint: lighten(brand.light, 0.55), line: lighten(brand.light, 0.25) };
+  // The caption uses the hero name's face, so it follows the display font token.
+  const eggFont = getComputedStyle(anchor.querySelector('h1') ?? anchor).fontFamily;
+  const egg = eggCopy ? createTspEgg(eggCopy, colors, eggFont) : null;
+  const hero = canvas.closest('section') ?? anchor;
 
   let width = 0;
   let height = 0;
@@ -108,6 +128,9 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
   let needsResize = true;
   let lastDraw = 0;
   let lastPulse = 0;
+  let lastPointerMove = 0;
+  let idleSpent = false;
+  let pendingEgg: { at: Point | null; next: number; until: number } | null = null;
 
   const resize = () => {
     const nextDpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
@@ -130,7 +153,9 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     width = nextWidth;
     height = nextHeight;
     const count = Math.round(Math.min(MAX_NODES, Math.max(MIN_NODES, (width * height) / AREA_PER_NODE)));
-    nodes = nodes.slice(0, count).map((node) => ({ ...node, x: node.x * sx, y: node.y * sy }));
+    egg?.cancel();
+    pendingEgg = null;
+    nodes = nodes.slice(0, count).map((node) => ({ ...node, x: node.x * sx, y: node.y * sy, frozen: false }));
     while (nodes.length < count) nodes.push(createNode(width, height));
     nodes.sort((a, b) => a.layer - b.layer);
     pulses.length = 0;
@@ -150,12 +175,14 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     parallax.y += (parallaxTarget.y - parallax.y) * ease;
     for (const node of nodes) {
       const layer = LAYERS[node.layer];
-      node.x += node.vx * dt;
-      node.y += node.vy * dt;
-      if (node.x < -WRAP_MARGIN) node.x += width + WRAP_MARGIN * 2;
-      else if (node.x > width + WRAP_MARGIN) node.x -= width + WRAP_MARGIN * 2;
-      if (node.y < -WRAP_MARGIN) node.y += height + WRAP_MARGIN * 2;
-      else if (node.y > height + WRAP_MARGIN) node.y -= height + WRAP_MARGIN * 2;
+      if (!node.frozen) {
+        node.x += node.vx * dt;
+        node.y += node.vy * dt;
+        if (node.x < -WRAP_MARGIN) node.x += width + WRAP_MARGIN * 2;
+        else if (node.x > width + WRAP_MARGIN) node.x -= width + WRAP_MARGIN * 2;
+        if (node.y < -WRAP_MARGIN) node.y += height + WRAP_MARGIN * 2;
+        else if (node.y > height + WRAP_MARGIN) node.y -= height + WRAP_MARGIN * 2;
+      }
       node.px = node.x - parallax.x * layer.parallax;
       node.py = node.y - parallax.y * layer.parallax;
       const dx = (node.px - pool.x) / pool.rx;
@@ -243,7 +270,7 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     for (const node of nodes) {
       const sprite = people[node.layer];
       if (!sprite || node.fade <= 0) continue;
-      ctx.globalAlpha = Math.min(1, LAYERS[node.layer].alpha * node.fade * cursorBoost(node));
+      ctx.globalAlpha = node.frozen ? 1 : Math.min(1, LAYERS[node.layer].alpha * node.fade * cursorBoost(node));
       ctx.drawImage(sprite.image, node.px - sprite.half, node.py - sprite.half, sprite.half * 2, sprite.half * 2);
     }
   };
@@ -260,11 +287,69 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     drawCursor();
     drawPulses(links, dt, now);
     drawPeople();
+    if (pendingEgg && now >= pendingEgg.next) {
+      if (egg?.start(nodes, eggArea(), pendingEgg.at, now, false) || now > pendingEgg.until) pendingEgg = null;
+      else pendingEgg.next = now + EGG_RETRY_MS;
+    }
+    egg?.draw(ctx, signal, now);
     ctx.globalAlpha = 1;
     canvas.dataset.ready = '';
+    if (!still && cursor.active && !idleSpent && lastPointerMove > 0 && now - lastPointerMove > IDLE_MS) {
+      idleSpent = true;
+      startEgg({ x: cursor.x, y: cursor.y }, now, false);
+    }
   };
 
+  /**
+   * Where the tour may go: inside the hero's padding box (the fixed sidebar
+   * covers the canvas's left edge on wide screens), away from the edges and
+   * never over the hero copy itself. People inside the pool are faded out, so
+   * only the tour's edges can come near the copy.
+   */
+  const eggArea = (): EggArea => {
+    const left = parseFloat(getComputedStyle(hero).paddingLeft) || 0;
+    const copy = {
+      left: anchor.offsetLeft - EGG_COPY_CLEARANCE,
+      top: anchor.offsetTop - EGG_COPY_CLEARANCE,
+      right: anchor.offsetLeft + anchor.offsetWidth + EGG_COPY_CLEARANCE,
+      bottom: anchor.offsetTop + anchor.offsetHeight + EGG_COPY_CLEARANCE,
+    };
+    return {
+      left: left + EGG_EDGE,
+      top: EGG_EDGE,
+      right: width - EGG_EDGE,
+      bottom: height - EGG_EDGE,
+      blocked: ({ x, y }) => x > copy.left && x < copy.right && y > copy.top && y < copy.bottom,
+    };
+  };
+
+  /**
+   * Starts a run. A moving run that finds no clear tour yet is retried from
+   * the draw loop for a moment; a still (reduced-motion) run shows the solved
+   * tour, then clears it.
+   */
+  function startEgg(at: Point | null, now: number, still: boolean) {
+    if (!egg || egg.active) return;
+    const started = egg.start(nodes, eggArea(), at, now, still);
+    if (!started) {
+      if (!still) pendingEgg = { at, next: now + EGG_RETRY_MS, until: now + EGG_PATIENCE_MS };
+      return;
+    }
+    if (!still) return;
+    loop.redraw();
+    window.setTimeout(() => loop.redraw(), egg.stillMs);
+  }
+
   const loop = frameLoop(canvas, draw);
+
+  const stopEggTriggers = egg
+    ? listenForEgg(hero, (at) => {
+        const box = canvas.getBoundingClientRect();
+        if (box.bottom <= 0 || box.top >= window.innerHeight) return;
+        const point = at ? { x: at.clientX - box.left, y: at.clientY - box.top } : null;
+        startEgg(point, performance.now(), loop.reduced);
+      })
+    : noop;
 
   const onPointerMove = (event: PointerEvent) => {
     if (event.pointerType === 'touch' || loop.reduced) return;
@@ -274,6 +359,8 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
     cursor.x = event.clientX - box.left;
     cursor.y = event.clientY - box.top;
     cursor.active = cursor.x >= 0 && cursor.y >= 0 && cursor.x <= box.width && cursor.y <= box.height;
+    lastPointerMove = performance.now();
+    idleSpent = false;
   };
 
   const onPointerLeave = () => {
@@ -292,6 +379,8 @@ export function mountPeopleNetwork(canvas: HTMLCanvasElement, anchor: HTMLElemen
 
   return () => {
     loop.stop();
+    stopEggTriggers();
+    egg?.cancel();
     resizeObserver.disconnect();
     window.removeEventListener('pointermove', onPointerMove);
     document.documentElement.removeEventListener('pointerleave', onPointerLeave);

@@ -86,6 +86,10 @@ export interface Dict {
   hero: {
     typedRoles: string[];
     typedPrefix: string;
+    /** P vs NP easter egg in the hero network: canvas caption (`{count}` = tours measured). */
+    eggChecked: string;
+    /** Console hint that names the problem and the triggers. */
+    eggHint: string;
   };
   sections: {
     aboutTitle: string;
