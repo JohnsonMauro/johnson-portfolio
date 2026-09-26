@@ -38,28 +38,85 @@ pnpm build        # static build to dist/
 pnpm preview      # serve dist/
 pnpm lint         # zero-warning lint
 pnpm lint:fix     # autofix
+pnpm text:save    # after a build: save the rendered text of every page as a baseline
+pnpm text:diff    # after a build: diff the rendered text against that baseline
+pnpm cv:check     # CV copy rules: 475–600 words, bullet length, buzzwords
+pnpm copy:check   # EN/PT locale parity and unused dictionary keys
 pnpm favicons     # regenerate favicons from source
 ```
 
 ## Project layout
 
-FSD-inspired layered architecture:
+FSD-inspired layered architecture under `src/`. Each arrow is a real import
+between layers; the flow only runs downward.
 
-```
-src/
-├── app/            # layouts, root wiring
-├── pages/          # Astro routes ([lang]/index.astro, [lang]/cv.astro)
-├── widgets/        # hero, about, skills, resume, cv, footer
-├── features/       # sidebar, back-to-top
-├── domain/
-│   ├── i18n/locales/   # en.ts, pt.ts — all visible copy
-│   ├── profile/        # contact, social, expertise, skills meta
-│   └── seo/
-└── shared/         # ui primitives, icons, lib helpers
+```mermaid
+flowchart TB
+  subgraph pages["pages/ · Astro routes"]
+    direction LR
+    portfolio["[lang]/index.astro · portfolio"]
+    cv["[lang]/cv.astro · printable CV"]
+  end
+
+  app["app/ · BaseLayout"]
+
+  subgraph widgets["widgets/ · static sections (.astro)"]
+    direction LR
+    sections["Hero · About · Skills · Resume · Footer"]
+    cvdoc["CvDocument"]
+  end
+
+  subgraph features["features/ · React islands"]
+    direction LR
+    sidebar["Sidebar · client:load"]
+    backtotop["BackToTop · client:idle"]
+  end
+
+  subgraph domain["domain/ · content source of truth"]
+    direction LR
+    locales[("i18n/locales · en.ts · pt.ts")]
+    profile["profile/ · contact · social · expertise"]
+    seo["seo/ · JSON-LD"]
+  end
+
+  subgraph shared["shared/ · primitives"]
+    direction LR
+    ui["ui/ · FadeIn · Typed · icons"]
+    lib["lib/ · asset()"]
+  end
+
+  pages e1@--> app
+  pages e2@--> widgets
+  pages e3@--> features
+  app e4@--> domain
+  widgets e5@--> domain
+  features e6@--> domain
+  widgets e7@--> shared
+  features e8@--> shared
+  app e9@--> shared
+
+  e1@{ animate: true }
+  e2@{ animate: true }
+  e3@{ animate: true }
+  e4@{ animate: true }
+  e5@{ animate: true }
+  e6@{ animate: true }
+  e7@{ animate: true }
+  e8@{ animate: true }
+  e9@{ animate: true }
 ```
 
-Dependency direction: `pages → widgets → features → domain → shared`. No
-upward imports. No widget-to-widget imports.
+Rules the diagram encodes:
+
+- **No upward imports.** `domain/` and `shared/` import nothing from the
+  project; `pages/` only composes.
+- **No widget-to-widget imports.** Something two widgets need moves to
+  `shared/ui` (presentational) or `domain/*` (content, data).
+- **All visible copy lives in `domain/i18n/locales`**, EN and PT-BR side by
+  side; widgets and islands receive it as props.
+- **React runs only in islands**: the `features/` units and the `shared/ui`
+  primitives (`FadeIn`, `Typed`) that widgets hydrate with a `client:*`
+  directive. The rest of `widgets/` renders to static HTML at build time.
 
 ## Content source of truth
 

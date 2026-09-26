@@ -4,9 +4,11 @@ Project-level instructions for Claude Code. Read before editing.
 
 ## What this is
 
-Personal portfolio + printable CV for Johnson Mauro. Astro 7 + React 19.3 +
-Tailwind 4. ESLint 10, pnpm 12, Node `^22.22.3 || >=24.16.0`. Bilingual (EN / PT-BR). Deploys to GitHub Pages via
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+Personal portfolio + printable CV for Johnson Mauro. Astro + React islands +
+Tailwind, ESLint flat config, pnpm. Bilingual (EN / PT-BR). Deploys to GitHub
+Pages via [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+Versions live in `package.json` and the lockfile only; read the installed one
+before trusting any note about an API.
 
 Two surfaces share one content source:
 
@@ -25,30 +27,11 @@ is no second copy.
 | Preview build | `pnpm preview` |
 | Lint (zero warnings) | `pnpm lint` |
 | Lint + autofix | `pnpm lint:fix` |
+| Save rendered-text baseline (after a build) | `pnpm text:save` |
+| Diff rendered text against the baseline | `pnpm text:diff` |
+| CV content rules (words, bullets, buzzwords) | `pnpm cv:check` |
+| Locale parity EN/PT + unused dictionary keys | `pnpm copy:check` |
 | Regenerate favicons | `pnpm favicons` |
-
-Always run `pnpm lint` and `pnpm build` before declaring CV / content edits
-done. Build catches locale-shape regressions; lint catches a11y / React rules.
-
-## Astro 7 rules (post-upgrade)
-
-- **JSX whitespace.** `compressHTML` defaults to `'jsx'`: a newline between
-  inline elements is dropped, not collapsed to a space. Adjacent inline items
-  (CTA pairs, locale links, footer spans) must sit in a flex/gap container or
-  use an explicit `{' '}`. After markup edits, diff the rendered text of
-  `/en/` and `/en/cv` for merged words.
-- **Strict compiler.** Close every non-void tag; no block elements inside
-  `<p>`. The build fails instead of auto-correcting.
-- **Reserved `src/fetch.ts`** (Advanced Routing entrypoint) — do not create.
-- **No `babel` option on `react()`** — `@astrojs/react` 7 uses Oxc. Custom
-  transforms go in `vite.plugins` via `@rolldown/plugin-babel`.
-- **Lint a11y plugin is `jsx-a11y-x`.** Disable comments use the
-  `jsx-a11y-x/<rule>` prefix in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
-  Keep legacy `eslint-plugin-jsx-a11y` out of the tree — `eslint-plugin-astro`
-  prefers it when present.
-- **`eslint-plugin-react` has no ESLint 10 peer yet** — allowed explicitly in
-  `pnpm-workspace.yaml` (`peerDependencyRules`). Drop the override once it
-  ships support.
 
 ## Architecture (FSD-inspired)
 
@@ -67,177 +50,60 @@ src/
 
 Dependency direction: `pages → widgets → features → domain → shared`.
 Never reach upward. Widgets do not import from other widgets — extract to
-`shared/ui` or `domain/*` first.
+`shared/ui` or `domain/*` first. Ask before introducing a new top-level folder.
 
-## Content source of truth
+## Skills — which to load for which change
 
-All visible text comes from:
+Skills live in `.claude/skills/<name>/SKILL.md`. The project is self-contained:
+every skill it needs is in this repo. Each skill's `description` says when it
+applies. This table is the other direction: **before editing, find the row
+for the change and load every skill in it with the Skill tool.** A change that
+fits several rows loads the union. Don't write the code first and check the
+skill after.
 
-- [`src/domain/i18n/locales/en.ts`](src/domain/i18n/locales/en.ts)
-- [`src/domain/i18n/locales/pt.ts`](src/domain/i18n/locales/pt.ts)
+| Change | Load |
+|---|---|
+| **Add, remove or reshape a component** (section, island, UI primitive, icon) | `component-guide` + the rows below for what it contains; the full cycle runs through `/component-pipeline` |
+| Any `.astro` file, island markup, route, `astro.config.mjs` | `astro-guide` |
+| Any user-visible string, alt / aria-label, meta / SEO, contact data | `locale-copy-guide` |
+| CV or career copy (summary, current, bullets, keywords, stats), tailoring to a JD | `cv-content-guide`, `locale-copy-guide` |
+| New or reshaped section, layout, styling, tokens, icons, motion, print layout | `visual-design-guide`, `astro-guide` |
+| React island (`.tsx`) component or hook, or deciding whether something needs one | `react-island-guide` + the rows above for what it renders |
+| `eslint.config.js`, an eslint-disable comment, `pnpm-workspace.yaml` | `tooling-guide` |
+| New, removed or bumped dependency | `tooling-guide` |
+| Node version, GitHub Actions workflow | `tooling-guide` |
+| Restructure, move, rename, split across files, dead code | `refactor-guide`, `component-guide` + the rows for what is being moved |
 
-All contact / social / identity from:
+## Component pipeline
 
-- [`src/domain/profile/profile.ts`](src/domain/profile/profile.ts)
+`/component-pipeline [inventory | next | refactor <path> | add <name> <intent> | remove <path>]`
+runs one unit at a time: audit (`component-auditor` agent) → plan with the
+expected rendered-text drift → **stop for approval** → baseline → structure
+commits → behavior commits → verification → review (`component-reviewer`
+agent) → **stop**. Working files live in `.dev.debug/pipeline/` (gitignored);
+never reference them from committed code.
 
-Hard rule: **never inline copy in components**. If a string is hardcoded in a
-`.astro` / `.tsx`, that is a bug — lift it to the locale file.
+## Verification
 
-## Jeff Su mentorship — compact rules
+Before declaring any change done:
 
-Full version in [`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md).
-Below is the operating checklist Claude must apply when touching CV content.
-
-References:
-- 5 Golden Rules — https://www.jeffsu.org/5-golden-rules-for-an-incredible-resume/
-- Biggest mistake (missing metrics) — https://www.jeffsu.org/heres-the-biggest-mistake-found-on-resumes/
-- Job-search hub — https://www.jeffsu.org/job-search/
-
-### The 5 rules (apply to every CV edit)
-
-1. **LinkedIn surfaced.** `profile.social.linkedin` must render in the print
-   header. Keep the URL canonical (no UTM, no tracking).
-2. **Keyword alignment.** Pull keywords from the target job description into
-   `meta.keywords`, `about.summary`, `about.current`, `resume[].bullets`.
-   Balance hard + soft skills.
-3. **XYZ bullets.** `Accomplished [X] as measured by [Y], by doing [Z]`. Every
-   bullet must answer at least one of: how many? how long? how often? If no
-   metric exists, tie to a downstream business outcome.
-4. **475–600 words total.** Union of `about.summary` + `about.current` +
-   all `resume[].bullets` per locale stays in that window. Verify before
-   shipping a content PR.
-5. **No buzzwords.** Ban: *results-driven*, *team player*, *synergy*,
-   *go-getter*, *think outside the box*, *passionate*, *rockstar*. Replace
-   with a measurable achievement.
-
-### Bullet checklist (must all be true)
-
-- [ ] Starts with a strong action verb. Banned openers: *Responsible for*,
-      *In charge of*, *Worked on*, *Helped with*.
-- [ ] Has at least one number (count, %, currency, time, headcount).
-- [ ] ≤ 25 words.
-- [ ] Tech stack at the end of the bullet, not the start.
-- [ ] EN and PT-BR translate intent, not word-for-word. Numbers identical
-      across locales.
-
-### Action verb bank
-
-- Build / Ship — Built, Shipped, Launched, Delivered, Implemented, Released
-- Improve — Reduced, Increased, Accelerated, Optimized, Streamlined, Refactored
-- Lead — Led, Mentored, Coordinated, Owned, Drove, Championed
-- Discover — Investigated, Diagnosed, Identified, Prototyped, Proved out
-- Automate — Automated, Eliminated, Replaced, Migrated, Consolidated
-
-### Section order (web + print)
-
-1. Header — name, role, location, LinkedIn, GitHub, email, phone, portfolio.
-2. Summary — `about.summary` (2–3 sentences, keyword-dense).
-3. Skills — categorized; no progress bars on print.
-4. Experience — `resume[]`, reverse chronological, XYZ bullets.
-5. Education / Certifications — relevant only.
-6. Optional — selected projects / publications when they add signal.
-
-## Edit workflow for CV content
-
-1. Gather target JD; extract top 10–15 keywords.
-2. Edit `en.ts` and `pt.ts` **together** in the same change — never let
-   locales drift.
-3. Rewrite each bullet through the XYZ filter; add ≥ 1 metric.
-4. Word-count EN union: target 475–600.
-5. Strip buzzwords.
-6. `pnpm dev` → check `/en/`, `/en/cv`, `/pt/`, `/pt/cv`.
-7. Browser print-to-PDF from `/cv` → verify A4, no orphan headings, contact
-   line intact.
-8. `pnpm lint && pnpm build`.
+1. `pnpm lint` — a11y (jsx-a11y strict) and React rules; zero warnings.
+2. `pnpm build`. It does **not** type-check: a key missing from one locale
+   builds green.
+3. `pnpm copy:check` — EN/PT parity and no orphan dictionary keys (the check
+   the build skips).
+4. `pnpm text:diff` against a baseline saved before the change — for markup,
+   layout or refactor work the expected result is "unchanged".
+5. `pnpm cv:check` when CV copy changed.
 
 ## Things to never do
 
-- Duplicate copy into the CV route. Lift it into a locale file.
-- Add progress bars or skill % to the print layout (recruiters distrust them).
-- Translate metrics word-for-word (numbers must match across locales).
+- Duplicate copy into the CV route, or inline a string in a component.
+- Add progress bars or skill % to web or print.
+- Translate metrics word-for-word (numbers match across locales).
+- Invent a metric for a CV bullet.
 - Animate layout-bound CSS properties (use `transform`, `opacity`, `clip-path`).
 - Hardcode palette, spacing, or type sizes — use the tokens in
   [`src/styles/`](src/styles/).
 - Mutate locale objects in place — content is read-only at runtime.
-
-## Visual design rules (2026 portfolio direction)
-
-References that informed these rules:
-- [myseera — best developer portfolio templates 2026](https://myseera.com/blog/best-developer-portfolio-templates-2026)
-- [Awwwards — editorial layout](https://www.awwwards.com/inspiration/editorial-layout)
-- [Tilda — web design trends 2026](https://tilda.education/en/web-design-trends-2026)
-- [Wavespace — best website design examples 2026](https://www.wavespace.agency/blog/best-website-design-examples)
-- [format.com — portfolio about page guide](https://www.format.com/magazine/resources/photography/online-portfolio-about-page-step-by-step-guide)
-
-### Layering rule (no duplicated assets)
-
-The sidebar is fixed on `xl` viewports and already carries:
-
-- profile photo (120×120)
-- name
-- social icons (LinkedIn, GitHub, Medium, WhatsApp, Mail)
-- locale switcher + theme toggle
-- CV CTA
-
-Main sections (About, Resume, etc.) must **not** repeat any of these. If a
-piece of identity content already lives in the sidebar, the main column
-spends its real estate on something else (stats, prose, CTA, skills).
-
-This rule also applies to mobile: when the sidebar collapses into a drawer,
-the drawer still owns photo + socials. Hero may show the photo *once* on
-mobile, but never About.
-
-### Section depth over section count
-
-Aim for 4–5 deep sections, not 8 shallow ones. If a section answers fewer
-than 2 recruiter questions ("who is this", "what did they ship", "what stack",
-"how do I contact them"), merge it or delete it.
-
-### About section composition
-
-Required blocks, in order:
-
-1. **Section header** — `h2` + accent rule.
-2. **Stat anchors** — 3–5 numbers (years, companies, sectors, remote-first
-   flag). Editorial typography: number oversized, label small uppercase.
-   No stat unless it survives a fact-check.
-3. **Prose** — `about.summary` (career positioning) + `about.current`
-   (present focus) with a small kicker label between them
-   (e.g., `→ Current focus`).
-4. **CTA pair** — primary "Download CV", secondary LinkedIn.
-
-Skills do **not** belong inside About. They get their own section.
-
-### Skills section composition
-
-Three tiers, never six flat categories:
-
-| Tier | Contents | Visual treatment |
-|------|----------|------------------|
-| **Primary** | Stack you'd ship tomorrow (Angular, React, TypeScript, Node.js, .NET Core). | Larger tiles, full color icons. |
-| **Secondary** | Stack with real production exposure but not current focus. | Medium tiles, slightly muted. |
-| **Tools & methods** | Azure DevOps, AWS, Scrum, Jira, Power BI, BI/AI tooling. | Compact chips, smallest. |
-
-Banned: single-icon categories. If only one icon survives a category,
-absorb it into Tools & methods.
-
-### Typography hierarchy in editorial blocks
-
-- Stat number — `font-display`, oversized (clamp ~3rem → ~5rem).
-- Stat label — `text-xs` or `text-sm`, uppercase, muted.
-- Kicker label (`→ Current focus`) — `text-sm`, accent color, sentence case.
-- Body prose — `text-base` or `text-lg`, ink/80.
-
-### CTA placement
-
-Every editorial section that explains *who you are* must end with at least
-one navigable next step (CV download, contact, resume jump). No dead-end
-sections.
-
-## When in doubt
-
-- Content question → re-read [`docs/RESUME_GUIDELINES.md`](docs/RESUME_GUIDELINES.md).
-- Architecture question → respect FSD direction; ask before introducing a new
-  top-level folder.
-- Visual / motion question → see global rules under
-  `~/.claude/rules/ecc/web/` (design-quality, performance).
+- Create `src/fetch.ts` (reserved Astro entrypoint).
