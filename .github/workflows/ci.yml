@@ -33,6 +33,12 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Type check
+        run: pnpm check
+
+      - name: Locale dictionaries
+        run: pnpm copy:check
+
       - name: Build
         run: pnpm build
         env:
