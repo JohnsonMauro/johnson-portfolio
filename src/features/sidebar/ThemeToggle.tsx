@@ -1,6 +1,18 @@
-import { useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { SunIcon, MoonIcon } from '../../shared/ui/icons';
 import { THEME_STORAGE_KEY } from '../../shared/lib/storage-keys';
+
+// The inline script in BaseLayout sets the `dark` class before paint. The
+// server has no document and renders the light state; useSyncExternalStore
+// hydrates with that server snapshot, then switches to the real class, so
+// the first client render matches the HTML (no hydration mismatch).
+const readThemeClass = () => document.documentElement.classList.contains('dark');
+
+const subscribeToThemeClass = (onChange: () => void) => {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  return () => observer.disconnect();
+};
 
 interface ThemeToggleProps {
   label: string;
@@ -9,11 +21,7 @@ interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ label, toDarkLabel, toLightLabel }: ThemeToggleProps) {
-  // Reads the class the inline script in BaseLayout set before paint. On the
-  // server there is no document, so the static HTML renders the light state.
-  const [isDark, setIsDark] = useState(
-    () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
-  );
+  const isDark = useSyncExternalStore(subscribeToThemeClass, readThemeClass, () => false);
 
   const toggleTheme = () => {
     const root = document.documentElement;
@@ -24,7 +32,6 @@ export default function ThemeToggle({ label, toDarkLabel, toLightLabel }: ThemeT
     } catch {
       /* localStorage unavailable — ignore */
     }
-    setIsDark(next);
   };
 
   return (
