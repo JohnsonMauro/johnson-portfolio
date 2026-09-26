@@ -149,7 +149,7 @@ export default function Sidebar({
             alt={name}
             width={120}
             height={120}
-            className="h-[120px] w-[120px] rounded-full border-8 border-sidebar-ring object-cover"
+            className="size-30 rounded-full border-8 border-sidebar-ring object-cover"
           />
           <p className="mt-4 text-center font-display text-2xl font-semibold text-white">
             <a href={homeHref} className="text-white hover:text-white">

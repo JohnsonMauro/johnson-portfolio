@@ -14,7 +14,7 @@ const { items } = Astro.props;
     items.map((item, idx) => (
       <FadeIn client:visible variant="fade-up" delay={idx * 80} as="li" className="relative pb-8 last:pb-0">
         <span
-          class="absolute -left-[33px] top-1.5 flex h-4 w-4 items-center justify-center rounded-full border-2 border-accent bg-surface"
+          class="absolute -left-[calc(--spacing(8)+1px)] top-1.5 flex h-4 w-4 items-center justify-center rounded-full border-2 border-accent bg-surface"
           aria-hidden="true"
         />
         <h4 class="font-display text-lg font-semibold text-ink-deep">{item.role}</h4>
@@ -41,7 +41,7 @@ const { items } = Astro.props;
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 aria-hidden="true"
-                class="inline-block translate-y-[-1px]"
+                class="inline-block -translate-y-px"
               >
                 <path d="M14 3h7v7" />
                 <path d="M10 14 21 3" />

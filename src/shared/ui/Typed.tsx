@@ -58,7 +58,7 @@ export default function Typed({
       <span>{reducedMotion ? words[0] : text}</span>
       <span
         aria-hidden="true"
-        className="ml-0.5 inline-block h-[1em] w-0.5 -translate-y-[-2px] bg-current animate-blink"
+        className="ml-0.5 inline-block h-[1em] w-0.5 translate-y-0.5 bg-current animate-blink"
       />
     </span>
   );
