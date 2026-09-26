@@ -1,0 +1,35 @@
+/*
+ * Brand palette, light values. The single source for colors:
+ * - global.css maps every Tailwind --color-* token to one of these;
+ * - the print CV (pages/[lang]/cv.astro and widgets/cv/*), which does not
+ *   load Tailwind, reads them directly.
+ * Dark-theme overrides stay in global.css; the CV is light-only.
+ */
+:root {
+  --palette-ink: #272829;
+  --palette-ink-deep: #173b6c;
+  --palette-ink-dark: #040b14;
+
+  --palette-sidebar: #040b14;
+  --palette-sidebar-ring: #2c2f3f;
+  --palette-sidebar-social: #212431;
+
+  --palette-accent: #149ddd;
+  --palette-accent-hover: #2eafec;
+  --palette-accent-dark: #0e7bb0;
+  --palette-accent-light: #37b3ed;
+
+  --palette-bar-track: #ecedf2;
+
+  --palette-surface: #ffffff;
+  --palette-surface-alt: #f8fafc;
+  --palette-surface-card: #ffffff;
+  --palette-border: #e5e7eb;
+
+  /* Print CV: neutral text scale on white paper, plus the screen backdrop. */
+  --palette-print-text: #1a1a1a;
+  --palette-print-muted: #444444;
+  --palette-print-subtle: #555555;
+  --palette-print-faint: #888888;
+  --palette-print-backdrop: #f3f4f6;
+}

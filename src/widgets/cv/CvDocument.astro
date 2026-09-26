@@ -173,8 +173,8 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     max-width: 820px;
     margin: 0 auto;
     padding: 32px 40px;
-    color: #1a1a1a;
-    background: #ffffff;
+    color: var(--palette-print-text);
+    background: var(--palette-surface);
     font-family: 'Open Sans', system-ui, sans-serif;
     font-size: 11pt;
     line-height: 1.45;
@@ -186,7 +186,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     gap: 20px;
     align-items: center;
     padding-bottom: 16px;
-    border-bottom: 2px solid #149ddd;
+    border-bottom: 2px solid var(--palette-accent);
   }
 
   .cv__photo {
@@ -194,7 +194,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     height: 96px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #173b6c;
+    border: 3px solid var(--palette-ink-deep);
   }
 
   .cv__name {
@@ -202,14 +202,14 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     font-family: 'Poppins', system-ui, sans-serif;
     font-size: 22pt;
     font-weight: 700;
-    color: #173b6c;
+    color: var(--palette-ink-deep);
     letter-spacing: -0.02em;
   }
 
   .cv__role {
     margin: 2px 0 8px;
     font-size: 12pt;
-    color: #149ddd;
+    color: var(--palette-accent);
     font-weight: 600;
   }
 
@@ -224,12 +224,12 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   }
 
   .cv__contact a {
-    color: #1a1a1a;
+    color: var(--palette-print-text);
     text-decoration: none;
   }
 
   .cv__contact a:hover {
-    color: #149ddd;
+    color: var(--palette-accent);
     text-decoration: underline;
   }
 
@@ -244,8 +244,8 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #173b6c;
-    border-bottom: 1px solid #e5e7eb;
+    color: var(--palette-ink-deep);
+    border-bottom: 1px solid var(--palette-border);
     padding-bottom: 4px;
   }
 
@@ -269,7 +269,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
 
   .cv__skills-row dt {
     font-weight: 600;
-    color: #173b6c;
+    color: var(--palette-ink-deep);
     font-size: 10pt;
   }
 
@@ -298,7 +298,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
 
   .cv__skill-names {
     font-size: 9.5pt;
-    color: #444;
+    color: var(--palette-print-muted);
   }
 
   .cv__practices {
@@ -312,14 +312,14 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   }
 
   .cv__practices strong {
-    color: #173b6c;
+    color: var(--palette-ink-deep);
     font-weight: 600;
   }
 
   .cv__soft {
     margin: 0;
     font-size: 10pt;
-    color: #444;
+    color: var(--palette-print-muted);
   }
 
   .cv__experience {
@@ -347,13 +347,13 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     font-family: 'Poppins', system-ui, sans-serif;
     font-size: 11.5pt;
     font-weight: 600;
-    color: #173b6c;
+    color: var(--palette-ink-deep);
   }
 
   .cv__period {
     font-size: 9.5pt;
     font-weight: 500;
-    color: #149ddd;
+    color: var(--palette-accent);
     white-space: nowrap;
   }
 
@@ -361,7 +361,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     margin: 2px 0 4px;
     font-size: 10pt;
     font-style: italic;
-    color: #555;
+    color: var(--palette-print-subtle);
   }
 
   .cv__org a {
@@ -370,7 +370,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   }
 
   .cv__org a:hover {
-    color: #149ddd;
+    color: var(--palette-accent);
   }
 
   .cv__bullets {
@@ -386,11 +386,11 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   .cv__footer {
     margin-top: 24px;
     padding-top: 10px;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--palette-border);
     display: flex;
     justify-content: space-between;
     font-size: 8.5pt;
-    color: #888;
+    color: var(--palette-print-faint);
   }
 
   @media print {
@@ -401,7 +401,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
 
     html,
     body {
-      background: #ffffff !important;
+      background: var(--palette-surface) !important;
     }
 
     .cv {
@@ -412,7 +412,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     }
 
     .cv__contact a {
-      color: #1a1a1a !important;
+      color: var(--palette-print-text) !important;
       text-decoration: none;
     }
   }

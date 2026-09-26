@@ -1,27 +1,29 @@
 @import "tailwindcss";
+@import "./palette.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-ink: #272829;
-  --color-ink-deep: #173b6c;
-  --color-ink-dark: #040b14;
+  /* Light values come from palette.css (shared with the print CV). */
+  --color-ink: var(--palette-ink);
+  --color-ink-deep: var(--palette-ink-deep);
+  --color-ink-dark: var(--palette-ink-dark);
 
-  --color-sidebar: #040b14;
-  --color-sidebar-ring: #2c2f3f;
-  --color-sidebar-social: #212431;
+  --color-sidebar: var(--palette-sidebar);
+  --color-sidebar-ring: var(--palette-sidebar-ring);
+  --color-sidebar-social: var(--palette-sidebar-social);
 
-  --color-accent: #149ddd;
-  --color-accent-hover: #2eafec;
-  --color-accent-dark: #0e7bb0;
-  --color-accent-light: #37b3ed;
+  --color-accent: var(--palette-accent);
+  --color-accent-hover: var(--palette-accent-hover);
+  --color-accent-dark: var(--palette-accent-dark);
+  --color-accent-light: var(--palette-accent-light);
 
-  --color-bar-track: #ecedf2;
+  --color-bar-track: var(--palette-bar-track);
 
-  --color-surface: #ffffff;
-  --color-surface-alt: #f8fafc;
-  --color-surface-card: #ffffff;
-  --color-border: #e5e7eb;
+  --color-surface: var(--palette-surface);
+  --color-surface-alt: var(--palette-surface-alt);
+  --color-surface-card: var(--palette-surface-card);
+  --color-border: var(--palette-border);
 
   --font-sans: "Open Sans", system-ui, sans-serif;
   --font-heading: Raleway, system-ui, sans-serif;
