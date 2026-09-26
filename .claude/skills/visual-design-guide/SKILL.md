@@ -57,7 +57,7 @@ Every section that explains who you are ends with a navigable next step (CV down
 
 ## Tokens and motion
 
-- Palette, spacing and type sizes come from the tokens in `src/styles/global.css`. Never hardcode them in a component.
+- Colors come from `src/styles/palette.css` (light brand palette and the CV's print grays, plain custom properties); `global.css` maps the Tailwind tokens onto it and holds the dark overrides. Spacing and type sizes are Tailwind tokens in `global.css`. Never hardcode any of them, including in the CV's scoped styles.
 - Animate only `transform`, `opacity` and `clip-path`. Never width, height, top/left, margin or padding.
 - Motion must respect `prefers-reduced-motion`. Entrance animations go through `src/shared/ui/FadeIn.tsx` and the `--animate-*` tokens in `global.css`. That path does not check `prefers-reduced-motion` yet, so new motion must not add to the gap.
 

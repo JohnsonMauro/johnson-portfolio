@@ -72,15 +72,16 @@ On a clean tree: `pnpm build && pnpm text:save`. This is the net for every later
 
 ## 6. Structure commits
 
-One S row per commit. After each: `pnpm lint`, `pnpm build`, `pnpm text:diff` → **unchanged**. Drift on an S commit means it was not structure: fix or revert that step before the next one. Never stack changes on red.
+One S row per commit. After each: `pnpm lint`, `pnpm check`, `pnpm build`, `pnpm text:diff` → **unchanged**. Drift on an S commit means it was not structure: fix or revert that step before the next one. Never stack changes on red.
 
 ## 7. Behavior commits
 
-One B row per commit. After each: `pnpm lint`, `pnpm build`, `pnpm copy:check`, `pnpm text:diff`, and compare the drift with the plan's expected drift. Unexpected lines are a bug; missing lines are an unfinished step.
+One B row per commit. After each: `pnpm lint`, `pnpm check`, `pnpm build`, `pnpm copy:check`, `pnpm text:diff`, and compare the drift with the plan's expected drift. Unexpected lines are a bug; missing lines are an unfinished step.
 
 ## 8. Final verification
 
-- `pnpm lint`, `pnpm build`, `pnpm copy:check`, `pnpm text:diff` (matches the plan), `pnpm cv:check` if CV copy changed.
+- `pnpm lint`, `pnpm check`, `pnpm build`, `pnpm copy:check`, `pnpm text:diff` (matches the plan), `pnpm cv:check` if CV copy changed.
+- `text:diff` does not see CSS, attributes (`src`, `hreflang`, `aria-pressed`) or island behavior after hydration. For an S change to styles or islands, compare screenshots of the built pages before and after (both themes, `xl` and mobile) and drive the island in a browser; say which of these ran.
 - `pnpm dev`: `/en/`, `/pt/`, `/en/cv`, `/pt/cv`; both themes; `xl` and mobile (drawer); keyboard tab through anything interactive; sidebar nav and scroll-spy if the section is navigable.
 - Print `/cv` to PDF if the CV changed.
 - Say what was checked by hand and what was not.

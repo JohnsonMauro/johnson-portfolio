@@ -46,6 +46,8 @@ Islands render once on the server at build time, where `window`, `document` and 
 - Scroll listeners are `{ passive: true }`. Prefer `IntersectionObserver` to scroll math for visibility.
 - Hooks are never conditional. Custom hooks start with `use`.
 
+Known gap: after a reload with the dark theme stored, hydration logs React error #418. `ThemeToggle` reads the `dark` class during render, so the server HTML (light: Moon icon, `aria-pressed="false"`) differs from the first client render. Reading it after mount fixes it, and that fix is a behavior change (B).
+
 ## Memoization
 
 This project does **not** run the React Compiler, so nothing is memoized automatically. That still does not make `useMemo` / `useCallback` / `memo` the default: islands are small and re-render rarely.

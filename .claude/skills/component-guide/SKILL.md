@@ -38,7 +38,7 @@ Copy the shape of an existing section (`About.astro` is the reference):
 </section>
 ```
 
-- `id` is the anchor the sidebar nav and scroll-spy use. `section-anchor` handles the scroll offset.
+- `id` must match the section's entry in `src/domain/sections/sections.ts`; the sidebar nav and scroll-spy read it from there. `section-anchor` handles the scroll offset.
 - The `xl:pl-[…sidebar…]` padding keeps content clear of the fixed sidebar. Hero and Footer carry their own variant.
 - Alternate `bg-surface` / `bg-surface-alt` with the neighbouring sections so the rhythm holds.
 - Props: `dict: Dict` (plus `lang: Locale` when it builds URLs). The widget never picks a locale itself.
@@ -52,19 +52,19 @@ Copy the shape of an existing section (`About.astro` is the reference):
 | 2 | `src/domain/i18n/content.ts` | New keys in `Dict` (`sections.<name>Title`, a `<name>` block, `nav.<name>` if it gets a nav item) |
 | 3 | `src/domain/i18n/locales/en.ts` + `pt.ts` | The copy, both locales in the same commit (`locale-copy-guide`) |
 | 4 | `src/pages/[lang]/index.astro` | Import and render inside `<main>`, in reading order |
-| 5 | `src/features/sidebar/Sidebar.tsx` (if navigable) | `NAV` entry, `NAV_ICONS` entry, `navLabels` prop type, and the id in the scroll-spy `ids` array |
+| 5 | `src/domain/sections/sections.ts` | One entry in render order: `{ id }`, plus `nav: { label, icon }` if it belongs in the sidebar nav. Nav and scroll-spy derive from it; a new icon key also needs its component in `NAV_ICONS` (`Sidebar.tsx`) |
 | 6 | `src/shared/ui/icons/index.tsx` (if a new icon) | Inline SVG component, same `IconProps` shape |
 | 7 | `src/widgets/cv/CvDocument.astro` (if the content belongs on the CV) | The CV renders its own markup from the same dict keys; no second copy of text |
 | 8 | `public/assets/…` (if media) | Referenced through `asset()` |
 
-Not every section is navigable: today `#skills` renders but has no sidebar entry. Decide it explicitly in the plan.
+Not every section is navigable: today `#skills` renders with no `nav` entry. Decide it explicitly in the plan.
 
 ## Removing a component: nothing left behind
 
 Work the add table backwards, then prove it:
 
 1. **Fan-in first**: `grep -rn "<Name>" src` and the import path. Every importer changes in the same commit.
-2. Page render and import, sidebar `NAV` / `NAV_ICONS` / `navLabels` / scroll-spy id.
+2. Page render and import, and the entry in `domain/sections/sections.ts` (plus its `NAV_ICONS` component if no other section uses that icon).
 3. Dict keys: remove from `content.ts`, `en.ts` and `pt.ts` together. `pnpm copy:check` fails on a key left in one locale or a key nobody reads.
 4. Icons, assets and helpers used only by the removed component: grep each; delete the ones with zero remaining consumers.
 5. CV: if `CvDocument` read the same keys, decide whether the CV loses the block too.
@@ -84,4 +84,4 @@ Work the add table backwards, then prove it:
 
 ## Verify
 
-`pnpm lint` · `pnpm build` · `pnpm copy:check` · `pnpm text:diff` against a baseline saved before the change: the drift must be exactly what the plan said, nothing else.
+`pnpm lint` (also enforces the layer direction) · `pnpm check` · `pnpm build` · `pnpm copy:check` · `pnpm text:diff` against a baseline saved before the change: the drift must be exactly what the plan said, nothing else.

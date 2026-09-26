@@ -20,7 +20,7 @@ Both surfaces read from the same dictionaries — content is never duplicated.
   Rust compiler + Vite 8 (Rolldown).
 - **React 19.3** — interactive islands only (sidebar, back-to-top), via
   `@astrojs/react` 7 (Oxc JSX transform, no Babel).
-- **Tailwind 4** — via `@tailwindcss/vite`; design tokens in `src/styles/`.
+- **Tailwind 4** — via `@tailwindcss/vite`; colors in `src/styles/palette.css`, tokens in `src/styles/global.css`.
 - **TypeScript** strict.
 - **ESLint 10** flat config + `eslint-plugin-astro` 3, `react`, `react-hooks`,
   `jsx-a11y-x` (ESLint 10-compatible fork of `jsx-a11y`).
@@ -35,6 +35,7 @@ Astro 7 alone needs `>=22.12`).
 pnpm install
 pnpm dev          # local dev at http://localhost:4321/johnson-portfolio/
 pnpm build        # static build to dist/
+pnpm check        # type check (astro check)
 pnpm preview      # serve dist/
 pnpm lint         # zero-warning lint
 pnpm lint:fix     # autofix
@@ -63,12 +64,12 @@ flowchart TB
   subgraph widgets["widgets/ · static sections (.astro)"]
     direction LR
     sections["Hero · About · Skills · Resume · Footer"]
-    cvdoc["CvDocument"]
+    cvdoc["CvDocument · CvToolbar"]
   end
 
   subgraph features["features/ · React islands"]
     direction LR
-    sidebar["Sidebar · client:load"]
+    sidebar["Sidebar · LocaleSwitcher · ThemeToggle · client:load"]
     backtotop["BackToTop · client:idle"]
   end
 
@@ -76,13 +77,14 @@ flowchart TB
     direction LR
     locales[("i18n/locales · en.ts · pt.ts")]
     profile["profile/ · contact · social · expertise"]
+    sectionsreg["sections/ · section registry"]
     seo["seo/ · JSON-LD"]
   end
 
   subgraph shared["shared/ · primitives"]
     direction LR
     ui["ui/ · FadeIn · Typed · icons"]
-    lib["lib/ · asset()"]
+    lib["lib/ · asset() · storage keys"]
   end
 
   pages e1@--> app
@@ -109,7 +111,7 @@ flowchart TB
 Rules the diagram encodes:
 
 - **No upward imports.** `domain/` and `shared/` import nothing from the
-  project; `pages/` only composes.
+  project; `pages/` only composes. `pnpm lint` fails on any violation.
 - **No widget-to-widget imports.** Something two widgets need moves to
   `shared/ui` (presentational) or `domain/*` (content, data).
 - **All visible copy lives in `domain/i18n/locales`**, EN and PT-BR side by
@@ -171,7 +173,7 @@ asset URLs.
   `chore:`, `ci:`, `perf:`).
 - **Animation** — compositor-friendly only (`transform`, `opacity`,
   `clip-path`). Never animate layout properties.
-- **Styling** — use tokens in `src/styles/`; no hardcoded palette or spacing.
+- **Styling** — colors from `src/styles/palette.css`, other tokens from `src/styles/global.css`; no hardcoded palette or spacing.
 - **A11y** — semantic HTML first; lint enforces `jsx-a11y-x` rules in `.tsx`
   and `astro/jsx-a11y/*` in `.astro`.
 

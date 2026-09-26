@@ -28,6 +28,7 @@ Two surfaces share one content source: `/<lang>/` (interactive portfolio) and `/
 
 ## Verify
 
-- **`pnpm copy:check`** — the build does not type-check (`typescript` is not installed), so a key missing from `pt.ts` builds green and renders empty. `copy:check` fails on any key path or array length present in one locale only, and on a `dict.<section>.<key>` nobody reads.
+- **`pnpm check`** — the build strips types without checking them; `astro check` fails on a key missing from a locale or a wrong prop.
+- **`pnpm copy:check`** — what types cannot see: an array (resume entries, bullets) with a different length in each locale, and a `dict.<section>.<key>` nobody reads (read as `.key`, or as a quoted `'key'` through a registry).
 - `pnpm text:diff` (see `astro-guide`): shows exactly which pages and lines the copy change reached, in both locales.
 - CV copy also goes through `cv-content-guide` and `pnpm cv:check`.

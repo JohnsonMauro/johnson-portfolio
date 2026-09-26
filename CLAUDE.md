@@ -24,6 +24,7 @@ is no second copy.
 |------|---------|
 | Dev server | `pnpm dev` |
 | Production build | `pnpm build` |
+| Type check (`astro check`) | `pnpm check` |
 | Preview build | `pnpm preview` |
 | Lint (zero warnings) | `pnpm lint` |
 | Lint + autofix | `pnpm lint:fix` |
@@ -49,8 +50,10 @@ src/
 ```
 
 Dependency direction: `pages → widgets → features → domain → shared`.
-Never reach upward. Widgets do not import from other widgets — extract to
-`shared/ui` or `domain/*` first. Ask before introducing a new top-level folder.
+Never reach upward. Widgets do not import from other widgets, nor features
+from other features — extract to `shared/ui` or `domain/*` first. `pnpm lint`
+enforces all of this. The page's sections are declared once in
+`src/domain/sections/sections.ts`; colors live in `src/styles/palette.css`. Ask before introducing a new top-level folder.
 
 ## Skills — which to load for which change
 
@@ -88,13 +91,12 @@ never reference them from committed code.
 Before declaring any change done:
 
 1. `pnpm lint` — a11y (jsx-a11y strict) and React rules; zero warnings.
-2. `pnpm build`. It does **not** type-check: a key missing from one locale
-   builds green.
-3. `pnpm copy:check` — EN/PT parity and no orphan dictionary keys (the check
-   the build skips).
-4. `pnpm text:diff` against a baseline saved before the change — for markup,
+2. `pnpm check` — types (`astro check`); the build alone strips them unchecked.
+3. `pnpm build`.
+4. `pnpm copy:check` — EN/PT array parity and no orphan dictionary keys.
+5. `pnpm text:diff` against a baseline saved before the change — for markup,
    layout or refactor work the expected result is "unchanged".
-5. `pnpm cv:check` when CV copy changed.
+6. `pnpm cv:check` when CV copy changed.
 
 ## Things to never do
 
@@ -103,7 +105,8 @@ Before declaring any change done:
 - Translate metrics word-for-word (numbers match across locales).
 - Invent a metric for a CV bullet.
 - Animate layout-bound CSS properties (use `transform`, `opacity`, `clip-path`).
-- Hardcode palette, spacing, or type sizes — use the tokens in
-  [`src/styles/`](src/styles/).
+- Hardcode palette, spacing, or type sizes — colors come from
+  [`src/styles/palette.css`](src/styles/palette.css), the rest from the tokens
+  in [`src/styles/global.css`](src/styles/global.css).
 - Mutate locale objects in place — content is read-only at runtime.
 - Create `src/fetch.ts` (reserved Astro entrypoint).

@@ -17,7 +17,7 @@ The caller gives you the unit, the mode (`refactor`, `add`, `remove`), the commi
 
 ## Rules
 
-- **Read-only.** No Edit or Write, no git command that changes state. You may run `pnpm lint`, `pnpm copy:check`, `pnpm cv:check` and `pnpm text:diff`. Run `pnpm build` only if `text:diff` needs a fresh `dist/`, and say so.
+- **Read-only.** No Edit or Write, no git command that changes state. You may run `pnpm lint`, `pnpm check`, `pnpm copy:check`, `pnpm cv:check` and `pnpm text:diff`. Run `pnpm build` only if `text:diff` needs a fresh `dist/`, and say so.
 - **Load the skills for what changed.** Map every changed file to its rows in the CLAUDE.md table and load them. List them at the top.
 - **Evidence.** Every finding cites `file:line` from the diff and the skill section. Pre-existing problems outside the diff go only in "Noticed, out of scope".
 

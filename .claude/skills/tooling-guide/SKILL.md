@@ -29,6 +29,8 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 
 - Flat config in `eslint.config.js`: `@eslint/js` recommended, `typescript-eslint` strict + stylistic (no type-aware rules), React + hooks, jsx-a11y strict, Astro recommended + jsx-a11y strict.
 - `pnpm lint` runs with `--max-warnings=0`. A warning fails CI like an error.
+- **Layer direction is a lint rule** (`layerBoundaries()` at the end of `eslint.config.js`): an upward import, or a widget/feature importing a sibling slice, fails. The patterns match relative specifiers; features and widgets are one folder deep.
+- `tseslint.config()` is deprecated (hint from `pnpm check`); moving to ESLint's `defineConfig` is pending.
 - **The a11y plugin is `eslint-plugin-jsx-a11y-x`.** Disable comments use `jsx-a11y-x/<rule>` in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
 - **Keep legacy `eslint-plugin-jsx-a11y` out of the tree.** `eslint-plugin-astro` prefers it when present, which silently swaps the rule set under the `.astro` files.
 - `scripts/` is ignored by ESLint. Scripts there are plain Node ESM (`.mjs`).
@@ -40,6 +42,14 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 - Retest signal: `pnpm view eslint-plugin-react peerDependencies` lists the ESLint major in use.
 - When it does: remove the `peerDependencyRules` entry, `pnpm install`, `pnpm lint`.
 - Re-checked 2026-09-26: latest `eslint-plugin-react` is 7.37.5 (published 2025-04), peer range still ends at `^9.7`. Hold stays.
+
+## Deliberate hold: typescript 6 line
+
+`@astrojs/check` declares `typescript` as a peer with `^5 || ^6`, so `typescript` stays on the 6 line although a newer major exists.
+
+- Retest signal: `pnpm view @astrojs/check peerDependencies` includes the current typescript major.
+- When it does: bump `typescript`, run `pnpm check`.
+- Re-checked 2026-09-26: `@astrojs/check` 0.9.10, peer `^5.0.0 || ^6.0.0`; typescript latest 7.0.2.
 
 ## pnpm and supply chain
 

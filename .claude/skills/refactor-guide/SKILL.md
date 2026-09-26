@@ -50,6 +50,7 @@ Direction: `pages → widgets → features → domain → shared`. Never import 
 
 - **Closest common ancestor.** One consumer → next to it. Used by several widgets → `shared/ui` (presentational) or `domain/*` (content, data, rules).
 - **`shared/` is not a parking lot.** Something only one widget uses stays in that widget.
+- `pnpm lint` fails on an upward import or a sibling-slice import, so a wrong move is caught before commit.
 - **Measure consumers before moving**: grep the import path, not the name.
 - **One move per commit**, updating every importer in the same commit.
 - An import that points upward (shared → widget, domain → feature) means the code sits on the wrong floor.
@@ -61,7 +62,7 @@ A shared component accumulating `variant`/`mode` flags that branch behavior is t
 ## 7. Per-step checklist
 
 1. `pnpm lint` on a clean tree (zero warnings).
-2. `pnpm build`.
+2. `pnpm check` and `pnpm build`.
 3. `pnpm text:diff` → unchanged.
 4. `pnpm copy:check` when dictionary keys moved or were deleted.
 5. Commit: one move per commit.

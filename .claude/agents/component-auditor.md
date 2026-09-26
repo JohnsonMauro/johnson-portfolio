@@ -17,7 +17,7 @@ The caller gives you a mode (`refactor`, `add`, `remove`) and a target: a path u
 
 ## Rules
 
-- **Read-only.** No Edit, no Write, no git command that changes state. Bash is for `git log`, `grep`, `wc`, `pnpm exec eslint <files> --max-warnings=0`, `pnpm copy:check`.
+- **Read-only.** No Edit, no Write, no git command that changes state. Bash is for `git log`, `grep`, `wc`, `pnpm exec eslint <files> --max-warnings=0`, `pnpm check`, `pnpm copy:check`.
 - **Load the skills before judging.** Four are preloaded. Read the CLAUDE.md table "Skills — which to load for which change", pick the rows the unit touches (copy → `locale-copy-guide`, island → `react-island-guide`, CV → `cv-content-guide`, tooling → `tooling-guide`) and load them. List every skill loaded at the top of the report.
 - **Evidence, not plausibility.** Every finding cites `file:line` (or the grep that proves it) and the skill section it breaks. No line, no finding. A rule that names something that no longer exists goes under "Skill drift". Something that looks wrong with no rule behind it goes under "Skill gap".
 - **Classify** each finding **S** (nothing a visitor, the rendered text or the print CV can observe changes) or **B** (rendered text, meta, alt/aria, URLs/anchors, layout, island behavior change). Suggest the catalog move and scale (`refactor-guide`).
