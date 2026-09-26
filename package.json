@@ -20,7 +20,8 @@
     "cv:check": "node scripts/cv-check.mjs",
     "copy:check": "node scripts/copy-check.mjs",
     "lint": "eslint . --max-warnings=0",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",

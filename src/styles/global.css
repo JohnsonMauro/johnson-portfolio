@@ -38,31 +38,39 @@
   --animate-fade-right: fadeRight 600ms ease-out both;
   --animate-fade-left: fadeLeft 600ms ease-out both;
   --animate-blink: blink 1s steps(1) infinite;
+}
 
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
+/*
+ * Keyframes for the --animate-* tokens above. They sit outside @theme only
+ * because the CSS lint parser (tailwind-csstree) cannot read an @theme that
+ * mixes declarations with nested @keyframes:
+ * https://github.com/humanwhocodes/tailwind-csstree/issues/79
+ * Every one is in use, so emitting them unconditionally costs nothing; move
+ * them back inside @theme once that issue is fixed.
+ */
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
 
-  @keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(24px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
+@keyframes fadeUp {
+  0% { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 
-  @keyframes fadeRight {
-    0% { opacity: 0; transform: translateX(-24px); }
-    100% { opacity: 1; transform: translateX(0); }
-  }
+@keyframes fadeRight {
+  0% { opacity: 0; transform: translateX(-24px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
 
-  @keyframes fadeLeft {
-    0% { opacity: 0; transform: translateX(24px); }
-    100% { opacity: 1; transform: translateX(0); }
-  }
+@keyframes fadeLeft {
+  0% { opacity: 0; transform: translateX(24px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
 
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    50.01%, 100% { opacity: 0; }
-  }
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
 }
 
 :root.dark {
@@ -122,6 +130,8 @@
     scroll-behavior: auto;
   }
 
+  /* eslint-disable css/no-important -- the preference must beat inline
+     animation delays (FadeIn) and utility classes. */
   *,
   *::before,
   *::after {
@@ -131,6 +141,7 @@
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
   }
+  /* eslint-enable css/no-important */
 }
 
 @layer utilities {

@@ -4,6 +4,8 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y-x';
 import astro from 'eslint-plugin-astro';
+import css from '@eslint/css';
+import { tailwind4 } from 'tailwind-csstree';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 import { readdirSync } from 'node:fs';
@@ -13,9 +15,12 @@ export default defineConfig(
     ignores: ['dist/', '.astro/', 'node_modules/', 'public/', 'scripts/'],
   },
 
-  js.configs.recommended,
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
+  // JS/TS rule sets carry no `files` of their own, so unscoped they would also
+  // run on the CSS language below and crash on its source code.
+  {
+    files: ['**/*.{js,mjs,cjs,jsx,ts,tsx,astro}'],
+    extends: [js.configs.recommended, tseslint.configs.strict, tseslint.configs.stylistic],
+  },
 
   {
     files: ['**/*.{ts,tsx,js,jsx}'],
@@ -69,6 +74,21 @@ export default defineConfig(
     files: ['eslint.config.js', 'astro.config.mjs'],
     languageOptions: {
       globals: globals.node,
+    },
+  },
+
+  // Stylesheets: the CSS language, taught Tailwind 4's at-rules (@theme,
+  // @apply, @custom-variant…) so they parse instead of reading as typos.
+  {
+    files: ['**/*.css'],
+    plugins: { css },
+    language: 'css/css',
+    languageOptions: { customSyntax: tailwind4 },
+    extends: ['css/recommended'],
+    rules: {
+      // ::selection only tints highlighted text; where it is unsupported the
+      // browser's default highlight shows, so its limited baseline is harmless.
+      'css/use-baseline': ['error', { allowSelectors: ['selection'] }],
     },
   },
 

@@ -4,9 +4,11 @@
     "javascriptreact",
     "typescript",
     "typescriptreact",
-    "astro"
+    "astro",
+    "css"
   ],
   "eslint.useFlatConfig": true,
+  "css.validate": false,
   "[astro]": {
     "editor.defaultFormatter": "astro-build.astro-vscode"
   }
