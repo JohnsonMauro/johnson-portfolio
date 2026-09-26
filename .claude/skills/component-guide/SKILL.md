@@ -26,7 +26,7 @@ Copy the shape of an existing section (`About.astro` is the reference):
 ```astro
 <section
   id="<anchor>"
-  class="section-anchor bg-surface py-20 px-6 xl:pl-[calc(theme(spacing.sidebar)+theme(spacing.6))]"
+  class="section-anchor bg-surface py-20 px-6 xl:pl-[calc(var(--spacing-sidebar)+(--spacing(6)))]"
 >
   <div class="mx-auto max-w-page">
     <header class="mb-12">

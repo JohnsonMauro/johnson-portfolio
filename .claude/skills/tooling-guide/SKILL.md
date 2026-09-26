@@ -1,6 +1,6 @@
 ---
 name: tooling-guide
-description: Use when touching eslint.config.js, writing an eslint-disable comment, considering, adding, removing or bumping a dependency, changing pnpm-workspace.yaml, the Node version (.nvmrc, engines), or a GitHub Actions workflow. Covers the a11y plugin naming (jsx-a11y-x), the eslint-plugin-react peer hold, pnpm supply-chain settings, and which files move together on a Node or CI change.
+description: Use when touching eslint.config.js (including CSS lint), writing an eslint-disable comment, the pre-commit hook (.husky/, lint-staged.config.js), considering, adding, removing or bumping a dependency, changing pnpm-workspace.yaml, the Node version (.nvmrc, engines), or a GitHub Actions workflow. Covers the a11y plugin naming (jsx-a11y-x), CSS lint with Tailwind syntax, what the hook runs, the eslint-plugin-react and tailwind-csstree holds, pnpm supply-chain settings, and which files move together on a Node or CI change.
 ---
 
 # Tooling guide
@@ -27,13 +27,42 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 
 ## ESLint
 
-- Flat config in `eslint.config.js`: `@eslint/js` recommended, `typescript-eslint` strict + stylistic (no type-aware rules), React + hooks, jsx-a11y strict, Astro recommended + jsx-a11y strict.
+- Flat config in `eslint.config.js`: `@eslint/js` recommended, `typescript-eslint` strict + stylistic (no type-aware rules), React + hooks, jsx-a11y strict, Astro recommended + jsx-a11y strict, and `@eslint/css` recommended for `**/*.css`.
+- **The JS/TS rule sets are scoped with `files`** (`**/*.{js,mjs,cjs,jsx,ts,tsx,astro}`). Unscoped they also run on the CSS language and crash (`sourceCode.getAllComments is not a function`). Any new rule set without its own `files` goes inside that scoped block.
+- **CSS lint knows Tailwind 4** through `languageOptions.customSyntax: tailwind4` (`tailwind-csstree`), so `@theme`, `@apply` and `@custom-variant` parse. Only `.css` files are covered: `<style>` blocks inside `.astro` are not CSS-linted.
+- `css/use-baseline` allows `::selection` (cosmetic, degrades to the default highlight). `css/no-important` is disabled only around the reduced-motion block in `global.css`, which must beat inline animation delays.
+- VS Code: `.vscode/settings.json` adds `css` to `eslint.validate` and sets `css.validate: false`, so the editor shows ESLint's Tailwind-aware CSS diagnostics instead of the built-in validator's false "Unknown at rule @theme".
+- A class warning in the editor that `pnpm lint` does not report comes from the Tailwind CSS IntelliSense extension (`suggestCanonicalClasses`). Use no `theme()` in arbitrary values (`var(--spacing-sidebar)`, `--spacing(6)` instead). Its px → scale suggestions (`h-[120px]` → `h-30`) switch px to rem, so they only match at a 16px root: judge each one, do not apply them blindly.
 - `pnpm lint` runs with `--max-warnings=0`. A warning fails CI like an error.
 - **Layer direction is a lint rule** (`layerBoundaries()` at the end of `eslint.config.js`): an upward import, or a widget/feature importing a sibling slice, fails. Specifiers are matched as written — relative or `@/` — at any nesting depth inside a slice; slices are read from `src/features/` and `src/widgets/` at config load, so a new slice is covered. Dynamic `import()` is not seen by `no-restricted-imports`. After changing the rule, re-prove it with probe files (forbidden and allowed forms per layer).
 - The config is wrapped in ESLint's own `defineConfig()` (`eslint/config`); `tseslint.config()` is deprecated upstream in its favor. `typescript-eslint` stays for its parser and rule sets.
 - **The a11y plugin is `eslint-plugin-jsx-a11y-x`.** Disable comments use `jsx-a11y-x/<rule>` in `.tsx` and `astro/jsx-a11y/<rule>` in `.astro`.
 - **Keep legacy `eslint-plugin-jsx-a11y` out of the tree.** `eslint-plugin-astro` prefers it when present, which silently swaps the rule set under the `.astro` files.
 - `scripts/` is ignored by ESLint. Scripts there are plain Node ESM (`.mjs`).
+
+## Pre-commit hook
+
+`husky` installs the hooks through the `prepare` script (every `pnpm install`, which sets `core.hooksPath` to `.husky/_`). `.husky/pre-commit` runs `lint-staged --hide-all`, configured in `lint-staged.config.js`:
+
+| Staged | Runs |
+|---|---|
+| `*.{js,mjs,cjs,jsx,ts,tsx,astro,css}` | `eslint --max-warnings=0 --no-warn-ignored` on those files |
+| `src/**/*.{ts,tsx,astro}` | `astro check`, `copy-check.mjs` (project-wide, once) |
+| `src/domain/i18n/locales/*.ts` | `cv-check.mjs` |
+
+- `--no-warn-ignored` is required: a staged file under an ESLint ignore (`scripts/`) otherwise raises "File ignored" as a warning and fails `--max-warnings=0`.
+- Project-wide checks are functions in the config so lint-staged does not append the file list.
+- `--hide-all` stashes unstaged edits **and untracked files** while the checks run, so `astro check` sees exactly what is being committed. Without it lint-staged hides only the unstaged part of partially staged files, and a commit missing a new, untracked module still passes. Proven: staging `Hero.astro` alone, without its untracked imports, fails `astro check`.
+- The hook is a fast local gate, not a replacement for CI: `build` and `text:diff` stay manual (CLAUDE.md → Verification) and CI still runs lint, check, copy check and build.
+- Bypassing with `--no-verify` is for a message-only amend (lint-staged has nothing staged then), never to get failing code in.
+
+## Deliberate hold: keyframes outside `@theme`
+
+`tailwind-csstree` cannot parse an `@theme` block that mixes declarations with nested `@keyframes` ([issue #79](https://github.com/humanwhocodes/tailwind-csstree/issues/79)), so the keyframes for the `--animate-*` tokens live at the top level of `global.css`. The generated CSS was verified identical (same keyframes, same tokens) before and after the move.
+
+- Retest signal: issue #79 closed and a `tailwind-csstree` release after it.
+- When it is: move the keyframes back inside `@theme`, `pnpm lint`, compare the `@keyframes` in `dist/_astro/*.css` before and after.
+- Opened 2026-09-26 with `tailwind-csstree` 0.4.0.
 
 ## Deliberate hold: eslint-plugin-react peer
 

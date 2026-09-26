@@ -34,6 +34,10 @@ Read the installed Astro version (`node -p "require('astro/package.json').versio
 - `src/fetch.ts` is the Advanced Routing entrypoint. Do not create a file with that name.
 - `@astrojs/react` compiles with Oxc and has no `babel` option. A custom transform goes in `vite.plugins` through `@rolldown/plugin-babel`.
 
+## CSS minifier folds `animation-timeline` into an invalid shorthand
+
+The build minifies CSS with lightningcss (through Vite); `pnpm dev` does not. `animation: x linear both; animation-timeline: --h` comes out as `animation: linear both x --h`, which browsers reject whole, so a scroll-driven animation works in dev and silently disappears in the build. Write longhands only (`animation-name`, `-timing-function`, `-fill-mode`, `-timeline`, `-range`), as `widgets/hero/Hero.astro` does, and grep the rule in `dist/_astro/*.css` after `pnpm build`.
+
 ## Routes and i18n
 
 - Routes: `src/pages/[lang]/index.astro` (portfolio) and `src/pages/[lang]/cv.astro` (printable CV). `src/pages/index.astro` is the root entry.
