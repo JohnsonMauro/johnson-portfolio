@@ -28,6 +28,7 @@ is no second copy.
 | Preview build | `pnpm preview` |
 | Lint (zero warnings) | `pnpm lint` |
 | Lint + autofix | `pnpm lint:fix` |
+| Format (Prettier) / check only | `pnpm format` / `pnpm format:check` |
 | Save rendered-text baseline (after a build) | `pnpm text:save` |
 | Diff rendered text against the baseline | `pnpm text:diff` |
 | CV content rules (words, bullets, buzzwords) | `pnpm cv:check` |
@@ -77,7 +78,7 @@ skill after.
 | CV or career copy (summary, current, bullets, keywords, stats), tailoring to a JD | `cv-content-guide`, `locale-copy-guide` |
 | New or reshaped section, layout, styling, tokens, icons, motion, print layout | `visual-design-guide`, `astro-guide` |
 | React island (`.tsx`) component or hook, or deciding whether something needs one | `react-island-guide` + the rows above for what it renders |
-| `eslint.config.js`, an eslint-disable comment, `pnpm-workspace.yaml`, `lint-staged.config.js`, `.husky/` | `tooling-guide` |
+| `eslint.config.js`, an eslint-disable comment, `prettier.config.mjs`, `.prettierignore`, `pnpm-workspace.yaml`, `lint-staged.config.js`, `.husky/` | `tooling-guide` |
 | New, removed or bumped dependency | `tooling-guide` |
 | Node version, GitHub Actions workflow | `tooling-guide` |
 | Restructure, move, rename, split across files, dead code | `refactor-guide`, `component-guide` + the rows for what is being moved |
@@ -94,8 +95,9 @@ reference them from committed code.
 
 ## Verification
 
-Before declaring any change done (the pre-commit hook already runs lint,
-`astro check` and the copy checks on staged files — `tooling-guide`; the
+Before declaring any change done (the pre-commit hook already runs
+Prettier, lint, `astro check` and the copy checks on staged files —
+`tooling-guide`; the
 steps below still apply, since build and `text:diff` are not in it):
 
 1. `pnpm lint` — a11y (jsx-a11y strict), React and CSS rules; zero warnings.

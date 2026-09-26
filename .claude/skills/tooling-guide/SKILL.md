@@ -40,20 +40,42 @@ An agent writes 30–50 lines of own code in minutes, but they still cost review
 - **Keep legacy `eslint-plugin-jsx-a11y` out of the tree.** `eslint-plugin-astro` prefers it when present, which silently swaps the rule set under the `.astro` files.
 - `scripts/` is ignored by ESLint. Scripts there are plain Node ESM (`.mjs`).
 
+## Prettier
+
+Prettier owns layout, ESLint owns correctness. `prettier.config.mjs` explains each choice in its header; the short version:
+
+- Stock Prettier except `printWidth: 100` and `singleQuote: true`. One canonical layout, so diffs show only what changed, for people and coding agents alike.
+- `prettier-plugin-astro` with `astroCompressHTML: 'jsx'`, which must mirror `compressHTML` in `astro.config.mjs` (unset there, so Astro's default). That is what lets the formatter move whitespace without changing the rendered text: after a mass format, `pnpm text:diff` against a baseline saved before it must say "unchanged".
+- `*.md` is in `.prettierignore` on purpose: Prettier pads Markdown table columns to align them, which grew `CLAUDE.md` by 28% in spaces agents read every session. Prose and skills stay as written.
+- A table of constants (one row per case) opts out with `// prettier-ignore` on the line above it (`LAYERS` in `peopleNetwork.ts`); keep that for real tables, not to dodge a layout you dislike.
+- No `eslint-config-prettier`: its CLI (`npx eslint-config-prettier <file>`) found no conflicting rule in this config, only the "special" `no-unexpected-multiline`, which is safe with semicolons. Re-run it when a new ESLint plugin or rule set is added.
+- Long strings (Tailwind class lists, template literals) are never broken by Prettier; `printWidth` is a target, not a limit. Do not add `max-len` on top: it is deprecated in core and would fight the formatter over those strings.
+
+## Deliberate hold: Tailwind class sorting
+
+`prettier-plugin-tailwindcss` 0.8.1 sorts classes in `.tsx` but not in `.astro`: its Astro transform walks the pre-1.0 `prettier-plugin-astro` AST (`element` nodes under `children`), and 1.x parses templates into a JSX tree (`AstroRoot` → `template`). Sorting half the files would be worse than none, so the plugin is not installed.
+
+- Retest signal: a `prettier-plugin-tailwindcss` release that mentions prettier-plugin-astro 1.x, or upstream [issue #451](https://github.com/tailwindlabs/prettier-plugin-tailwindcss/issues/451) closing.
+- Probe: `printf -- '---\n---\n<p class="uppercase p-4 flex">x</p>\n' | pnpm exec prettier --stdin-filepath src/probe.astro` must print the classes reordered (`flex p-4 uppercase`).
+- When it does: add the plugin **last** in `plugins`, set `tailwindStylesheet: './src/styles/global.css'`, format in its own `style:` commit and check `text:diff`.
+- Opened 2026-09-26 with prettier-plugin-astro 1.1.0.
+
 ## Pre-commit hook
 
-`husky` installs the hooks through the `prepare` script (every `pnpm install`, which sets `core.hooksPath` to `.husky/_`). `.husky/pre-commit` runs `lint-staged --hide-all`, configured in `lint-staged.config.js`:
+`husky` installs the hooks through the `prepare` script (every `pnpm install`, which sets `core.hooksPath` to `.husky/_`). `.husky/pre-commit` runs `lint-staged --hide-all --concurrent false`, configured in `lint-staged.config.js`:
 
 | Staged | Runs |
 |---|---|
-| `*.{js,mjs,cjs,jsx,ts,tsx,astro,css}` | `eslint --max-warnings=0 --no-warn-ignored` on those files |
+| `*.{js,mjs,cjs,jsx,ts,tsx,astro,css}` | `prettier --write`, then `eslint --max-warnings=0 --no-warn-ignored` on those files |
+| `*.{json,yml,yaml}` | `prettier --write` |
 | `src/**/*.{ts,tsx,astro}` | `astro check`, `copy-check.mjs` (project-wide, once) |
 | `src/domain/i18n/locales/*.ts` | `cv-check.mjs` |
 
 - `--no-warn-ignored` is required: a staged file under an ESLint ignore (`scripts/`) otherwise raises "File ignored" as a warning and fails `--max-warnings=0`.
 - Project-wide checks are functions in the config so lint-staged does not append the file list.
+- Prettier writes, lint-staged re-stages the result: the commit holds the formatted file (proven with a deliberately misformatted staged file). `--concurrent false` runs the tasks one after another, so `astro check` never reads a file Prettier is rewriting.
 - `--hide-all` stashes unstaged edits **and untracked files** while the checks run, so `astro check` sees exactly what is being committed. Without it lint-staged hides only the unstaged part of partially staged files, and a commit missing a new, untracked module still passes. Proven: staging `Hero.astro` alone, without its untracked imports, fails `astro check`.
-- The hook is a fast local gate, not a replacement for CI: `build` and `text:diff` stay manual (CLAUDE.md → Verification) and CI still runs lint, check, copy check and build.
+- The hook is a fast local gate, not a replacement for CI: `build` and `text:diff` stay manual (CLAUDE.md → Verification) and CI still runs format check, lint, check, copy check and build.
 - Bypassing with `--no-verify` is for a message-only amend (lint-staged has nothing staged then), never to get failing code in.
 
 ## Deliberate hold: keyframes outside `@theme`
