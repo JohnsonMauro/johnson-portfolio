@@ -35,6 +35,7 @@ const pt: Dict = {
     experienceTitle: 'Experiência profissional',
     educationTitle: 'Formação',
     languagesTitle: 'Idiomas',
+    certificationsTitle: 'Certificações',
     printAction: 'Imprimir / Salvar como PDF',
     toolbarLabel: 'Ações do CV',
   },
@@ -205,11 +206,11 @@ const pt: Dict = {
     {
       chapter: 'product',
       role: 'Software Engineer',
-      period: 'Out 2020 - Jun 2021',
+      period: 'Out 2020 - Ago 2021',
       org: 'IT Lean',
       url: 'https://www.itlean.com.br/',
       bullets: [
-        'Construí em 9 meses o front-end do Leanbot, IA conversacional proprietária (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
+        'Construí em 11 meses o front-end do Leanbot, IA conversacional proprietária (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
       ],
     },
     {
@@ -257,10 +258,10 @@ const pt: Dict = {
     {
       chapter: 'product',
       role: 'Software Engineer',
-      period: 'Jan 2018 - Mai 2018',
+      period: 'Jan 2018 - Jun 2018',
       org: 'Tella World',
       bullets: [
-        'Construí em 5 meses o front-end do iBoltt, app mobile de caronas e entregas (AngularJS, Node.js).',
+        'Construí em 6 meses o front-end do iBoltt, app mobile de caronas e entregas (AngularJS, Node.js).',
       ],
     },
     {
@@ -282,7 +283,16 @@ const pt: Dict = {
   ],
   languages: [
     { name: 'Português', level: 'Nativo' },
-    { name: 'Inglês', level: 'Proficiência profissional' },
+    { name: 'Inglês', level: 'Proficiência profissional plena' },
+  ],
+  certifications: [
+    {
+      name: 'Exam 480: Programming in HTML5 with JavaScript and CSS3',
+      issuer: 'Microsoft',
+      year: '2019',
+      url: 'https://www.credly.com/badges/bed431d6-4888-404e-94b8-7e7c7760d384',
+    },
+    { name: 'Scrum Foundation Professional', issuer: 'CertiProf', year: '2019' },
   ],
 };
 

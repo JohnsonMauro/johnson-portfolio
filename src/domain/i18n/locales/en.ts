@@ -35,6 +35,7 @@ const en: Dict = {
     experienceTitle: 'Professional experience',
     educationTitle: 'Education',
     languagesTitle: 'Languages',
+    certificationsTitle: 'Certifications',
     printAction: 'Print / Save as PDF',
     toolbarLabel: 'CV actions',
   },
@@ -201,11 +202,11 @@ const en: Dict = {
     {
       chapter: 'product',
       role: 'Software Engineer',
-      period: 'Oct 2020 - Jun 2021',
+      period: 'Oct 2020 - Aug 2021',
       org: 'IT Lean',
       url: 'https://www.itlean.com.br/',
       bullets: [
-        'Built the front end of Leanbot, a proprietary conversational-AI product, over 9 months (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
+        'Built the front end of Leanbot, a proprietary conversational-AI product, over 11 months (Angular, PO-UI, Node.js, PostgreSQL, AWS).',
       ],
     },
     {
@@ -253,10 +254,10 @@ const en: Dict = {
     {
       chapter: 'product',
       role: 'Software Engineer',
-      period: 'Jan 2018 - May 2018',
+      period: 'Jan 2018 - Jun 2018',
       org: 'Tella World',
       bullets: [
-        'Built the front end of iBoltt, a ride- and delivery-sharing mobile app, in 5 months (AngularJS, Node.js).',
+        'Built the front end of iBoltt, a ride- and delivery-sharing mobile app, in 6 months (AngularJS, Node.js).',
       ],
     },
     {
@@ -278,7 +279,16 @@ const en: Dict = {
   ],
   languages: [
     { name: 'Portuguese', level: 'Native' },
-    { name: 'English', level: 'Professional working proficiency' },
+    { name: 'English', level: 'Full professional proficiency' },
+  ],
+  certifications: [
+    {
+      name: 'Exam 480: Programming in HTML5 with JavaScript and CSS3',
+      issuer: 'Microsoft',
+      year: '2019',
+      url: 'https://www.credly.com/badges/bed431d6-4888-404e-94b8-7e7c7760d384',
+    },
+    { name: 'Scrum Foundation Professional', issuer: 'CertiProf', year: '2019' },
   ],
 };
 

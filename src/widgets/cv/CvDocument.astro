@@ -85,6 +85,24 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
         <dt>{dict.cv.languagesTitle}</dt>
         <dd>{dict.languages.map((item) => `${item.name}: ${item.level}`).join(' · ')}</dd>
       </div>
+      <div class="cv__skills-row">
+        <dt>{dict.cv.certificationsTitle}</dt>
+        <dd>
+          {dict.certifications.map((item, i) => (
+            <Fragment>
+              {i > 0 && ' · '}
+              {item.url ? (
+                <a href={item.url} target="_blank" rel="noopener noreferrer">
+                  {item.name}
+                </a>
+              ) : (
+                item.name
+              )}
+              {` (${item.issuer}, ${item.year})`}
+            </Fragment>
+          ))}
+        </dd>
+      </div>
     </dl>
   </section>
 
@@ -216,7 +234,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
   }
 
   .cv__section {
-    margin-top: 12px;
+    margin-top: 10px;
   }
 
   .cv__section h2 {
@@ -255,6 +273,11 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     font-size: 10pt;
   }
 
+  .cv__skills-row a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .cv__skills-row dd {
     margin: 0;
     font-size: 10pt;
@@ -281,7 +304,7 @@ const whatsappDigits = profile.social.whatsapp.replace(/\D/g, '');
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 6px;
+    gap: 5px;
   }
 
   /* A job may split between bullets, never inside one or right after its header. */

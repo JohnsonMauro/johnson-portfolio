@@ -47,6 +47,14 @@ export interface LanguageEntry {
   level: string;
 }
 
+export interface CertificationEntry {
+  name: string;
+  issuer: string;
+  year: string;
+  /** Public verification page, when the issuer provides one. */
+  url?: string;
+}
+
 export interface Dict {
   meta: {
     title: string;
@@ -80,6 +88,7 @@ export interface Dict {
     experienceTitle: string;
     educationTitle: string;
     languagesTitle: string;
+    certificationsTitle: string;
     printAction: string;
     toolbarLabel: string;
   };
@@ -124,6 +133,7 @@ export interface Dict {
   resume: ResumeEntry[];
   education: EducationEntry[];
   languages: LanguageEntry[];
+  certifications: CertificationEntry[];
 }
 
 const content: Record<Locale, Dict> = { en, pt };

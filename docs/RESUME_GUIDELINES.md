@@ -139,6 +139,7 @@ For every `resume[].bullets[]` entry, confirm:
 | `about.expertise` | Tech-icon clusters | Skills grid (text + icons) |
 | `skills.judgment`, `skills.aiPractices` | Skills section, after the stack (engineering judgment, then AI practices) | "Engineering practices" row in Core skills; "How I build with AI" after Experience |
 | `languages[]` | — | "Languages" row in Core skills |
+| `certifications[]` | — | "Certifications" row in Core skills (verification link when the issuer has one) |
 | `education[]` | — | Education, last section |
 | `career.chapters` | Experience grouped into career chapters (period, title, arc) | — (the CV stays a flat list) |
 | `resume[]` | Experience timeline, each entry under its `chapter` | Experience block |
