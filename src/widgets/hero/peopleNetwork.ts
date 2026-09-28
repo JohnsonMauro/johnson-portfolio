@@ -31,10 +31,15 @@ const PULSE_SECONDS = 1.6;
 const CURSOR_LINK = 170;
 const CURSOR_GLOW = 220;
 const POINTER_EASE = 0.06;
-/** A mouse resting this long over the network starts the easter egg around it. */
+/**
+ * A mouse resting this long over the network starts the easter egg around it;
+ * on a touch screen, this long without a touch or scroll starts it anywhere.
+ */
 const IDLE_MS = 8000;
 /** While it keeps resting, the egg comes back this long after each run ends. */
 const IDLE_REPEAT_MS = 5000;
+/** A gap this long between frames means the loop was paused (off screen, hidden tab). */
+const LOOP_PAUSE_MS = 1000;
 /** The easter egg's tour keeps this far from the visible edges. */
 const EGG_EDGE = 40;
 /** Clearance the egg's tour and caption keep around the hero copy. */
@@ -139,8 +144,12 @@ export function mountPeopleNetwork(
   let needsResize = true;
   let lastDraw = 0;
   let lastPulse = 0;
-  /** When a resting mouse next starts the egg; 0 until the pointer first moves. */
+  /**
+   * When the idle egg next starts; 0 until a mouse first moves, or until the
+   * first frame on a touch screen (no hover), where there is no cursor to rest.
+   */
   let idleDue = 0;
+  const touchScreen = window.matchMedia('(hover: none)');
   let pendingEgg: { at: Point | null; next: number; until: number } | null = null;
 
   const resize = () => {
@@ -325,6 +334,9 @@ export function mountPeopleNetwork(
     if (needsResize) resize();
     // Still frames (reduced motion): nothing moves and no signals start.
     const dt = still || lastDraw === 0 ? 0 : Math.min(0.05, (now - lastDraw) / 1000);
+    // Coming back from a pause restarts the idle wait instead of firing at once.
+    if (idleDue > 0 && lastDraw > 0 && now - lastDraw > LOOP_PAUSE_MS)
+      idleDue = Math.max(idleDue, now + IDLE_MS);
     lastDraw = now;
     move(dt, still ? 0 : now / 1000);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -341,13 +353,26 @@ export function mountPeopleNetwork(
     egg?.draw(ctx, signal, now);
     ctx.globalAlpha = 1;
     canvas.dataset.ready = '';
-    if (!still && egg && cursor.active && idleDue > 0) {
-      // A run (or its retries) holds the next idle run off until it ends.
-      if (egg.active || pendingEgg) idleDue = Math.max(idleDue, now + IDLE_REPEAT_MS);
-      else if (now >= idleDue) {
-        idleDue = now + IDLE_REPEAT_MS;
-        startEgg({ x: cursor.x, y: cursor.y }, now, false);
+    if (!still && egg) idleEgg(now);
+  };
+
+  /**
+   * The egg that starts on its own: around a mouse resting on the network, or
+   * anywhere on a touch screen left alone with the hero at the top of the view.
+   */
+  const idleEgg = (now: number) => {
+    const touch = touchScreen.matches && !cursor.active;
+    if (touch && idleDue === 0) idleDue = now + IDLE_MS;
+    if ((!cursor.active && !touch) || idleDue === 0 || !egg) return;
+    // A run (or its retries) holds the next idle run off until it ends.
+    if (egg.active || pendingEgg) idleDue = Math.max(idleDue, now + IDLE_REPEAT_MS);
+    else if (now >= idleDue) {
+      if (touch && canvas.getBoundingClientRect().top < -EGG_EDGE) {
+        idleDue = now + IDLE_MS;
+        return;
       }
+      idleDue = now + IDLE_REPEAT_MS;
+      startEgg(touch ? null : { x: cursor.x, y: cursor.y }, now, false);
     }
   };
 
@@ -418,6 +443,13 @@ export function mountPeopleNetwork(
     cursor.active = false;
   };
 
+  // On a touch screen, any touch or scroll restarts the idle wait.
+  const onTouchActivity = (event: Event) => {
+    if (!touchScreen.matches) return;
+    if (event instanceof PointerEvent && event.pointerType === 'mouse') return;
+    idleDue = performance.now() + IDLE_MS;
+  };
+
   const resizeObserver = new ResizeObserver(() => {
     needsResize = true;
     loop.redraw();
@@ -427,6 +459,8 @@ export function mountPeopleNetwork(
 
   window.addEventListener('pointermove', onPointerMove, { passive: true });
   document.documentElement.addEventListener('pointerleave', onPointerLeave);
+  window.addEventListener('pointerdown', onTouchActivity, { passive: true });
+  window.addEventListener('scroll', onTouchActivity, { passive: true });
 
   return () => {
     loop.stop();
@@ -435,5 +469,7 @@ export function mountPeopleNetwork(
     resizeObserver.disconnect();
     window.removeEventListener('pointermove', onPointerMove);
     document.documentElement.removeEventListener('pointerleave', onPointerLeave);
+    window.removeEventListener('pointerdown', onTouchActivity);
+    window.removeEventListener('scroll', onTouchActivity);
   };
 }
