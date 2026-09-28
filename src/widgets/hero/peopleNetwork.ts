@@ -33,6 +33,8 @@ const CURSOR_GLOW = 220;
 const POINTER_EASE = 0.06;
 /** A mouse resting this long over the network starts the easter egg around it. */
 const IDLE_MS = 8000;
+/** While it keeps resting, the egg comes back this long after each run ends. */
+const IDLE_REPEAT_MS = 5000;
 /** The easter egg's tour keeps this far from the visible edges. */
 const EGG_EDGE = 40;
 /** Clearance the egg's tour and caption keep around the hero copy. */
@@ -137,8 +139,8 @@ export function mountPeopleNetwork(
   let needsResize = true;
   let lastDraw = 0;
   let lastPulse = 0;
-  let lastPointerMove = 0;
-  let idleSpent = false;
+  /** When a resting mouse next starts the egg; 0 until the pointer first moves. */
+  let idleDue = 0;
   let pendingEgg: { at: Point | null; next: number; until: number } | null = null;
 
   const resize = () => {
@@ -339,15 +341,13 @@ export function mountPeopleNetwork(
     egg?.draw(ctx, signal, now);
     ctx.globalAlpha = 1;
     canvas.dataset.ready = '';
-    if (
-      !still &&
-      cursor.active &&
-      !idleSpent &&
-      lastPointerMove > 0 &&
-      now - lastPointerMove > IDLE_MS
-    ) {
-      idleSpent = true;
-      startEgg({ x: cursor.x, y: cursor.y }, now, false);
+    if (!still && egg && cursor.active && idleDue > 0) {
+      // A run (or its retries) holds the next idle run off until it ends.
+      if (egg.active || pendingEgg) idleDue = Math.max(idleDue, now + IDLE_REPEAT_MS);
+      else if (now >= idleDue) {
+        idleDue = now + IDLE_REPEAT_MS;
+        startEgg({ x: cursor.x, y: cursor.y }, now, false);
+      }
     }
   };
 
@@ -411,8 +411,7 @@ export function mountPeopleNetwork(
     cursor.y = event.clientY - box.top;
     cursor.active =
       cursor.x >= 0 && cursor.y >= 0 && cursor.x <= box.width && cursor.y <= box.height;
-    lastPointerMove = performance.now();
-    idleSpent = false;
+    idleDue = performance.now() + IDLE_MS;
   };
 
   const onPointerLeave = () => {
