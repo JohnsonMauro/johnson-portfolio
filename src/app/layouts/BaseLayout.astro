@@ -4,6 +4,7 @@ import { getAbsoluteLocaleUrl } from 'astro:i18n';
 import { LOCALES, DEFAULT_LOCALE, HREFLANG_TAGS, type Locale } from '../../domain/i18n/config';
 import { asset } from '../../shared/lib/asset';
 import { THEME_STORAGE_KEY } from '../../shared/lib/storage-keys';
+import GoatCounter from '../analytics/GoatCounter.astro';
 
 interface Props {
   lang: Locale;
@@ -84,6 +85,7 @@ const ogImage = new URL(asset(`assets/img/og-${lang}.png`), Astro.site).href;
     ))}
 
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} is:inline />}
+    <GoatCounter />
   </head>
   <body class="bg-surface">
     <slot />

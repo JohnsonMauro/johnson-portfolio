@@ -5,6 +5,7 @@ import { getDict } from '../../domain/i18n/content';
 import { profile } from '../../domain/profile/profile';
 import { asset } from '../../shared/lib/asset';
 import { personJsonLd } from '../../domain/seo/jsonld';
+import GoatCounter from '../../app/analytics/GoatCounter.astro';
 import CvDocument from '../../widgets/cv/CvDocument.astro';
 import CvToolbar from '../../widgets/cv/CvToolbar.astro';
 import '../../styles/palette.css';
@@ -55,6 +56,7 @@ const title = `${profile.name} — ${dict.meta.jobTitle} (CV)`;
     />
 
     <script type="application/ld+json" set:html={jsonLd} is:inline />
+    <GoatCounter />
   </head>
   <body>
     <CvToolbar dict={dict} lang={typedLang} />

@@ -1,0 +1,11 @@
+---
+// Cookieless page-view counter (goatcounter.com). Rendered in production
+// builds only; count.js itself also skips localhost and private IPs, so
+// `pnpm preview` sends no hits either. The dashboard is private.
+const GOATCOUNTER_ENDPOINT = 'https://johnsonmauro.goatcounter.com/count';
+const GOATCOUNTER_SCRIPT = 'https://gc.zgo.at/count.js';
+---
+
+{import.meta.env.PROD && (
+  <script is:inline data-goatcounter={GOATCOUNTER_ENDPOINT} async src={GOATCOUNTER_SCRIPT} />
+)}
