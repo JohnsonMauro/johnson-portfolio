@@ -128,6 +128,11 @@ Every push to `main` builds the site and publishes it to GitHub Pages
 ([workflow](.github/workflows/deploy.yml)). Pull requests run lint, type
 check, content checks and the build first ([CI](.github/workflows/ci.yml)).
 
+Page views are counted with [GoatCounter](https://www.goatcounter.com)
+(cookieless, production build only). Stats dashboard, sign-in required:
+[johnsonmauro.goatcounter.com](https://johnsonmauro.goatcounter.com/). The
+snippet lives in [`src/app/analytics/GoatCounter.astro`](src/app/analytics/GoatCounter.astro).
+
 ## Contributing
 
 The engineering rules (architecture, content, design, tooling) are written for
