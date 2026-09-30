@@ -68,8 +68,8 @@ const pt: Dict = {
     stats: [
       { value: '13+', label: 'Anos entregando software' },
       { value: '10+', label: 'Empresas atendidas' },
-      { value: '0→3k', label: 'Testes numa reescrita coliderada' },
-      { value: 'Remote', label: 'First, fluente em fusos' },
+      { value: '3.800+', label: 'Horas de código registradas' },
+      { value: '40+', label: 'Projetos com 10h+ cada' },
     ],
     ctaCv: 'Baixar CV',
     ctaLinkedin: 'LinkedIn',

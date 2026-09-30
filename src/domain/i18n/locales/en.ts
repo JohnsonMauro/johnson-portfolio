@@ -64,8 +64,8 @@ const en: Dict = {
     stats: [
       { value: '13+', label: 'Years shipping software' },
       { value: '10+', label: 'Companies served' },
-      { value: '0→3k', label: 'Tests in a co-led rewrite' },
-      { value: 'Remote', label: 'First, time-zone fluent' },
+      { value: '3,800+', label: 'Hours of tracked coding' },
+      { value: '40+', label: 'Projects with 10+ hours each' },
     ],
     ctaCv: 'Download CV',
     ctaLinkedin: 'LinkedIn',
